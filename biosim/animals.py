@@ -49,6 +49,12 @@ class Animals:
                     1 / (1 + math.exp(-Animals.phi_weight * (self.weight - Animals.w_half))))
         return self.fit
 
+    def aging(self):
+        self.age += 1
+
+    def weight_loss(self):
+        self.weight -= self.weight * Animals.eta
+
     def birth(self):
         Animals()
 
