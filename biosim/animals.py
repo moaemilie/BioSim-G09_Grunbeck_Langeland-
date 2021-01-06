@@ -9,16 +9,35 @@ import math
 
 
 class Animals:
+    w_birth = None
+    sigma_birth = None
+    beta = None
+    eta = None
+    a_half = None
+    phi_age = None
+    w_half = None
+    phi_weight = None
+    mu = None
+    gamma = None
+    zeta = None
+    xi = None
+    omega = None
+    F = None
+    DeltaPhiMax = None
+
+    default_params = {'w_birth': w_birth, 'sigma_birth': sigma_birth, 'beta': beta, 'eta': eta, 'a_half': a_half,
+                      'phi_age': phi_age, 'w_half': w_half, 'phi_weight': phi_weight, 'mu': mu, 'gamma': gamma,
+                      'zeta': zeta, 'xi': xi, 'omega': omega, 'F': F, 'DeltaPhiMax': DeltaPhiMax}
 
     @classmethod
     def set_params(cls, new_params):
 
         for key in new_params:
-            if key not in ('w_birth', 'sigme_birth', 'beta', 'eta', 'a_half',
-                      'phi_age', 'w_half', 'phi_weight', 'mu', 'gamma',
-                      'zeta', 'xi', 'omega', 'F', 'DeltaPhiMax'):
+            if key not in ('w_birth', 'sigma_birth', 'beta', 'eta', 'a_half',
+                           'phi_age', 'w_half', 'phi_weight', 'mu', 'gamma',
+                           'zeta', 'xi', 'omega', 'F', 'DeltaPhiMax'):
                 raise KeyError('Invalid parameter name: ' + key)
-
+        cls.default_params = new_params
 
     def __init__(self, age, weight, species):
         self.age = age
@@ -26,16 +45,15 @@ class Animals:
         self.species = species
 
     def fitness(self):
-        self.fit = (1/(1+math.exp(phi_age*(self.age-a_half)))) * (1/(1+math.exp(-phi_weight*(self.weight-w_half))))
+        self.fit = (1 / (1 + math.exp(Animals.phi_age * (self.age - Animals.a_half)))) * (
+                    1 / (1 + math.exp(-Animals.phi_weight * (self.weight - Animals.w_half))))
         return self.fit
 
     def birth(self):
         Animals()
 
 
-
 class Herbivore(Animals):
-
     w_birth = 8
     sigma_birth = 1.5
     beta = 0.9
@@ -52,23 +70,12 @@ class Herbivore(Animals):
     F = 10
     DeltaPhiMax = None
 
-    default_params = {'w_birth': w_birth, 'sigme_birth': sigma_birth, 'beta': beta, 'eta': eta, 'a_half': a_half,
+    default_params = {'w_birth': w_birth, 'sigma_birth': sigma_birth, 'beta': beta, 'eta': eta, 'a_half': a_half,
                       'phi_age': phi_age, 'w_half': w_half, 'phi_weight': phi_weight, 'mu': mu, 'gamma': gamma,
                       'zeta': zeta, 'xi': xi, 'omega': omega, 'F': F, 'DeltaPhiMax': DeltaPhiMax}
 
     def __init__(self, age, weight, species):
         super().__init__(age, weight, species)
 
-
-
-
-
-    #def feeding(self):
-        #self.weight
-
-
-
-
-
-
-
+    # def feeding(self):
+    # self.weight
