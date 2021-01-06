@@ -9,7 +9,8 @@ import math
 
 
 class Animals:
-    animal_count = 0
+
+
 
 
     def __init__(self, age, weight, species):
@@ -18,9 +19,33 @@ class Animals:
         self.species = species
         self.count_new_animal()
 
+    def birth(self):
+        Animals()
+
 
 
 class Herbivore(Animals):
+
+    w_birth = 8
+    sigma_birth = 1.5
+    beta = 0.9
+    eta = 0.05
+    a_half = 40
+    phi_age = 0.6
+    w_half = 10
+    phi_weight = 0.1
+    mu = 0.25
+    gamma = 0.2
+    zeta = 3.5
+    xi = 1.2
+    omega = 0.4
+    F = 10
+    DeltaPhiMax = None
+
+    default_params = {'w_birth': w_birth, 'sigme_birth': sigma_birth, 'beta': beta, 'eta': eta, 'a_half': a_half,
+                      'phi_age': phi_age, 'w_half': w_half, 'phi_weight': phi_weight, 'mu': mu, 'gamma': gamma,
+                      'zeta': zeta, 'xi': xi, 'omega': omega, 'F': F, 'DeltaPhiMax': DeltaPhiMax}
+
     def __init__(self, age, weight, species):
         super().__init__(age, weight, species)
 
@@ -56,7 +81,8 @@ class Herbivore(Animals):
     #def feeding(self):
         #self.weight
 
-    #def birth(self):
+
+
 
 
 
