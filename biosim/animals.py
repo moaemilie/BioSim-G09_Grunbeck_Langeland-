@@ -7,14 +7,14 @@ __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 import math
 
+
 class Animals:
-
     animal_count = 0
-
 
     @classmethod
     def count_new_animal(cls):
         cls.animal_count += 1
+
 
     @classmethod
     def num_animals(cls):
@@ -24,7 +24,7 @@ class Animals:
         self.age = age
         self.weight = weight
         self.species = species
-
+        self.count_new_animal()
 
         if self.species == 'Herbivore' or 'herbivore':
             class Herbivore(Animals):
@@ -50,7 +50,6 @@ class Animals:
 
                     self.fit = 0
 
-
                 def fitness(self):
                     if weight <= 0:
                         self.fit = 0
@@ -61,17 +60,6 @@ class Animals:
                 def feeding(self):
                     self.weight
 
-
                 def birth(self):
-
-
-
-
-
-
-
-
-
-
 
 
