@@ -10,14 +10,24 @@ import math
 
 class Animals:
 
+    @classmethod
+    def set_params(cls, new_params):
 
+        for key in new_params:
+            if key not in ('w_birth', 'sigme_birth', 'beta', 'eta', 'a_half',
+                      'phi_age', 'w_half', 'phi_weight', 'mu', 'gamma',
+                      'zeta', 'xi', 'omega', 'F', 'DeltaPhiMax'):
+                raise KeyError('Invalid parameter name: ' + key)
 
 
     def __init__(self, age, weight, species):
         self.age = age
         self.weight = weight
         self.species = species
-        self.count_new_animal()
+
+    def fitness(self):
+        self.fit = (1/(1+math.exp(phi_age*(self.age-a_half)))) * (1/(1+math.exp(-phi_weight*(self.weight-w_half))))
+        return self.fit
 
     def birth(self):
         Animals()
@@ -50,33 +60,8 @@ class Herbivore(Animals):
         super().__init__(age, weight, species)
 
 
-    def __init__(self, age, weight):
-        self.age = age
-        self.weight = weight
-        self.w_birth = 8
-        self.sigma_birth = 1.5
-        self.beta = 0.9
-        self.eta = 0.05
-        self.a_half = 40
-        self.phi_age = 0.6
-        self.w_half = 10
-        self.phi_weight = 0.1
-        self.mu = 0.25
-        self.gamma = 0.2
-        self.zeta = 3.5
-        self.xi = 1.2
-        self.omega = 0.4
-        self.F = 10
-        self.DeltaPhiMax = None
 
-        self.fit = 0
 
-    def fitness(self):
-        if self.weight <= 0:
-            self.fit = 0
-        else:
-            self.fit = (1/(1+math.exp(self.phi_age*(self.age-self.a_half)))) * (1/(1+math.exp(-self.phi_weight*(self.weight-self.w_half))))
-            return self.fit
 
     #def feeding(self):
         #self.weight
