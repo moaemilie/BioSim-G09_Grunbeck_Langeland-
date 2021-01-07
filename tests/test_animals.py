@@ -1,19 +1,28 @@
 
-from biosim.animals import Animals
+from biosim.animals import Herbivore
 
 def test_animal_aging():
     """
     Tests that the aging function counts correctly
     """
     years = 4
-    Zebra = Animals(0,2,'Herbivore')
+    sheep = Herbivore(0,2,'Herbivore')
 
     for _ in range(years):
-        Zebra.aging()
-    assert Zebra.age == 4
+        sheep.aging()
+    assert sheep.age == 4
 
 
-def test_animal_fitnes():
+def test_animal_fitness():
+    """
+    Tests that the fitness always lies between 0 and 1
+    """
+    sheep = Herbivore(4,30,'Herbivore')
+    assert sheep.fitness() >= 0 and sheep.fitness() <= 1
 
-    Lion = Animals(4,30,'Herbivore')
-    assert Lion.fitness() < 0 and Lion.fitness() > 1
+
+#def test_weight_loss():
+    #sheep = Herbivore(0, 30, 'Herbivore')
+    #sheep.weightloss()
+    #assert sheep.death() == True
+
