@@ -28,8 +28,9 @@ def test_weightloss():
     assert sheep.weightloss() == animal_weight - weight_delta
 
 
-#def test_weight_loss_death():
-    #sheep = Herbivore(0, 30, 'Herbivore')
-    #sheep.weightloss()
-    #assert sheep.death() == True
+def test_weight_loss_death():
+    sheep = Herbivore(0, 30, 'Herbivore')
+    sheep.weightloss()
+    sheep.death()
+    assert p_death = 1.0
 
