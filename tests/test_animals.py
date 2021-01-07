@@ -37,7 +37,17 @@ def test_weight_loss_death():
     """
     sheep = Herbivore(0, 30)
     sheep.weightloss()
-    assert sheep.death() == True
+    assert sheep.death()
+
+
+def test_death_certain():
+    """
+    Test that if the the weight is zero the animal dies.
+    """
+    sheep = Herbivore(4,0)
+    for _ in range(100):
+        assert sheep.death()
+
 
 def test_eating():
     sheep = Herbivore(0, 30)
