@@ -21,7 +21,7 @@ def test_animal_fitness():
     assert sheep.fitness() >= 0 and sheep.fitness() <= 1
 
 
-def test_weghtloss():
+def test_weightloss():
     sheep = Herbivore(4, 30)
     weight_delta = 30 * sheep.eta
     animal_weight = 30
