@@ -22,6 +22,9 @@ def test_animal_fitness():
 
 
 def test_weightloss():
+    """
+    Test that the weightloss function returns the true value.
+    """
     sheep = Herbivore(4, 30)
     weight_delta = 30 * sheep.eta
     animal_weight = 30
@@ -29,8 +32,10 @@ def test_weightloss():
 
 
 def test_weight_loss_death():
-    sheep = Herbivore(0, 30, 'Herbivore')
+    """
+    Test that if the the weight loss makes the weight zero or bellow zero that the animal dies.
+    """
+    sheep = Herbivore(0, 30)
     sheep.weightloss()
-    sheep.death()
-    assert p_death = 1.0
+    assert sheep.death() == True
 
