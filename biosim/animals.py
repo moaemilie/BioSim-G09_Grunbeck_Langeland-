@@ -71,8 +71,19 @@ class Animals:
         self.weight += self.beta * F_line
         return self.weight
 
-    #def birth(self):
-        #Animals()
+    def birth(self, p_birth):
+        if self.weight < self.zeta*(self.w_birth + self.sigma_birth) or self.weight < self.w_birth:
+            p_birth = 0
+        chance = random.random() <= p_birth
+        if chance == True:
+            baby_weight =
+            self.weight -= self.w_birth * self.xi
+        return chance
+
+
+
+
+
 
 
 class Herbivore(Animals):
