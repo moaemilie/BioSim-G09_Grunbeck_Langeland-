@@ -69,6 +69,7 @@ class Animals:
 
     def eating(self, F_line):
         self.weight += self.beta * F_line
+        return self.weight
 
     #def birth(self):
         #Animals()
