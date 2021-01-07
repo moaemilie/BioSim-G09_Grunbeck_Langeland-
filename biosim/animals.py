@@ -64,8 +64,8 @@ class Animals:
         if self.weight <= 0:
             p_death = 1.0
         else:
-            p_death = self.weight*(1-self.fit)
-        return random.uniform(0.0,1.0) <= p_death
+            p_death = (self.omega*(1-self.fit))
+        return random.random() <= p_death
 
     def eating(self, F_line):
         self.weight += self.beta * F_line
