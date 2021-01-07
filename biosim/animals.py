@@ -57,7 +57,6 @@ class Animals:
 
     def weightloss(self):
         self.weight -= self.weight * self.eta
-        return self.weight
 
     def death(self):
         if self.weight == 0:
