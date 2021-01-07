@@ -40,10 +40,10 @@ class Animals:
                 raise KeyError('Invalid parameter name: ' + key)
         cls.default_params = new_params
 
-    def __init__(self, age, weight, species):
+    def __init__(self, age, weight):
         self.age = age
         self.weight = weight
-        self.species = species
+
 
     def fitness(self):
         if self.weight <= 0:
