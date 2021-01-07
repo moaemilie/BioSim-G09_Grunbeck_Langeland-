@@ -33,7 +33,13 @@ class Animals:
 
     @classmethod
     def set_params(cls, new_params):
+        """
+        Sets new parametres.
 
+        Input:
+        New parametres
+
+    """
         for key in new_params:
             if key not in ('w_birth', 'sigma_birth', 'beta', 'eta', 'a_half',
                            'phi_age', 'w_half', 'phi_weight', 'mu', 'gamma',
@@ -46,8 +52,14 @@ class Animals:
         self.weight = weight
         self.fit = self.fitness()
 
-
     def fitness(self):
+        """
+        Calculates the fitness of the animals.
+
+        Returns
+        -------
+        Float with new fitness between 0 and 1
+        """
         if self.weight <= 0:
             self.fit = 0
         else:
@@ -55,13 +67,36 @@ class Animals:
         return self.fit
 
     def aging(self):
+        """
+        Adds one year every time its called.
+
+        Returns
+        -------
+        Int with number of years
+        """
         self.age += 1
+        return self.age
 
     def weightloss(self):
+        """
+        Calculates the weight of an animal.
+
+        Returns
+        -------
+        Int with weight for the animal
+        """
         self.weight -= self.weight * self.eta
         return self.weight
 
     def death(self):
+        """
+        Desides if an animal should die or not.
+
+        Returns
+        -------
+        Bool
+                True if animal dies
+        """
         if self.weight <= 0:
             p_death = 1.0
         else:
@@ -69,10 +104,25 @@ class Animals:
         return random.random() <= p_death
 
     def eating(self, F_line):
+        """
+        Animal gains a sertan amount every year by eating.
+
+        Returns
+        -------
+        int
+        """
         self.weight += self.beta * F_line
         return self.weight
 
     def birth(self, p_birth):
+        """
+        Desides if a ned animal should be added to the simulation.
+
+        Returns
+        -------
+        Bool
+                True if animal should be added.
+        """
         baby_weight = np.random.normal(self.w_birth, self.sigma_birth)
         if baby_weight < self.zeta*(self.w_birth + self.sigma_birth) or self.weight < baby_weight:
             p_birth = 0
