@@ -8,3 +8,4 @@ def test_animal_aging():
     for _ in range(years):
         Zebra.aging()
     assert Zebra.age == 4
+
