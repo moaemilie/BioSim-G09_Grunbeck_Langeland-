@@ -6,7 +6,6 @@
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 import math
-from .ran_gen import lcg_rng
 
 
 class Animals:
@@ -59,6 +58,7 @@ class Animals:
     def weight_loss(self):
         self.weight -= self.weight * Animals.eta
 
+    def
 
 
     def birth(self):
