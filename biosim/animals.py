@@ -54,14 +54,12 @@ class Animals:
     def aging(self):
         self.age += 1
 
-    def weight_loss(self):
-        self.weight -= self.weight * Animals.eta
-
-    #def
+    def weightloss(self):
+        self.weight -= self.weight * self.eta
 
 
-    def birth(self):
-        Animals()
+    #def birth(self):
+        #Animals()
 
 
 class Herbivore(Animals):
@@ -88,5 +86,4 @@ class Herbivore(Animals):
     def __init__(self, age, weight, species):
         super().__init__(age, weight, species)
 
-    # def feeding(self):
-    # self.weight
+
