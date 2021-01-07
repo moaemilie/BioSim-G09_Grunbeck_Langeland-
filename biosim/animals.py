@@ -6,6 +6,7 @@
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 import math
+import random
 
 
 class Animals:
@@ -56,6 +57,14 @@ class Animals:
 
     def weightloss(self):
         self.weight -= self.weight * self.eta
+        return self.weight
+
+    def death(self):
+        if self.weight == 0:
+            p_death = 1.0
+        else:
+            p_death = self.weight*(1-self.fit)
+        return random.uniform(0.0,1.0) < p_death
 
 
     #def birth(self):
@@ -83,7 +92,7 @@ class Herbivore(Animals):
                       'phi_age': phi_age, 'w_half': w_half, 'phi_weight': phi_weight, 'mu': mu, 'gamma': gamma,
                       'zeta': zeta, 'xi': xi, 'omega': omega, 'F': F, 'DeltaPhiMax': DeltaPhiMax}
 
-    def __init__(self, age, weight, species):
-        super().__init__(age, weight, species)
+    def __init__(self, age, weight):
+        super().__init__(age, weight)
 
 
