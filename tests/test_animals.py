@@ -26,9 +26,9 @@ def test_weightloss():
     Test that the weightloss function returns the true value.
     """
     sheep = Herbivore(4, 30)
-    weight_delta = 30 * sheep.eta
+    delta_weight = 30 * sheep.eta
     animal_weight = 30
-    assert sheep.weightloss() == animal_weight - weight_delta
+    assert sheep.weightloss() == animal_weight - delta_weight
 
 
 def test_weight_loss_death():
@@ -38,4 +38,11 @@ def test_weight_loss_death():
     sheep = Herbivore(0, 30)
     sheep.weightloss()
     assert sheep.death() == True
+
+def test_eating():
+    sheep = Herbivore(0, 30)
+    F_line = 2
+    delta_eating = 2 * sheep.beta
+    new_weight = sheep.weight + delta_eating
+    assert new_weight == sheep.eating(F_line)
 
