@@ -43,6 +43,7 @@ class Animals:
     def __init__(self, age, weight):
         self.age = age
         self.weight = weight
+        self.fit = self.fitness()
 
 
     def fitness(self):
