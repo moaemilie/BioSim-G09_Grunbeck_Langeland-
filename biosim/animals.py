@@ -7,6 +7,7 @@ __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 import math
 import random
+import numpy as np
 
 
 class Animals:
@@ -72,12 +73,12 @@ class Animals:
         return self.weight
 
     def birth(self, p_birth):
-        if self.weight < self.zeta*(self.w_birth + self.sigma_birth) or self.weight < self.w_birth:
+        baby_weight = np.random.normal(self.w_birth, self.sigma_birth)
+        if baby_weight < self.zeta*(self.w_birth + self.sigma_birth) or self.weight < baby_weight:
             p_birth = 0
         chance = random.random() <= p_birth
         if chance == True:
-            baby_weight =
-            self.weight -= self.w_birth * self.xi
+            self.weight -= baby_weight * self.xi
         return chance
 
 
