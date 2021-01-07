@@ -45,8 +45,11 @@ class Animals:
         self.species = species
 
     def fitness(self):
-        self.fit = (1 / (1 + math.exp(Animals.phi_age * (self.age - Animals.a_half)))) * (
-                    1 / (1 + math.exp(-Animals.phi_weight * (self.weight - Animals.w_half))))
+        if self.weight <= 0:
+            self.fit = 0
+        else:
+            self.fit = (1 / (1 + math.exp(Animals.phi_age * (self.age - Animals.a_half)))) * (
+                     1 / (1 + math.exp(-Animals.phi_weight * (self.weight - Animals.w_half))))
         return self.fit
 
     def aging(self):
@@ -54,6 +57,9 @@ class Animals:
 
     def weight_loss(self):
         self.weight -= self.weight * Animals.eta
+
+    def
+
 
     def birth(self):
         Animals()
