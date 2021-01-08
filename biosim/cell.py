@@ -6,6 +6,7 @@
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 from biosim.animals import Herbivore
+import random
 
 
 class Cell:
@@ -16,8 +17,8 @@ class Cell:
         cls.f_max = new_f_max
 
     def __init__(self, num_herb):
-        self.num_herb = num_herb
-        self.herb_pop = [Herbivore(4, 20) for _ in range(num_herb)]
+        #self.num_herb = self.get_num_herb()
+        self.herb_pop = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_herb)]
 
     def get_num_herb(self):
         return len(self.herb_pop)
@@ -27,20 +28,28 @@ class Cell:
             herb.aging()
 
     def death(self):
-
         def survivors(pop):
             return [herb for herb in pop if not herb.death()]
 
         self.herb_pop = survivors(self.herb_pop)
 
     def birth(self):
+        p_birth = [min(1, Herbivore.gamma * herb.fit * (self.get_num_herb() - 1)) for herb in self.herb_pop]
 
-        p_birth = [min(1, Herbivore.gamma * herb.fit * (self.num_herb - 1)) for herb in self.herb_pop]
-
-        def newborns(pop, p):
-            return [Herbivore(4, 20) for parent in pop if parent.birth(p)]
+        def newborns(pop, prob):
+            return [Herbivore(0, random.randint(0, 50)) for parent in pop if parent.birth(prob)]
 
         return self.herb_pop.extend(newborns(self.herb_pop, p_birth))
+
+    def feeding(self):
+
+        #F = self.f_max
+        for herb in self.herb_pop:
+            herb.eating(8)
+
+    def fitness(self):
+        for herb in self.herb_pop:
+            herb.fitness()
 
 
 class Lowland(Cell):

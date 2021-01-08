@@ -7,7 +7,7 @@ __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 import math
 import random
-import numpy as np
+
 
 
 class Animals:
@@ -123,13 +123,13 @@ class Animals:
         Bool
                 True if animal should be added.
         """
-        baby_weight = np.random.normal(self.w_birth, self.sigma_birth)
+        baby_weight = random.gauss(self.w_birth, self.sigma_birth)
         if baby_weight < self.zeta*(self.w_birth + self.sigma_birth) or self.weight < baby_weight:
             p_birth = 0
         chance = random.random() <= p_birth
         if chance == True:
             self.weight -= baby_weight * self.xi
-        return chance
+        return chance, baby_weight
 
 
 
