@@ -36,9 +36,15 @@ class Animals:
         """
         Sets new parametres.
 
-        Input:
-        New parametres
+        Parameters
+        ----------
+        new_params: dict
+            New parametres
 
+        Returns
+        -------
+        dict
+            Dictionary with new class parameters.
     """
         for key in new_params:
             if key not in ('w_birth', 'sigma_birth', 'beta', 'eta', 'a_half',
@@ -58,7 +64,8 @@ class Animals:
 
         Returns
         -------
-        Float with new fitness between 0 and 1
+        Float
+            with new fitness between 0 and 1
         """
         if self.weight <= 0:
             self.fit = 0
@@ -72,7 +79,8 @@ class Animals:
 
         Returns
         -------
-        Int with number of years
+        Int
+            with number of years
         """
         self.age += 1
         return self.age
@@ -83,7 +91,8 @@ class Animals:
 
         Returns
         -------
-        Int with weight for the animal
+        Int
+            with weight for the animal
         """
         self.weight -= self.weight * self.eta
         return self.weight
@@ -107,9 +116,15 @@ class Animals:
         """
         Animal gains a sertan amount every year by eating.
 
+        Parameters
+        ----------
+        F_line: int
+            with the amount of food consumed by an animal.
+
         Returns
         -------
         int
+            New weight of animal
         """
         self.weight += self.beta * F_line
         return self.weight
@@ -117,6 +132,11 @@ class Animals:
     def birth(self, p_birth):
         """
         Desides if a ned animal should be added to the simulation.
+
+        Input
+        -------
+        int
+            with probability of birth
 
         Returns
         -------
