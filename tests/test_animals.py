@@ -95,18 +95,29 @@ def test_eating():
 
 
 
-#def test_birth():
+#def test_birth_p0():
     #"""
-    #Test that the birth function only returns True when propability of birth = 1.
+    #Test that the birth function returns False when there is only one animal. (propability of birth = 0).
+    #"""
+    #sheep = Herbivore(0, 30)
+    #assert sheep.birth(1) == False
+
+
+#def test_death_distribution():
+    #"""
+    #Test if the number of animals that dies follows a binomial distribution
+    #"""
+    #num_animals = 100
+    #sheeps = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_animals)]
+    #for animal in sheep:
+
+
+
+#def test_birth_distribution():
+    #"""
+    #Test if the number of animals thats added follows a binomial distribution
     #"""
 
-
-
-
-def test_death_distribution():
-    """
-    Test if the number of animals that dies follows a binomial distribution
-    """
 
 
 
