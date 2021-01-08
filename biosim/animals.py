@@ -7,6 +7,7 @@ __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 import math
 import random
+random.seed(123456)
 
 
 
@@ -153,11 +154,6 @@ class Animals:
         if chance == True:
             self.weight -= baby_weight * self.xi
         return chance, baby_weight
-
-
-
-
-
 
 
 class Herbivore(Animals):

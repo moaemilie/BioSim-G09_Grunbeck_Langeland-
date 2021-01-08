@@ -7,6 +7,7 @@ __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 from biosim.animals import Herbivore
 import random
+random.seed(123456)
 
 
 class Cell:
@@ -36,7 +37,7 @@ class Cell:
     def birth(self):
 
         def newborns(pop):
-            return [Herbivore(0, random.randint(0, 50)) for parent in pop if parent.birth(self.get_num_herb())]
+            return [Herbivore(0, random.randint(5, 10)) for parent in pop if parent.birth(self.get_num_herb())]
 
         return self.herb_pop.extend(newborns(self.herb_pop))
 
