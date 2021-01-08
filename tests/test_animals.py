@@ -1,6 +1,29 @@
 
+from biosim.animals import Animals
 from biosim.animals import Herbivore
-import numpy as np
+import pytest
+
+def test_sett_parameters():
+    """
+    Test if the default parametres is being replaced by the new ones.
+    """
+    new_params = {'w_birth': 1, 'sigma_birth': 1, 'beta': 1, 'eta': 1, 'a_half': 1,
+                      'phi_age': 1, 'w_half': 1, 'phi_weight': 1, 'mu': 1, 'gamma': 1,
+                      'zeta': 1, 'xi': 1, 'omega': 1, 'F': 1, 'DeltaPhiMax': 1}
+
+    Animals.set_params(new_params)
+    assert Animals.default_params == new_params
+
+def test_sett_wring_parameters():
+    """
+    Test if the new parameters are wrong there wil be raised a KeyError.
+    """
+    new_params = {'w_birth': 1, 'sigma_birth': 1, 'beta': 1, 'eta': 1, 'a_half': 1,
+                      'phi_age': 1, 'w_half': 1, 'phi_weight': 1, 'mu': 1, 'gamma': 1,
+                      'zeta': 1, 'xi': 1, 'omega': 1, 'F': 1, 'My': 1}
+
+    with pytest.raises(KeyError):
+        Animals.set_params(new_params)
 
 def test_animal_aging():
     """
@@ -61,35 +84,26 @@ def test_eating():
     assert new_weight == sheep.eating(F_line)
 
 
-def test_low_animalweight_birth():
-    """
-    Test that the birth function return False if the animal weight it lower than the babyweight.
-    """
-    sheep = Herbivore(20,1)
-    for N in range(20):
-        p_birth = min(1, sheep.gamma * sheep.fit * (N - 1))
-        assert sheep.birth(p_birth) == False
-
-def test_low_babyweight():
-    """
-    Test that the birth function returns False if the babyweight is lower than a constant.
-    """
-    sheep = Herbivore(30, 20)
-    baby_weight = sheep.zeta * (sheep.w_birth + sheep.sigma_birth)
-    for N in range(20):
-        while baby_weight > 0:
-            baby_weight -= 1
-            p_birth = min(1, sheep.gamma * sheep.fit * (N - 1))
-            assert sheep.birth(p_birth) == False
+#def test_low_animalweight_birth():
+    #"""
+    #Test that the birth function return False if the animal weight it lower than the babyweight.
+    #"""
+    #sheep = Herbivore(20,1)
+    #for N in range(20):
+        #p_birth = min(1, sheep.gamma * sheep.fit * (N - 1))
+        #assert sheep.birth(p_birth) == False
 
 
-def test_birth_healthy_animal():
-    """
-    Test that the birth function only returns False with a possibility of p_birth.
-    """
 
-    for year in range(500):
-        sheep = Herbivore(30, 50)
-        assert sheep.birth(1)
+#def test_birth():
+    #"""
+    #Test that the birth function only returns True when propability of birth = 1.
+    #"""
+
+
+
+
+#def test_death_distribution():
+
 
 
