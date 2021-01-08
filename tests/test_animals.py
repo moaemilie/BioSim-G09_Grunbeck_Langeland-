@@ -2,6 +2,8 @@
 from biosim.animals import Animals
 from biosim.animals import Herbivore
 import pytest
+import random
+random.seed(123456)
 
 def test_sett_parameters():
     """
@@ -89,9 +91,7 @@ def test_eating():
     #Test that the birth function return False if the animal weight it lower than the babyweight.
     #"""
     #sheep = Herbivore(20,1)
-    #for N in range(20):
-        #p_birth = min(1, sheep.gamma * sheep.fit * (N - 1))
-        #assert sheep.birth(p_birth) == False
+        #assert sheep.birth() == False
 
 
 
@@ -103,7 +103,11 @@ def test_eating():
 
 
 
-#def test_death_distribution():
+def test_death_distribution():
+    """
+    Test if the number of animals that dies follows a binomial distribution
+    """
+
 
 
 
