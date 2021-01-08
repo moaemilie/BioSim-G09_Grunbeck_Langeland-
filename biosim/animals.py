@@ -90,7 +90,7 @@ class Animals:
 
     def death(self):
         """
-        Desides if an animal should die or not.
+        Decides if an animal should die or not.
 
         Returns
         -------

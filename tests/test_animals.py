@@ -33,7 +33,7 @@ def test_weightloss():
 
 def test_weight_loss_death():
     """
-    Test that if the the weight loss makes the weight zero or bellow zero that the animal dies.
+    Test that if the the weight loss makes the weight is bellow zero that the animal dies.
     """
     sheep = Herbivore(0, 30)
     sheep.weightloss()
@@ -50,9 +50,16 @@ def test_death_certain():
 
 
 def test_eating():
+    """
+    Tests that the eating function works as exspected.
+    """
     sheep = Herbivore(0, 30)
     F_line = 2
     delta_eating = 2 * sheep.beta
     new_weight = sheep.weight + delta_eating
     assert new_weight == sheep.eating(F_line)
+
+
+
+
 
