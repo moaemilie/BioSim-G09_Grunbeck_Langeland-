@@ -34,12 +34,11 @@ class Cell:
         self.herb_pop = survivors(self.herb_pop)
 
     def birth(self):
-        p_birth = [min(1, Herbivore.gamma * herb.fit * (self.get_num_herb() - 1)) for herb in self.herb_pop]
 
-        def newborns(pop, prob):
-            return [Herbivore(0, random.randint(0, 50)) for parent in pop if parent.birth(prob)]
+        def newborns(pop):
+            return [Herbivore(0, random.randint(0, 50)) for parent in pop if parent.birth(self.get_num_herb())]
 
-        return self.herb_pop.extend(newborns(self.herb_pop, p_birth))
+        return self.herb_pop.extend(newborns(self.herb_pop))
 
     def feeding(self):
 
