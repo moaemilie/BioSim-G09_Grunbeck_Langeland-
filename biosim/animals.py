@@ -144,7 +144,7 @@ class Animals:
                 True if animal should be added.
         """
         baby_weight = random.gauss(self.w_birth, self.sigma_birth)
-        if baby_weight < self.zeta*(self.w_birth + self.sigma_birth) or self.weight < baby_weight:
+        if self.weight < self.zeta*(self.w_birth + self.sigma_birth) or self.weight < baby_weight:
             p_birth = 0
         chance = random.random() <= p_birth
         if chance == True:

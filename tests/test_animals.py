@@ -85,6 +85,11 @@ def test_low_babyweight():
 
 def test_birth_healthy_animal():
     """
-    Test that the animal
+    Test that the birth function only returns False with a possibility of p_birth.
     """
+
+    for year in range(500):
+        sheep = Herbivore(30, 50)
+        assert sheep.birth(1)
+
 
