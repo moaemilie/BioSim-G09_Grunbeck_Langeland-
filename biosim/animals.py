@@ -61,7 +61,7 @@ class Animals:
 
     def fitness(self):
         """
-        Calculates the fitness of the animals.
+        Calculates the fitness of an animal.
 
         Returns
         -------
@@ -132,7 +132,7 @@ class Animals:
 
     def birth(self, N):
         """
-        Desides if a ned animal should be added to the simulation.
+        Decides if a new animal should be added to the simulation.
 
         Input
         -------
@@ -180,4 +180,28 @@ class Herbivore(Animals):
     def __init__(self, age, weight):
         super().__init__(age, weight)
 
+
+class Carnivore(Animals):
+    w_birth = 6
+    sigma_birth = 1
+    beta = 0.75
+    eta = 0.125
+    a_half = 40
+    phi_age = 0.3
+    w_half = 4
+    phi_weight = 0.4
+    mu = 0.4
+    gamma = 0.8
+    zeta = 3.5
+    xi = 1.1
+    omega = 0.8
+    F = 50
+    DeltaPhiMax = 10
+
+    default_params = {'w_birth': w_birth, 'sigma_birth': sigma_birth, 'beta': beta, 'eta': eta, 'a_half': a_half,
+                      'phi_age': phi_age, 'w_half': w_half, 'phi_weight': phi_weight, 'mu': mu, 'gamma': gamma,
+                      'zeta': zeta, 'xi': xi, 'omega': omega, 'F': F, 'DeltaPhiMax': DeltaPhiMax}
+
+    def __init__(self, age, weight):
+        super().__init__(age, weight)
 
