@@ -159,6 +159,14 @@ class Carnivore(Animals):
                       'phi_age': 0.3, 'w_half': 4, 'phi_weight': 0.4, 'mu': 0.4, 'gamma': 0.8,
                       'zeta': 3.5, 'xi': 1.1, 'omega': 0.8, 'F': 50, 'DeltaPhiMax': 10}
 
+    def kill(self, fit_herb):
+        if fit_herb >= self.fit:
+            p_kill = 0
+        if  0 < self.fit - fit_herb < self.default_params["DeltaPhiMax"]:
+            p_kill = (self.fit - fit_herb)/(self.default_params["DeltaPhiMax"])
+        else:
+            p_kill = 1
+        return random.random() <= p_kill
 
     def __init__(self, age, weight):
         super().__init__(age, weight)
