@@ -162,7 +162,7 @@ class Carnivore(Animals):
     def kill(self, fit_herb):
         if fit_herb >= self.fit:
             p_kill = 0
-        if  0 < self.fit - fit_herb < self.default_params["DeltaPhiMax"]:
+        elif 0 < self.fit - fit_herb < self.default_params["DeltaPhiMax"]:
             p_kill = (self.fit - fit_herb)/(self.default_params["DeltaPhiMax"])
         else:
             p_kill = 1
