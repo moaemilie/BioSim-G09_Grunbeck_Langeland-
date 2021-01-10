@@ -6,6 +6,7 @@
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 from biosim.animals import Herbivore
+from biosim.animals import Carnivore
 import random
 
 random.seed(123456)
@@ -18,16 +19,47 @@ class Cell:
     def set_f_max(cls, new_f_max):
         cls.f_max = new_f_max
 
-    def __init__(self, num_herb):
+    def __init__(self, num_herb, num_carn):
         # self.num_herb = self.get_num_herb()
         self.herb_pop = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_herb)]
+        self.carn_pop = [Carnivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_carn)]
 
     def get_num_herb(self):
+        """
+       Counts how many herbivores its in the population.
+
+       Returns
+       -------
+       int
+           Number of herbivores
+        """
         return len(self.herb_pop)
 
+    def get_num_carn(self):
+        """
+        Counts how many carnivores its in the population.
+
+        Returns
+        -------
+        int
+            Number of carnivores
+        """
+        return len(self.carn_pop)
+
+
     def aging(self):
-        for herb in self.herb_pop:
+        """
+        Adds a year for al animals in the population for every time its called.
+
+        Returns
+        -------
+        int
+            Number of years
+        """
+        for herb, carn in zip(self.herb_pop, self.carn_pop):
             herb.aging()
+            carn.aging()
+
 
     def death(self):
         def survivors(pop):
@@ -38,7 +70,7 @@ class Cell:
     def birth(self):
 
         def newborns(pop):
-            return [Herbivore(0, random.randint(5, 10)) for parent in pop if parent.birth(self.get_num_herb())]
+            return [Herbivore(0, parent.babyweight) for parent in pop if parent.birth(self.get_num_herb())]
 
         return self.herb_pop.extend(newborns(self.herb_pop))
 
@@ -49,8 +81,17 @@ class Cell:
             herb.eating(8)
 
     def fitness(self):
-        for herb in self.herb_pop:
+        """
+         Calculates the fitness for every animal in the population.
+
+         Returns
+         -------
+         Float
+             with new fitness between 0 and 1
+         """
+        for herb, carn in zip(self.herb_pop, self.carn_pop):
             herb.fitness()
+            carn.fitness()
 
 
 class Lowland(Cell):
