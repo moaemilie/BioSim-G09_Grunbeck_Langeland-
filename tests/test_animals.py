@@ -3,6 +3,9 @@ from biosim.animals import Animals
 from biosim.animals import Herbivore
 import pytest
 import random
+import math
+import statistics as stats
+ALPHA = 0.05
 random.seed(123456)
 
 def test_sett_parameters():
@@ -16,6 +19,7 @@ def test_sett_parameters():
     Animals.set_params(new_params)
     assert Animals.default_params == new_params
 
+
 def test_sett_wring_parameters():
     """
     Test if the new parameters are wrong there wil be raised a KeyError.
@@ -26,6 +30,26 @@ def test_sett_wring_parameters():
 
     with pytest.raises(KeyError):
         Animals.set_params(new_params)
+
+
+def test_new_params():
+    """
+    Test that if the default params is being replaced by new params, that the new params is being used.
+    """
+    sheep1 = Herbivore(5,6)
+    sheep1.fitness()
+    default_fitness = sheep1.fit
+
+    new_params = {'w_birth': 1, 'sigma_birth': 1, 'beta': 1, 'eta': 1, 'a_half': 1,
+                  'phi_age': 1, 'w_half': 1, 'phi_weight': 1, 'mu': 1, 'gamma': 1,
+                  'zeta': 1, 'xi': 1, 'omega': 1, 'F': 1, 'DeltaPhiMax': 1}
+
+    sheep2 = Herbivore(5,6)
+    sheep2.set_params(new_params)
+    sheep2.fitness()
+    new_fitness = sheep2.fit
+
+    assert not new_fitness == default_fitness
 
 def test_animal_aging():
     """
@@ -105,11 +129,28 @@ def test_eating():
 
 #def test_death_distribution():
     #"""
-    #Test if the number of animals that dies follows a binomial distribution
+    #Test if the number of animals that dies follows a normal distribution
+    #Må finne hva sannsynlighetene konvergerer mot
     #"""
     #num_animals = 100
     #sheeps = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_animals)]
-    #for animal in sheep:
+    #p = []
+    #for sheep in sheeps:
+    #    sheep.fitness()
+    #    p.append(sheep.weight*(1-sheep.fit))
+
+    #p_mean = stats.mean(p)
+    #norm_mean = num_animals * p_mean
+
+    #var = num_animals * p_mean * (1 - p_mean)
+    #Z = (num_animals - norm_mean) / math.sqrt(var)
+    #phi = 2 * stats.norm.cdf(-abs(Z))
+    #assert phi > ALPHA
+
+
+
+
+
 
 
 
