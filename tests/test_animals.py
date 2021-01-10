@@ -1,6 +1,7 @@
 
 from biosim.animals import Animals
 from biosim.animals import Herbivore
+from biosim.animals import Carnivore
 import pytest
 import random
 import math
@@ -76,7 +77,7 @@ def test_weightloss():
     Test that the weightloss function returns the true value.
     """
     sheep = Herbivore(4, 30)
-    delta_weight = 30 * sheep.eta
+    delta_weight = 30 * sheep.default_params['eta']
     animal_weight = 30
     assert sheep.weightloss() == animal_weight - delta_weight
 
@@ -105,10 +106,37 @@ def test_eating():
     """
     sheep = Herbivore(0, 30)
     F_line = 2
-    delta_eating = 2 * sheep.beta
+    delta_eating = 2 * sheep.default_params['eta']
     new_weight = sheep.weight + delta_eating
     assert new_weight == sheep.eating(F_line)
 
+#def test_killing():
+    #""Test that killing follows a known distribution
+    #""
+
+def test_killing_p0():
+    """
+    Test that herbivore does not get killed if fitness is higher than the fitness of the carnivore
+    """
+    wolf = Carnivore(5,1)
+    sheep = Herbivore(5,10)
+    sheep.fitness()
+    assert not wolf.kill(sheep.fit)
+
+def test_killing_p1():
+    """
+    Test that if p=1 that the function always returns true.
+    """
+    wolf = Carnivore(5,10)
+    sheep = Herbivore(5,1)
+
+    new_params = {'w_birth': 6, 'sigma_birth': 1, 'beta': 0.75, 'eta': 0.125, 'a_half': 40,
+                      'phi_age': 0.3, 'w_half': 4, 'phi_weight': 0.4, 'mu': 0.4, 'gamma': 0.8,
+                      'zeta': 3.5, 'xi': 1.1, 'omega': 0.8, 'F': 50, 'DeltaPhiMax': 0.5}
+    wolf.set_params(new_params)
+
+    sheep.fitness()
+    assert wolf.kill(sheep.fit)
 
 #def test_low_animalweight_birth():
     #"""
