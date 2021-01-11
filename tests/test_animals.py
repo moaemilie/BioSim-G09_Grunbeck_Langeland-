@@ -5,7 +5,9 @@ from biosim.animals import Carnivore
 import pytest
 import random
 import math
-import statistics as stats
+import statistics
+import scipy.stats as stats
+
 ALPHA = 0.05
 random.seed(123456)
 
@@ -155,25 +157,25 @@ def test_killing_p1():
     #assert sheep.birth(1) == False
 
 
-#def test_death_distribution():
-    #"""
-    #Test if the number of animals that dies follows a normal distribution
-    #Må finne hva sannsynlighetene konvergerer mot
-    #"""
-    #num_animals = 100
-    #sheeps = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_animals)]
-    #p = []
-    #for sheep in sheeps:
-    #    sheep.fitness()
-    #    p.append(sheep.weight*(1-sheep.fit))
+def test_death_distribution():
+    """
+    Test if the number of animals that dies follows a normal distribution
+    Må finne hva sannsynlighetene konvergerer mot
+    """
+    num_animals = 100
+    sheeps = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_animals)]
+    p_sum = 0
+    for sheep in sheeps:
+        sheep.fitness()
+        p_sum += (sheep.default_params["omega"]*(1-sheep.fit))
 
-    #p_mean = stats.mean(p)
-    #norm_mean = num_animals * p_mean
+    p_mean = p_sum/num_animals
+    norm_mean = num_animals * p_mean
 
-    #var = num_animals * p_mean * (1 - p_mean)
-    #Z = (num_animals - norm_mean) / math.sqrt(var)
-    #phi = 2 * stats.norm.cdf(-abs(Z))
-    #assert phi > ALPHA
+    var = num_animals * p_mean * (1 - p_mean)
+    Z = (num_animals - norm_mean) / math.sqrt(var)
+    phi = 2 * stats.norm.cdf(-abs(Z))
+    assert phi > ALPHA
 
 
 
