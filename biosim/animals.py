@@ -44,6 +44,7 @@ class Animals:
         self.weight = weight
         self.fit = self.fitness()
         self.babyweight = None
+        self.fodder = None
 
     def fitness(self):
         """
@@ -99,9 +100,9 @@ class Animals:
             p_death = (self.default_params["omega"]*(1-self.fit))
         return random.random() <= p_death
 
-    def eating(self, F_line):
+    def eating(self, fodder):
         """
-        Animal gains a sertan amount every year by eating.
+        Animal gains a certain amount every year by eating.
 
         Parameters
         ----------
@@ -113,7 +114,7 @@ class Animals:
         int
             New weight of animal
         """
-        self.weight += self.default_params["beta"] * F_line
+        self.weight += self.default_params["beta"] * fodder
         return self.weight
 
     def birth(self, N):
