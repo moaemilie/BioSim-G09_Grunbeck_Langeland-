@@ -81,3 +81,20 @@ def test_aging():
     carn_delta_age = carn_new_age - carn_age
 
     assert carn_delta_age == years and herb_delta_age == years
+
+def test_aging_higher():
+    """
+    Test that the age doesnt become lower than the initial age after the function aging.
+    """
+    years = 10
+    landscape = Landscape(1,1)
+    herb_age = landscape.herb_pop[0].age
+    carn_age = landscape.carn_pop[0].age
+
+    for _ in range(years):
+        landscape.aging()
+
+    herb_new_age = landscape.herb_pop[0].age
+    carn_new_age = landscape.carn_pop[0].age
+
+    assert herb_new_age > herb_age and carn_new_age > carn_age
