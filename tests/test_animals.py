@@ -146,21 +146,20 @@ def test_killing_p1():
     assert wolf.kill(sheep.fit)
 
 
-#def test_low_animalweight_birth():
-    #"""
-    #Test that the birth function return False if the animal weight it lower than the babyweight.
-    #"""
-    #sheep = Herbivore(20,1)
-        #assert sheep.birth() == False
+def test_low_animalweight_birth():
+    """
+    Test that the birth function return False if the animal weight it lower than the babyweight.
+    """
+    sheep = Herbivore(20,1)
+    assert not sheep.birth(10)
 
 
-
-#def test_birth_p0():
-    #"""
-    #Test that the birth function returns False when there is only one animal. (propability of birth = 0).
-    #"""
-    #sheep = Herbivore(0, 30)
-    #assert sheep.birth(1) == False
+def test_birth_p0():
+    """
+    Test that the birth function returns False when there is only one animal. (propability of birth = 0).
+    """
+    sheep = Herbivore(10, 30)
+    assert not sheep.birth(1)
 
 
 def test_birth_distribution():
