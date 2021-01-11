@@ -77,9 +77,11 @@ class Cell:
         """
 
         def survivors(pop):
-            return [herb for herb in pop if not herb.death()]
+            return [animal for animal in pop if not animal.death()]
 
         self.herb_pop = survivors(self.herb_pop)
+        self.carn_pop = survivors(self.carn_pop)
+
 
     def birth(self):
         """
@@ -91,10 +93,15 @@ class Cell:
             Updated populations
         """
 
-        def newborns(pop):
+        def herb_newborns(pop):
             return [Herbivore(0, parent.babyweight) for parent in pop if parent.birth(self.get_num_herb())]
 
-        return self.herb_pop.extend(newborns(self.herb_pop))
+        def carn_newborns(pop):
+            return [Carnivore(0, parent.babyweight) for parent in pop if parent.birth(self.get_num_carn())]
+
+        self.herb_pop.extend(herb_newborns(self.herb_pop))
+        self.carn_pop.extend(carn_newborns(self.carn_pop))
+
 
     def feeding(self):
         """
@@ -106,7 +113,7 @@ class Cell:
             Updated populations
         """
 
-        self.set_f_max(self.default_f_max['f_max'])
+        self.set_f_max(self.default_f_max)
 
         for herb in self.herb_pop:
             if self.default_f_max['f_max'] >= herb.default_params["F"]:
@@ -120,10 +127,10 @@ class Cell:
             def sort_pop(pop, reverse=False):
                 for j in reversed(range(len(pop))):
                     for k in range(j):
-                        if self.herb_pop[k + 1].fit < self.herb_pop[k].fit and reverse == False:
-                            self.herb_pop[k], self.herb_pop[k + 1] = self.herb_pop[k + 1], self.herb_pop[k]
-                        elif self.herb_pop[k + 1].fit < self.herb_pop[k].fit and reverse == True:
-                            self.herb_pop[k], self.herb_pop[k + 1] = self.herb_pop[k + 1], self.herb_pop[k]
+                        if pop[k + 1].fit < pop[k].fit and reverse == False:
+                            pop[k], pop[k + 1] = pop[k + 1], pop[k]
+                        elif pop[k + 1].fit < pop[k].fit and reverse == True:
+                            pop[k], pop[k + 1] = pop[k + 1], pop[k]
                 return pop
 
         self.herb_pop = sort_pop(self.herb_pop)
@@ -131,7 +138,7 @@ class Cell:
 
         for carn in self.carn_pop:
             for herb in self.herb_pop:
-                if carn.killing() == True:
+                if carn.kill(herb.fit) == True:
                     carn.eating(herb.weight)
                     carn.fitness()
 
@@ -152,24 +159,24 @@ class Cell:
 class Lowland(Cell):
     default_f_max = {'f_max': 800}
 
-    def __init__(self, num_herb):
-        super().__init__(num_herb)
+    def __init__(self, num_herb, num_carn):
+        super().__init__(num_herb, num_carn)
 
 
 class Highland(Cell):
     default_f_max = {'f_max': 300}
 
-    def __init__(self, num_herb):
-        super().__init__(num_herb)
+    def __init__(self, num_herb, num_carn):
+        super().__init__(num_herb, num_carn)
 
 
 class Desert(Cell):
 
-    def __init__(self, num_herb):
-        super().__init__(num_herb)
+    def __init__(self, num_herb, num_carn):
+        super().__init__(num_herb, num_carn)
 
 
 class Water(Cell):
 
-    def __init__(self, num_herb):
-        super().__init__(num_herb)
+    def __init__(self, num_herb, num_carn):
+        super().__init__(num_herb, num_carn)
