@@ -27,7 +27,7 @@ class Cell:
         """
 
         for key in new_f_max:
-            if key not in ('f_max'):
+            if key not in 'f_max':
                 raise KeyError('Invalid parameter name: ' + key)
         cls.default_f_max = new_f_max
 
@@ -82,7 +82,6 @@ class Cell:
         self.herb_pop = survivors(self.herb_pop)
         self.carn_pop = survivors(self.carn_pop)
 
-
     def birth(self):
         """
         Adds new animals to the population.
@@ -101,7 +100,6 @@ class Cell:
 
         self.herb_pop.extend(herb_newborns(self.herb_pop))
         self.carn_pop.extend(carn_newborns(self.carn_pop))
-
 
     def feeding(self):
         """
@@ -127,9 +125,9 @@ class Cell:
             def sort_pop(pop, reverse=False):
                 for j in reversed(range(len(pop))):
                     for k in range(j):
-                        if pop[k + 1].fit < pop[k].fit and reverse == False:
+                        if pop[k + 1].fit < pop[k].fit and reverse is False:
                             pop[k], pop[k + 1] = pop[k + 1], pop[k]
-                        elif pop[k + 1].fit < pop[k].fit and reverse == True:
+                        elif pop[k + 1].fit < pop[k].fit and reverse is True:
                             pop[k], pop[k + 1] = pop[k + 1], pop[k]
                 return pop
 
@@ -138,7 +136,7 @@ class Cell:
 
         for carn in self.carn_pop:
             for herb in self.herb_pop:
-                if carn.kill(herb.fit) == True:
+                if carn.kill(herb.fit):
                     carn.eating(herb.weight)
                     carn.fitness()
 
