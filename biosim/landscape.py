@@ -12,7 +12,7 @@ import random
 random.seed(123456)
 
 
-class Cell:
+class Landscape:
     default_f_max = {'f_max': None}
 
     @classmethod
@@ -154,27 +154,27 @@ class Cell:
             carn.fitness()
 
 
-class Lowland(Cell):
+class Lowland(Landscape):
     default_f_max = {'f_max': 800}
 
     def __init__(self, num_herb, num_carn):
         super().__init__(num_herb, num_carn)
 
 
-class Highland(Cell):
+class Highland(Landscape):
     default_f_max = {'f_max': 300}
 
     def __init__(self, num_herb, num_carn):
         super().__init__(num_herb, num_carn)
 
 
-class Desert(Cell):
+class Desert(Landscape):
 
     def __init__(self, num_herb, num_carn):
         super().__init__(num_herb, num_carn)
 
 
-class Water(Cell):
+class Water(Landscape):
 
     def __init__(self, num_herb, num_carn):
         super().__init__(num_herb, num_carn)

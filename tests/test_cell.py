@@ -5,8 +5,8 @@
 
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
-from biosim.cell import Cell
-from biosim.cell import Lowland
+from biosim.landscape import Landscape
+from biosim.landscape import Lowland
 import pytest
 import random
 
@@ -19,8 +19,8 @@ def test_set_f_max():
     """
     new_f_max = {'f_max': 1}
 
-    Cell.set_f_max(new_f_max)
-    assert Cell.default_f_max == new_f_max
+    Landscape.set_f_max(new_f_max)
+    assert Landscape.default_f_max == new_f_max
 
 
 def test_set_right_f_max():
@@ -30,6 +30,34 @@ def test_set_right_f_max():
     new_f_max = {'f': 1}
 
     with pytest.raises(KeyError):
-        Cell.set_f_max(new_f_max)
+        Landscape.set_f_max(new_f_max)
 
 
+def test_get_num_herb():
+    """
+    Tests if the right amount of herbivores is returned.
+    """
+    N_herb = 10
+    N_carn = 10
+    cell = Lowland(N_herb, N_carn)
+
+    assert cell.get_num_herb() == N_herb
+
+
+def test_get_num_carn():
+    """
+    Tests if the right amount of carnivores is returned.
+    """
+    N_herb = 10
+    N_carn = 10
+    cell = Lowland(N_herb, N_carn)
+
+    assert cell.get_num_carn() == N_carn
+
+
+def test_fitness():
+    """
+    Tests that the fitness always lies between 0 and 1
+    """
+
+    assert

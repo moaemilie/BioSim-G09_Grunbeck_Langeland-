@@ -31,7 +31,7 @@ def test_set_parameters():
 
 def test_set_wrong_parameters():
     """
-    Test if the new parameters are wrong there wil be raised a KeyError.
+    Test that if the new parameters are wrong there will be raised a KeyError.
     """
     new_params = {'w_birth': 1, 'sigma_birth': 1, 'beta': 1, 'eta': 1, 'a_half': 1,
                       'phi_age': 1, 'w_half': 1, 'phi_weight': 1, 'mu': 1, 'gamma': 1,

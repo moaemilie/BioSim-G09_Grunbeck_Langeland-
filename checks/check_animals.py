@@ -7,7 +7,7 @@ __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 import random
 from biosim.animals import Herbivore
-from biosim.cell import Lowland
+from biosim.landscape import Lowland
 
 N = 10
 cell = Lowland(10, 10)
