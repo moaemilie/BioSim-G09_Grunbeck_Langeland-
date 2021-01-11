@@ -39,9 +39,9 @@ def test_get_num_herb():
     """
     N_herb = 10
     N_carn = 10
-    cell = Lowland(N_herb, N_carn)
+    landscape = Lowland(N_herb, N_carn)
 
-    assert cell.get_num_herb() == N_herb
+    assert landscape.get_num_herb() == N_herb
 
 
 def test_get_num_carn():
@@ -50,9 +50,9 @@ def test_get_num_carn():
     """
     N_herb = 10
     N_carn = 10
-    cell = Lowland(N_herb, N_carn)
+    landscape = Lowland(N_herb, N_carn)
 
-    assert cell.get_num_carn() == N_carn
+    assert landscape.get_num_carn() == N_carn
 
 
 def test_fitness():
