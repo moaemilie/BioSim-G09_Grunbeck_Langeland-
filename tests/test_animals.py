@@ -1,3 +1,10 @@
+# -*- encoding: utf-8 -*-
+"""
+
+"""
+
+__author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
+
 
 from biosim.animals import Animals
 from biosim.animals import Herbivore
@@ -5,13 +12,12 @@ from biosim.animals import Carnivore
 import pytest
 import random
 import math
-import statistics
 import scipy.stats as stats
 
 ALPHA = 0.05
 random.seed(123456)
 
-def test_sett_parameters():
+def test_set_parameters():
     """
     Test if the default parametres is being replaced by the new ones.
     """
@@ -23,7 +29,7 @@ def test_sett_parameters():
     assert Animals.default_params == new_params
 
 
-def test_sett_wring_parameters():
+def test_set_wrong_parameters():
     """
     Test if the new parameters are wrong there wil be raised a KeyError.
     """
@@ -53,6 +59,7 @@ def test_new_params():
     new_fitness = sheep2.fit
 
     assert not new_fitness == default_fitness
+
 
 def test_animal_aging():
     """
@@ -112,9 +119,6 @@ def test_eating():
     new_weight = sheep.weight + delta_eating
     assert new_weight == sheep.eating(F_line)
 
-#def test_killing():
-    #""Test that killing follows a known distribution
-    #""
 
 def test_killing_p0():
     """
@@ -124,6 +128,7 @@ def test_killing_p0():
     sheep = Herbivore(5,10)
     sheep.fitness()
     assert not wolf.kill(sheep.fit)
+
 
 def test_killing_p1():
     """
@@ -139,6 +144,7 @@ def test_killing_p1():
 
     sheep.fitness()
     assert wolf.kill(sheep.fit)
+
 
 #def test_low_animalweight_birth():
     #"""
@@ -157,38 +163,51 @@ def test_killing_p1():
     #assert sheep.birth(1) == False
 
 
-def test_death_distribution():
+def test_birth_distribution():
     """
-    Test if the number of animals that dies follows a normal distribution
-    Må finne hva sannsynlighetene konvergerer mot
+    Test if the function birth() follows a Gaussian distribution.
     """
     num_animals = 100
     sheeps = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_animals)]
     p_sum = 0
+    n = 0
     for sheep in sheeps:
         sheep.fitness()
-        p_sum += (sheep.default_params["omega"]*(1-sheep.fit))
+        p_sum += min(1, sheep.default_params["gamma"] * sheep.fit * (num_animals - 1))
+        n += sheep.birth(num_animals)
 
-    p_mean = p_sum/num_animals
-    norm_mean = num_animals * p_mean
+    p = p_sum/num_animals
 
-    var = num_animals * p_mean * (1 - p_mean)
-    Z = (num_animals - norm_mean) / math.sqrt(var)
+    mean = num_animals * p
+    var = num_animals * p * (1 - p)
+    Z = (n - mean) / math.sqrt(var)
     phi = 2 * stats.norm.cdf(-abs(Z))
     assert phi > ALPHA
 
 
+def test_death_distribution():
+    """
+    Test if the number of animals that dies follows a normal distribution
+    """
+    num_animals = 100
+    sheeps = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_animals)]
+    p_sum = 0
+    n = 0
 
+    for sheep in sheeps:
+        sheep.fitness()
+        p_sum += (sheep.default_params["omega"] * (1 - sheep.fit))
+        n += sheep.death()
 
+    p_mean = p_sum / num_animals
 
+    norm_mean = num_animals * p_mean
+    var = num_animals * p_mean * (1 - p_mean)
 
+    Z = (n - norm_mean) / math.sqrt(var)
+    phi = 2 * stats.norm.cdf(-abs(Z))
 
-
-#def test_birth_distribution():
-    #"""
-    #Test if the number of animals thats added follows a binomial distribution
-    #"""
-
+    assert phi > ALPHA
 
 
 
