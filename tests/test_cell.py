@@ -31,3 +31,5 @@ def test_set_right_f_max():
 
     with pytest.raises(KeyError):
         Cell.set_f_max(new_f_max)
+
+

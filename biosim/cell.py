@@ -27,7 +27,7 @@ class Cell:
         """
 
         for key in new_f_max:
-            if key not in 'f_max':
+            if key != 'f_max':
                 raise KeyError('Invalid parameter name: ' + key)
         cls.default_f_max = new_f_max
 
