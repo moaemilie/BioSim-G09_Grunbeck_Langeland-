@@ -26,7 +26,7 @@ class Island():
                 if letter not in ('W', 'H', 'L', 'D', ' '):
                     raise ValueError('Invalid landscape letter: ' + letter)
 
-        for string in geogr[0][:] + geogr[-1][:] + geogr[:][0] + geogr[:][-1]:
+        for string in self.island_map[0][:] + self.island_map[-1][:] + self.island_map[:][0] + self.island_map[:][-1]:
             if string != 'W':
                 raise ValueError('Map must be surrounded by water')
 
