@@ -29,7 +29,7 @@ def test_wrong_map():
                 WWWWWWWWWWWWWWWWWWWWW"""
     geogr = textwrap.dedent(geogr)
     new_island = Island(geogr)
-    with pytest.raises(ValueError):
+    with pytest.raises(NameError):
         new_island.make_map()
 
 def test_surrounded_by_water():
@@ -52,5 +52,5 @@ def test_surrounded_by_water():
                WWWWWWWWWWWWWWWWWWWLL"""
     geogr = textwrap.dedent(geogr)
     new_island = Island(geogr)
-    with pytest.raises(NameError):
+    with pytest.raises(ValueError):
         new_island.make_map()
