@@ -26,11 +26,7 @@ class Island():
                 if letter not in ('W', 'H', 'L', 'D'):
                     raise ValueError('Invalid landscape letter: ' + letter)
 
-        if self.island_map[0][0:-1] or
-            self.island_map[-1][0:-1] or
-            self.island_map[0:-1][0] or
-            self.island_map[0:-1][-1]
-                != 'W':
+        if self.island_map[0][0:-1] or self.island_map[-1][0:-1] or self.island_map[0:-1][0] or self.island_map[0:-1][-1] != 'W':
             return ValueError('Map must be surrounded by water')
 
         landscapes = {'W': Water(0, 0), 'L': Lowland(0, 0), 'H': Highland(0, 0), 'D': Desert(0, 0)}
