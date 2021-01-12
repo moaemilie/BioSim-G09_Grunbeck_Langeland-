@@ -23,8 +23,8 @@ class Island():
 
         for string in self.island_map:
             for letter in string:
-                if letter not in ('W', 'H', 'L', 'D', ' '):
-                    raise ValueError('Invalid landscape letter: ' + letter)
+                if letter not in ('W', 'H', 'L', 'D'):
+                    raise NameError('Invalid landscape letter: ' + letter)
 
         for string in self.island_map[0][:] + self.island_map[-1][:] + self.island_map[:][0] + self.island_map[:][-1]:
             if string != 'W':

@@ -7,10 +7,11 @@ __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 from biosim.island import Island
 import pytest
+import textwrap
 
 def test_wrong_map():
     """
-    Test that you get a KeyError if its a unknown letter in the map
+    Test that you get a KeyError if there is a unknown letter in the map.
     """
     geogr = """\
                 WWWWWWWWWWWWWWWWWWWWW
@@ -26,6 +27,7 @@ def test_wrong_map():
                 WWHHHHLLLLLLLWWWWWWWW
                 WWWHHHHLLLLLLLWWWWWWW
                 WWWWWWWWWWWWWWWWWWWWW"""
+    geogr = textwrap.dedent(geogr)
     new_island = Island(geogr)
     with pytest.raises(ValueError):
         new_island.make_map()
@@ -47,7 +49,8 @@ def test_surrounded_by_water():
                WHHHHLLLLDDLLLLWWWWWW
                WWHHHHLLLLLLLLWWWWWWW
                WWWHHHHLLLLLLLWWWWWWW
-               WWWWWWWWWWWWWWWWWWWWW"""
+               WWWWWWWWWWWWWWWWWWWLL"""
+    geogr = textwrap.dedent(geogr)
     new_island = Island(geogr)
-    with pytest.raises(ValueError):
+    with pytest.raises(NameError):
         new_island.make_map()
