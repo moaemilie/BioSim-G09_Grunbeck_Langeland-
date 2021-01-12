@@ -10,7 +10,8 @@ from biosim.landscape import Highland
 from biosim.landscape import Desert
 from biosim.landscape import Water
 
-class Island():
+
+class Island:
 
     def __init__(self, island_map):
         self.island_map = island_map
@@ -32,21 +33,19 @@ class Island():
 
         landscapes = {'W': Water(0, 0), 'L': Lowland(0, 0), 'H': Highland(0, 0), 'D': Desert(0, 0)}
 
-        new1_list = []
         new2_list = []
         for line in self.island_map:
+            new1_list = []
             for string in line:
                 new1_list.append(landscapes[string])
             new2_list.append(new1_list)
         self.island_map = new2_list
         return self.island_map
 
-
     def find_num_row_col(self):
         self.map_rows = len(self.island_map)
         self.map_columns = len(self.island_map[0])
         return self.map_rows, self.map_columns
-
 
     def add_animals(self, coordinates, num_herb, num_carn):
         x_coor = coordinates[0]
@@ -61,4 +60,4 @@ class Island():
         origin.num_herb = num_herb
         origin.num_carn = num_carn
 
-    #def move(self):
+    # def move(self):
