@@ -9,10 +9,11 @@ class Island():
 
     def __init__(self, island_map):
         self.island_map = island_map
+        cells = []
 
     def make_map(self):
         self.island_map = self.island_map.split('\n')
-        self.island_map = [string.strip() for string in self.island_map]
+        self.island_map = self.island_map.replace('', ',')
 
         for string in self.island_map:
             for letter in string:
@@ -21,4 +22,4 @@ class Island():
 
         return self.island_map
 
-    #def migration(self):
+    #def move(self):
