@@ -23,9 +23,31 @@ def test_wrong_map():
                 WWHHHHLLLDDLLLHWWWWWW
                 WHHHLLLLLDDLLLLLLLWWW
                 WHHHHLLLLDDLLLLWWWWWW
-                WWHHHHLLLLLLLWWWWWWW
+                WWHHHHLLLLLLLWWWWWWWW
                 WWWHHHHLLLLLLLWWWWWWW
                 WWWWWWWWWWWWWWWWWWWWW"""
     new_island = Island(geogr)
-    with pytest.raises(KeyError):
+    with pytest.raises(ValueError):
+        new_island.make_map()
+
+def test_surrounded_by_water():
+    """
+        Test that you get a KeyError if the island is not surrounded by water.
+        """
+    geogr = """\
+               WWWWWWWWWWWWWWWWWWWWW
+               WWWWWWWWHWWWWLLLLLLLW
+               WHHHHHLLLLWWLLLLLLLWW
+               WHHHHHHHHHWWLLLLLLWWW
+               WHHHHHLLLLLLLLLLLLWWW
+               WHHHHHLLLDDLLLHLLLWWW
+               WHHLLLLLDDDLLLHHHHWWW
+               WWHHHHLLLDDLLLHWWWWWW
+               WHHHLLLLLDDLLLLLLLWWW
+               WHHHHLLLLDDLLLLWWWWWW
+               WWHHHHLLLLLLLLWWWWWWW
+               WWWHHHHLLLLLLLWWWWWWW
+               WWWWWWWWWWWWWWWWWWWWW"""
+    new_island = Island(geogr)
+    with pytest.raises(ValueError):
         new_island.make_map()
