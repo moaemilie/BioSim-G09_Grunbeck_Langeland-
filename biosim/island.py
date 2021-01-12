@@ -33,13 +33,8 @@ class Island:
 
         landscapes = {'W': Water(0, 0), 'L': Lowland(0, 0), 'H': Highland(0, 0), 'D': Desert(0, 0)}
 
-        new2_list = []
-        for line in self.island_map:
-            new1_list = []
-            for string in line:
-                new1_list.append(landscapes[string])
-            new2_list.append(new1_list)
-        self.island_map = new2_list
+        self.island_map = [[landscapes[string] for string in line] for line in self.island_map]
+
         return self.island_map
 
     def find_num_row_col(self):

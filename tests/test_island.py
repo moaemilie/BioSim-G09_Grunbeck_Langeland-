@@ -57,6 +57,7 @@ def test_surrounded_by_water():
     with pytest.raises(ValueError):
         new_island.make_map()
 
+
 def test_find_num_row_col():
     geogr = """\
                WWWW
