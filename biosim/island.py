@@ -13,12 +13,12 @@ class Island():
 
     def make_map(self):
         self.island_map = self.island_map.split('\n')
-        self.island_map = self.island_map.replace('', ',')
+        self.island_map = [list(line) for line in self.island_map]
 
         for string in self.island_map:
             for letter in string:
                 if letter != 'W' or 'H' or 'L' or'D':
-                    raise KeyError ('Invalid landskape letter: ' + letter)
+                    raise KeyError ('Invalid landscape letter: ' + letter)
 
         return self.island_map
 
