@@ -32,9 +32,10 @@ class Landscape:
         cls.default_f_max = new_f_max
 
     def __init__(self, num_herb, num_carn):
-
-        self.herb_pop = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_herb)]
-        self.carn_pop = [Carnivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_carn)]
+        self.num_herb = num_herb
+        self.num_carn = num_carn
+        self.herb_pop = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(self.num_herb)]
+        self.carn_pop = [Carnivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(self.num_carn)]
 
     def get_num_herb(self):
         """
