@@ -55,19 +55,21 @@ def test_get_num_carn():
     assert landscape.get_num_carn() == N_carn
 
 
-#def test_fitness():
-    #"""
-    #Tests that the fitness always lies between 0 and 1
-    #"""
+def test_fitness():
+    """
+    Tests that the fitness always lies between 0 and 1
+    """
+    landscape = Lowland(10, 10)
+    assert [0 <= herb.fitness() <= 1 for herb in landscape.herb_pop] and [0 <= carn.fitness() <= 1 for carn in
+                                                                          landscape.carn_pop]
 
-    #assert
 
 def test_aging():
     """
     Test that correct number of years are added
     """
     years = 5
-    landscape = Landscape(1,1)
+    landscape = Landscape(1, 1)
     herb_age = landscape.herb_pop[0].age
     carn_age = landscape.carn_pop[0].age
 
@@ -82,12 +84,13 @@ def test_aging():
 
     assert carn_delta_age == years and herb_delta_age == years
 
+
 def test_aging_higher():
     """
     Test that the age doesnt become lower than the initial age after the function aging.
     """
     years = 10
-    landscape = Landscape(1,1)
+    landscape = Landscape(1, 1)
     herb_age = landscape.herb_pop[0].age
     carn_age = landscape.carn_pop[0].age
 
