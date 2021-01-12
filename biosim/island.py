@@ -30,18 +30,19 @@ class Island():
             if string != 'W':
                 raise ValueError('Map must be surrounded by water')
 
-    def add_classes(self):
         landscapes = {'W': Water(0, 0), 'L': Lowland(0, 0), 'H': Highland(0, 0), 'D': Desert(0, 0)}
 
-        new_list = []
+        new1_list = []
+        new2_list = []
         for line in self.island_map:
             for string in line:
-                new_list.append(landscapes[string])
-                new_list = self.island_map
+                new1_list.append(landscapes[string])
+            new2_list.append(new1_list)
+        self.island_map = new2_list
         return self.island_map
 
 
-    def find_num_col_row(self):
+    def find_num_row_col(self):
         self.map_rows = len(self.island_map)
         self.map_columns = len(self.island_map[0])
         return self.map_rows, self.map_columns
