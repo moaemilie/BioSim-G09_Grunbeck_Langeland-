@@ -51,8 +51,11 @@ class Island():
     def add_animals(self, coordinates, num_herb, num_carn):
         x_coor = coordinates[0]
         y_coor = coordinates[1]
-        if y_coor > self.map_rows or x_coor > self.map_columns:
+        if y_coor >= self.map_rows or x_coor >= self.map_columns:
             return ValueError('Coordinate out of range' + coordinates)
+
+        if self.island_map[x_coor][y_coor] == Water:
+            return ValueError('Can not place animals in water' + coordinates)
 
         origin = self.island_map[x_coor - 1][y_coor - 1]
         origin.num_herb = num_herb
