@@ -58,39 +58,28 @@ class Island:
 
     def move(self):
 
-        def check_move_animal(row, col, pop):
+        def get_neighbors(row, col):
+            return {'left': self.island_map[row][col + 1], 'right': self.island_map[row][col - 1], 'up': self.island_map[row+1][col], 'down': self.island_map[row - 1][col]}
+
+        def move_animals(pop, neighbors):
+            stay = []
             for animal in pop:
                 p_move = animal.mu * animal.fit
-                if check_which_cell(row, col) is False or random.random() < p_move is False:
-                    stay = [animal]
+                chosen_neighbor = neighbors(random.choice(('left', 'right', 'up', 'down'))
+                if isinstance(chosen_neighbor, Water) or random.random() < p_move is False:
+                    stay.append(animal)
                 else:
-                    go = [animal]
-                    coord = [new_coord]
-
-
-
-        def check_which_cell(row, col):
-            directions = {'left': (row, col+1),'right': (row, col-1), 'up': (row+1, col), 'down': (row-1, col)}
-            choice = random.choice(('left','right', 'up', 'down'))
-            new_coord = directions(choice)
-            if isinstance(self.island_map[new_coord[0]][new_coord[1]], Water):
-                return False
-            else:
-                return new_coord
-
-
-        def move_to_new_cell(row, col, pop):
-            if check_move_animal(pop):
-                new_coord = check_which_cell(row, col)
-                if isinstance(self.island_map[new_coord[0]][new_coord[1]], Water):
-
-                else:
-
+                    chosen_neighbor.immigrants.extend(animal)
+            return stay
 
 
         for row in range(self.map_rows):
             for col in range(self.map_columns):
-                if check_move_animal(self.island_map[row][col]):
+                    neighbors = get_neighbors(row, col)
+                    stay_herb = move_animals(self.island_map[row][col].herb_pop, neighbors)
+                    stay_carn = move_animals(self.island_map[row][col].carn_pop, neighbors)
+                    self.island_map[row][col].herb_pop.extend(stay_herb)
+                    self.island_map[row][col].carn_pop.extend(stay_carn)
 
 
 
