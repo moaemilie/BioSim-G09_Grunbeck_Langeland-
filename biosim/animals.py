@@ -107,7 +107,7 @@ class Animals:
         Parameters
         ----------
         F_line: int
-            with the amount of food consumed by an animal.
+                with the amount of food consumed by an animal.
 
         Returns
         -------
@@ -124,7 +124,7 @@ class Animals:
         Input
         -------
         int
-            with probability of birth
+                with probability of birth
 
         Returns
         -------
@@ -162,13 +162,12 @@ class Carnivore(Animals):
 
     def kill(self, fit_herb):
         """
-
         Tests if the carnivore can kill a herbivore.
 
         Input
         -------
         int
-            fitness of a herbivore
+                fitness of a herbivore
 
         Returns
         -------
