@@ -20,6 +20,14 @@ class Island:
         self.map_columns = None
 
     def make_map(self):
+        """
+        Creates a list with al the landskape classes in for a cell in is corresponding position.
+
+        Returns
+        -------
+        List
+                2D list with the landscape classes for every cell.
+        """
         self.island_map = self.island_map.split('\n')
         self.island_map = [list(line) for line in self.island_map]
 
@@ -39,6 +47,15 @@ class Island:
         return self.island_map
 
     def find_num_row_col(self):
+        """
+
+        Calculates the number of columns and rows in the created map.
+
+        Returns
+        -------
+        int, int
+                number of rows, number of columns
+        """
         self.map_rows = len(self.island_map)
         self.map_columns = len(self.island_map[0])
         return self.map_rows, self.map_columns
@@ -59,9 +76,36 @@ class Island:
     def move(self):
 
         def get_neighbors(row, col):
+            """
+
+            Finds neighbouring cells.
+
+            Input
+            -------
+            int, int
+                    number of rows and columns
+
+            Returns
+            -------
+            dic
+                    dictionary with the neighbouring cells.
+            """
             return {'left': self.island_map[row][col + 1], 'right': self.island_map[row][col - 1], 'up': self.island_map[row+1][col], 'down': self.island_map[row - 1][col]}
 
         def move_animals(pop, neighbors):
+            """
+            Moves the animals from a cell.
+
+            Input
+            -------
+            list, dict
+                    list with population, dict with neighboring cells.
+
+            Returns
+            -------
+            list
+                    list with animals that stays in the cell.
+            """
             stay = []
             for animal in pop:
                 p_move = animal.mu * animal.fit
