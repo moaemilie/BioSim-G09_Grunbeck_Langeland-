@@ -115,10 +115,10 @@ class Landscape:
         self.set_f_max(self.default_f_max)
 
         for herb in self.herb_pop:
-            if self.default_f_max['f_max'] >= herb.default_params["F"]:
+            if self.default_f_max['f_max'] >= herb.default_params["F"] and herb.weight > 0:
                 herb.eating(herb.default_params["F"])
                 self.default_f_max['f_max'] -= herb.default_params["F"]
-            elif self.default_f_max['f_max'] < herb.default_params["F"] and self.default_f_max['f_max'] != 0:
+            elif self.default_f_max['f_max'] < herb.default_params["F"] and self.default_f_max['f_max'] != 0 and herb.weight > 0:
                 herb.fodder = self.default_f_max['f_max']
                 herb.eating(self.default_f_max['f_max'])
             herb.fitness()
@@ -128,7 +128,7 @@ class Landscape:
                     for k in range(j):
                         if pop[k + 1].fit < pop[k].fit and reverse is False:
                             pop[k], pop[k + 1] = pop[k + 1], pop[k]
-                        elif pop[k + 1].fit < pop[k].fit and reverse is True:
+                        elif pop[k + 1].fit > pop[k].fit and reverse is True:
                             pop[k], pop[k + 1] = pop[k + 1], pop[k]
                 return pop
 
@@ -137,8 +137,9 @@ class Landscape:
 
         for carn in self.carn_pop:
             for herb in self.herb_pop:
-                if carn.kill(herb.fit):
+                if carn.kill(herb.fit) and herb.weight > 0:
                     carn.eating(herb.weight)
+                    herb.weight = 0
                     carn.fitness()
 
     def fitness(self):

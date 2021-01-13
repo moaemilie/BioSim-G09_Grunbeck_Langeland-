@@ -48,9 +48,6 @@ class Island:
         if y_coor >= self.map_rows or x_coor >= self.map_columns:
             raise ValueError(f'Coordinate out of range {coordinates}')
 
-        #if self.island_map[x_coor][y_coor] == Water:
-            #raise ValueError(f'Can not place animals in water {coordinates}')
-
         if isinstance(self.island_map[x_coor - 1][y_coor - 1], Water):
             raise ValueError(f'Can not place animals in water {coordinates}')
 
@@ -58,4 +55,12 @@ class Island:
         origin.num_herb = num_herb
         origin.num_carn = num_carn
 
-    # def move(self):
+    def move(self):
+
+        for cell in self.island_map:
+            coordinate = [0,0]
+            for animal in cell.herb_pop + cell.carn_pop:
+                p_move = animal.mu * animal.fit
+                if random.random() < p_move:
+
+
