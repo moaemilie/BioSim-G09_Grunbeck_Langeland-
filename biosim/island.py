@@ -74,6 +74,15 @@ class Island:
         origin.num_carn = num_carn
 
     def move(self):
+    """
+
+    Moves the animals
+
+    Returns
+    -------
+    dic
+            dictionary with the neighbouring cells.
+    """
 
         def get_neighbors(row, col):
             """
