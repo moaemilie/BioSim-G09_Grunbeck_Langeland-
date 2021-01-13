@@ -68,3 +68,38 @@ def test_find_num_row_col():
     new_island = Island(geogr)
     new_island.make_map()
     assert new_island.find_num_row_col() == (4, 4)
+
+def test_add_animals_outside_map():
+    """
+    Test that you get an error if you place the animals outside the map.
+    """
+    geog = """\
+            WWW
+            WHW
+            WWW"""
+    geog = textwrap.dedent(geog)
+
+    new_island = Island(geog)
+    new_island.make_map()
+    new_island.find_num_row_col()
+
+    with pytest.raises(ValueError):
+        new_island.add_animals((6, 6), 5, 5)
+
+def test_add_animals_in_water():
+    """
+    Test that you get an error if you place the animals in water.
+    """
+    geog = """\
+            WWW
+            WHW
+            WWW"""
+    geog = textwrap.dedent(geog)
+
+    new_island = Island(geog)
+    new_island.make_map()
+    new_island.find_num_row_col()
+
+    with pytest.raises(ValueError):
+        new_island.add_animals((1, 1), 5, 5)
+
