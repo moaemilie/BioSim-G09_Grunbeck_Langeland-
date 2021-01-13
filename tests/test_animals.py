@@ -61,6 +61,14 @@ def test_new_params():
     assert not new_fitness == default_fitness
 
 
+def test_animal_fitness():
+    """
+    Tests that the fitness always lies between 0 and 1
+    """
+    sheep = Herbivore(4,30)
+    assert sheep.fitness() >= 0 and sheep.fitness() <= 1
+
+
 def test_animal_aging():
     """
     Tests that the aging function counts correctly
@@ -73,14 +81,6 @@ def test_animal_aging():
     assert sheep.age == 4
 
 
-def test_animal_fitness():
-    """
-    Tests that the fitness always lies between 0 and 1
-    """
-    sheep = Herbivore(4,30)
-    assert sheep.fitness() >= 0 and sheep.fitness() <= 1
-
-
 def test_weightloss():
     """
     Test that the weightloss function returns the true value.
@@ -89,6 +89,31 @@ def test_weightloss():
     delta_weight = 30 * sheep.default_params['eta']
     animal_weight = 30
     assert sheep.weightloss() == animal_weight - delta_weight
+
+
+def test_death_distribution():
+    """
+    Test if the number of animals that dies follows a normal distribution
+    """
+    num_animals = 100
+    sheeps = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_animals)]
+    p_sum = 0
+    n = 0
+
+    for sheep in sheeps:
+        sheep.fitness()
+        p_sum += (sheep.default_params["omega"] * (1 - sheep.fit))
+        n += sheep.death()
+
+    p_mean = p_sum / num_animals
+
+    norm_mean = num_animals * p_mean
+    var = num_animals * p_mean * (1 - p_mean)
+
+    Z = (n - norm_mean) / math.sqrt(var)
+    phi = 2 * stats.norm.cdf(-abs(Z))
+
+    assert phi > ALPHA
 
 
 def test_weight_loss_death():
@@ -120,32 +145,6 @@ def test_eating():
     assert new_weight == sheep.eating(F_line)
 
 
-def test_killing_p0():
-    """
-    Test that herbivore does not get killed if fitness is higher than the fitness of the carnivore
-    """
-    wolf = Carnivore(5,1)
-    sheep = Herbivore(5,10)
-    sheep.fitness()
-    assert not wolf.kill(sheep.fit)
-
-
-def test_killing_p1():
-    """
-    Test that if p=1 that the function always returns true.
-    """
-    wolf = Carnivore(5,10)
-    sheep = Herbivore(5,1)
-
-    new_params = {'w_birth': 6, 'sigma_birth': 1, 'beta': 0.75, 'eta': 0.125, 'a_half': 40,
-                      'phi_age': 0.3, 'w_half': 4, 'phi_weight': 0.4, 'mu': 0.4, 'gamma': 0.8,
-                      'zeta': 3.5, 'xi': 1.1, 'omega': 0.8, 'F': 50, 'DeltaPhiMax': 0.5}
-    wolf.set_params(new_params)
-
-    sheep.fitness()
-    assert wolf.kill(sheep.fit)
-
-
 def test_low_animalweight_birth():
     """
     Test that the birth function return False if the animal weight it lower than the babyweight.
@@ -164,7 +163,7 @@ def test_birth_p0():
 
 def test_birth_distribution():
     """
-    Test if the function birth() follows a Gaussian distribution.
+    Test if the function birth() follows a Gaussian distribution. (Mock)
     """
     num_animals = 100
     sheeps = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_animals)]
@@ -175,39 +174,46 @@ def test_birth_distribution():
         p_sum += min(1, sheep.default_params["gamma"] * sheep.fit * (num_animals - 1))
         n += sheep.birth(num_animals)
 
-    p = p_sum/num_animals
 
-    mean = num_animals * p
-    var = num_animals * p * (1 - p)
-    Z = (n - mean) / math.sqrt(var)
-    phi = 2 * stats.norm.cdf(-abs(Z))
-    assert phi > ALPHA
-
-
-def test_death_distribution():
+def test_kill_p0():
     """
-    Test if the number of animals that dies follows a normal distribution
+    Test that herbivore does not get killed if fitness is higher than the fitness of the carnivore
     """
-    num_animals = 100
-    sheeps = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_animals)]
-    p_sum = 0
-    n = 0
-
-    for sheep in sheeps:
-        sheep.fitness()
-        p_sum += (sheep.default_params["omega"] * (1 - sheep.fit))
-        n += sheep.death()
-
-    p_mean = p_sum / num_animals
-
-    norm_mean = num_animals * p_mean
-    var = num_animals * p_mean * (1 - p_mean)
-
-    Z = (n - norm_mean) / math.sqrt(var)
-    phi = 2 * stats.norm.cdf(-abs(Z))
-
-    assert phi > ALPHA
+    wolf = Carnivore(5,1)
+    sheep = Herbivore(5,10)
+    sheep.fitness()
+    assert not wolf.kill(sheep.fit)
 
 
+def test_kill_p1():
+    """
+    Test that if p=1 that the function always returns true.
+    """
+    wolf = Carnivore(5,10)
+    sheep = Herbivore(5,1)
+
+    new_params = {'w_birth': 6, 'sigma_birth': 1, 'beta': 0.75, 'eta': 0.125, 'a_half': 40,
+                      'phi_age': 0.3, 'w_half': 4, 'phi_weight': 0.4, 'mu': 0.4, 'gamma': 0.8,
+                      'zeta': 3.5, 'xi': 1.1, 'omega': 0.8, 'F': 50, 'DeltaPhiMax': 0.5}
+    wolf.set_params(new_params)
+
+    sheep.fitness()
+    assert wolf.kill(sheep.fit)
+
+
+def test_kill_when_zero_weight():
+    """
+    Test that if the carenvores weight is zero the kill function wil return False.
+    """
+    wolf = Carnivore(20,0)
+    assert not wolf.kill(0.5)
+
+
+def test_kill_when_negative_weight():
+    """
+    Test that if the carenvores weight is zero the kill function wil return False.
+    """
+    wolf = Carnivore(20,-5)
+    assert not wolf.kill(0.5)
 
 
