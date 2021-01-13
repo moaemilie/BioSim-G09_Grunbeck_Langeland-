@@ -161,7 +161,21 @@ class Carnivore(Animals):
                       'zeta': 3.5, 'xi': 1.1, 'omega': 0.8, 'F': 50, 'DeltaPhiMax': 10}
 
     def kill(self, fit_herb):
-        if fit_herb >= self.fit:
+        """
+
+        Tests if the carnivore can kill a herbivore.
+
+        Input
+        -------
+        int
+            fitness of a herbivore
+
+        Returns
+        -------
+        Bool
+                True if carnivore can kill.
+        """
+        if fit_herb >= self.fit or self.weight <= 0:
             p_kill = 0
         elif 0 < self.fit - fit_herb < self.default_params["DeltaPhiMax"]:
             p_kill = (self.fit - fit_herb)/(self.default_params["DeltaPhiMax"])
