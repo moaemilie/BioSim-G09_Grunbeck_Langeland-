@@ -162,18 +162,31 @@ def test_birth_p0():
     assert not sheep.birth(1)
 
 
-def test_birth_distribution():
+def test_birth_p1():
     """
-    Test if the function birth() follows a Gaussian distribution. (Mock)
+    Test if the function birth() with a probability 1 always return True.
     """
-    pytest_mock.patch(p_birth, return_value=0.5)
-    num_animals = 100
-    sheeps = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_animals)]
-    counter = 0
-    for sheep in sheeps:
-        counter += sheep.birth(num_animals)
+    sheep = Herbivore({'age':5,'weight':10})
+    mock(sheep.fitness, 0.1)
+    n = 100
+    assert sheep.birth(100)
 
-    assert counter == 50
+
+def test_birth_p0_5():
+    """
+    Test that the birth function return True half the time
+    """
+    n = 100
+    counter = 0
+    list_counter = []
+    sheeps = [Herbivore({'age':5,'weight':10}) for _ in range(n)]
+    for round in range(100):
+        counter = 0
+        for sheep in sheeps:
+            mock(sheep.fitness, 0.5/((n-1)*0.2))
+            counter += sheep.birth(n)
+        list_counter.append(counter)
+
 
 def test_kill_p0():
     """
