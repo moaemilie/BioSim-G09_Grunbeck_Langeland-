@@ -167,6 +167,11 @@ class Landscape:
         self.carn_immigrants = []
 
 
+    def add_animals(self, new_herbs=[], new_carns=[]):
+        self.herb_pop.extend([Herbivore(new_herbs[animal]) for animal in range(len(new_herbs))])
+        self.carn_pop.extend([Carnivore(new_carns[animal]) for animal in range(len(new_carns))])
+
+
 class Lowland(Landscape):
     default_f_max = {'f_max': 800}
 
