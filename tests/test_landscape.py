@@ -101,3 +101,14 @@ def test_aging_higher():
     carn_new_age = landscape.carn_pop[0].age
 
     assert herb_new_age > herb_age and carn_new_age > carn_age
+
+
+def test_feeding_herb_no_weight():
+    """
+    Test that a herbivore does not eat when his weight is 0 or less.
+    """
+    landscape = Lowland(1, 1)
+
+    landscape.feeding()
+
+

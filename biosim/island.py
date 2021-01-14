@@ -9,6 +9,8 @@ from biosim.landscape import Lowland
 from biosim.landscape import Highland
 from biosim.landscape import Desert
 from biosim.landscape import Water
+from biosim.animals import Herbivore
+from biosim.animals import Carnivore
 import random
 
 
@@ -60,8 +62,7 @@ class Island:
         self.map_columns = len(self.island_map[0])
         return self.map_rows, self.map_columns
 
-
-    def add_animals(self, coordinates, new_herbs = [], new_carns = []):
+    def add_animals(self, coordinates, new_herbs=[], new_carns=[]):
         x_coor = coordinates[0]
         y_coor = coordinates[1]
         if y_coor >= self.map_rows or x_coor >= self.map_columns:
@@ -74,18 +75,16 @@ class Island:
         origin_cell.herb_pop.extend(new_herbs)
         origin_cell.carn_pop.extend(new_carns)
 
+    def move(self):
+        """
 
-    #def move(self):
-    #"""
+        Moves the animals
 
-    #Moves the animals
-
-    #Returns
-    #-------
-    #dic
-            #dictionary with the neighbouring cells.
-    #"""
-
+        Returns
+        -------
+        dic
+                dictionary with the neighbouring cells.
+        """
 
         def get_neighbors(row, col):
             """
@@ -102,9 +101,11 @@ class Island:
             dic
                     dictionary with the neighbouring cells.
             """
-            return {'left': self.island_map[row][col + 1], 'right': self.island_map[row][col - 1], 'up': self.island_map[row+1][col], 'down': self.island_map[row - 1][col]}
+            return {'left': self.island_map[row][col + 1], 'right': self.island_map[row][col - 1],
+                    'up': self.island_map[row + 1][col], 'down': self.island_map[row - 1][col]}
 
-        def move_animals(pop, neighbors):
+        def move_animals(row, col, pop):
+            neighbors = get_neighbors(row, col)
             """
             Moves the animals from a cell.
 
@@ -121,23 +122,16 @@ class Island:
             stay = []
             for animal in pop:
                 p_move = animal.mu * animal.fit
-                chosen_neighbor = neighbors(random.choice(('left', 'right', 'up', 'down'))
-                if isinstance(chosen_neighbor, Water) or random.random() < p_move is False:
+                chosen_neighbor = neighbors[random.choice(('left', 'right', 'up', 'down'))]
+                if isinstance(chosen_neighbor, Water) or random.random() > p_move:
                     stay.append(animal)
-                else:
-                    chosen_neighbor.immigrants.extend(animal)
+                elif isinstance(animal, Herbivore):
+                    chosen_neighbor.herb_immigrants.append(animal)
+                elif isinstance(animal, Carnivore):
+                    chosen_neighbor.carn_immigrants.append(animal)
             return stay
-
 
         for row in range(self.map_rows):
             for col in range(self.map_columns):
-                    neighbors = get_neighbors(row, col)
-                    stay_herb = move_animals(self.island_map[row][col].herb_pop, neighbors)
-                    stay_carn = move_animals(self.island_map[row][col].carn_pop, neighbors)
-                    self.island_map[row][col].herb_pop.extend(stay_herb)
-                    self.island_map[row][col].carn_pop.extend(stay_carn)
-
-
-
-
-
+                self.island_map[row][col].herb_pop = move_animals(row, col, self.island_map[row][col].herb_pop)
+                self.island_map[row][col].carn_pop = move_animals(row, col, self.island_map[row][col].carn_pop)
