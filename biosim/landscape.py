@@ -177,17 +177,17 @@ class Lowland(Landscape):
 class Highland(Landscape):
     default_f_max = {'f_max': 300}
 
-    def __init__(self, num_herb, num_carn):
-        super().__init__(num_herb, num_carn)
+    def __init__(self, herb_pop, carn_pop):
+        super().__init__(herb_pop, carn_pop)
 
 
 class Desert(Landscape):
 
-    def __init__(self, num_herb, num_carn):
-        super().__init__(num_herb, num_carn)
+    def __init__(self, herb_pop, carn_pop):
+        super().__init__(herb_pop, carn_pop)
 
 
 class Water(Landscape):
 
-    def __init__(self, num_herb, num_carn):
-        super().__init__(num_herb, num_carn)
+    def __init__(self, herb_pop, carn_pop):
+        super().__init__(herb_pop, carn_pop)
