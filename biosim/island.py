@@ -40,7 +40,7 @@ class Island:
             if string != 'W':
                 raise ValueError('Map must be surrounded by water')
 
-        landscapes = {'W': Water(0, 0), 'L': Lowland(0, 0), 'H': Highland(0, 0), 'D': Desert(0, 0)}
+        landscapes = {'W': Water([], []), 'L': Lowland([], []), 'H': Highland([], []), 'D': Desert([], [])}
 
         self.island_map = [[landscapes[string] for string in line] for line in self.island_map]
 
@@ -60,7 +60,8 @@ class Island:
         self.map_columns = len(self.island_map[0])
         return self.map_rows, self.map_columns
 
-    def add_animals(self, coordinates, num_herb, num_carn):
+
+    def add_animals(self, coordinates, new_herbs = [], new_carns = []):
         x_coor = coordinates[0]
         y_coor = coordinates[1]
         if y_coor >= self.map_rows or x_coor >= self.map_columns:
@@ -69,20 +70,22 @@ class Island:
         if isinstance(self.island_map[x_coor - 1][y_coor - 1], Water):
             raise ValueError(f'Can not place animals in water {coordinates}')
 
-        origin = self.island_map[x_coor - 1][y_coor - 1]
-        origin.num_herb = num_herb
-        origin.num_carn = num_carn
+        origin_cell = self.island_map[x_coor - 1][y_coor - 1]
+        origin_cell.herb_pop.extend(new_herbs)
+        origin_cell.carn_pop.extend(new_carns)
 
-    def move(self):
-    """
 
-    Moves the animals
+    #def move(self):
+    #"""
 
-    Returns
-    -------
-    dic
-            dictionary with the neighbouring cells.
-    """
+    #Moves the animals
+
+    #Returns
+    #-------
+    #dic
+            #dictionary with the neighbouring cells.
+    #"""
+
 
         def get_neighbors(row, col):
             """

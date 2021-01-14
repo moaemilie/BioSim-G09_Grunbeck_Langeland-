@@ -13,6 +13,7 @@ import pytest
 import random
 import math
 import scipy.stats as stats
+from unittest import mock
 
 ALPHA = 0.05
 random.seed(123456)
@@ -165,15 +166,14 @@ def test_birth_distribution():
     """
     Test if the function birth() follows a Gaussian distribution. (Mock)
     """
+    pytest_mock.patch(p_birth, return_value=0.5)
     num_animals = 100
     sheeps = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(num_animals)]
-    p_sum = 0
-    n = 0
+    counter = 0
     for sheep in sheeps:
-        sheep.fitness()
-        p_sum += min(1, sheep.default_params["gamma"] * sheep.fit * (num_animals - 1))
-        n += sheep.birth(num_animals)
+        counter += sheep.birth(num_animals)
 
+    assert counter == 50
 
 def test_kill_p0():
     """

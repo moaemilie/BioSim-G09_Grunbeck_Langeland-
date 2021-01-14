@@ -31,11 +31,9 @@ class Landscape:
                 raise KeyError('Invalid parameter name: ' + key)
         cls.default_f_max = new_f_max
 
-    def __init__(self, num_herb, num_carn):
-        self.num_herb = num_herb
-        self.num_carn = num_carn
-        self.herb_pop = [Herbivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(self.num_herb)]
-        self.carn_pop = [Carnivore(random.randint(0, 50), random.randint(0, 50)) for _ in range(self.num_carn)]
+    def __init__(self, ini_herbs, ini_carns):
+        self.herb_pop = [Herbivore(ini_herbs[animal]) for animal in range(len(ini_herbs))]
+        self.carn_pop = [Carnivore(ini_carns[animal]) for animal in range(len(ini_carns))]
 
     def get_num_herb(self):
         """
