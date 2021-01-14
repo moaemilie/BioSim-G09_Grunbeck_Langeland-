@@ -54,7 +54,7 @@ def test_new_params():
                   'phi_age': 1, 'w_half': 1, 'phi_weight': 1, 'mu': 1, 'gamma': 1,
                   'zeta': 1, 'xi': 1, 'omega': 1, 'F': 1, 'DeltaPhiMax': 1}
 
-    sheep2 = Herbivore(5,6)
+    sheep2 = Herbivore({'age': 5, 'weight': 6})
     sheep2.set_params(new_params)
     sheep2.fitness()
     new_fitness = sheep2.fit
