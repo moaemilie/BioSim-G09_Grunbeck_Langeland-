@@ -94,10 +94,14 @@ class Landscape:
         """
 
         def herb_newborns(pop):
-            return [Herbivore(0, parent.babyweight) for parent in pop if parent.birth(self.get_num_herb())]
+            return [Herbivore({'species': 'Herbivore',
+                               'age': 0,
+                               'weight': parent.babyweight}) for parent in pop if parent.birth(self.get_num_herb())]
 
         def carn_newborns(pop):
-            return [Carnivore(0, parent.babyweight) for parent in pop if parent.birth(self.get_num_carn())]
+            return [Carnivore({'species': 'Herbivore',
+                               'age': 0,
+                               'weight': parent.babyweight}) for parent in pop if parent.birth(self.get_num_carn())]
 
         self.herb_pop.extend(herb_newborns(self.herb_pop))
         self.carn_pop.extend(carn_newborns(self.carn_pop))
@@ -115,13 +119,14 @@ class Landscape:
         self.set_f_max(self.default_f_max)
 
         for herb in self.herb_pop:
-            if self.default_f_max['f_max'] >= herb.default_params["F"] and herb.weight > 0:
-                herb.eating(herb.default_params["F"])
-                self.default_f_max['f_max'] -= herb.default_params["F"]
-            elif self.default_f_max['f_max'] < herb.default_params["F"] and self.default_f_max['f_max'] != 0 and herb.weight > 0:
-                herb.fodder = self.default_f_max['f_max']
-                herb.eating(self.default_f_max['f_max'])
-            herb.fitness()
+            if herb.weight > 0:
+                if self.default_f_max['f_max'] >= herb.default_params["F"]:
+                    herb.eating(herb.default_params["F"])
+                    self.default_f_max['f_max'] -= herb.default_params["F"]
+                elif self.default_f_max['f_max'] < herb.default_params["F"] and self.default_f_max['f_max'] != 0:
+                    herb.fodder = self.default_f_max['f_max']
+                    herb.eating(self.default_f_max['f_max'])
+                herb.fitness()
 
             def sort_pop(pop, reverse=False):
                 for j in reversed(range(len(pop))):
