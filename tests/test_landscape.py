@@ -185,3 +185,52 @@ def test_feeding_to_much_food():
     landscape.feeding()
 
     assert landscape.default_f_max['f_max'] == 500 - sheep.default_params['F']
+
+
+def test_herb_feeding_sorting():
+    """
+    Test that herbivores are sorted reversed by their fitness in the feeding function
+    """
+    herb_info = [{'age': 1, 'weight': 1}, {'age': 2, 'weight': 2}, {'age': 3, 'weight': 3}]
+    carn_info = [{'age': 1, 'weight': 1}, {'age': 2, 'weight': 2}, {'age': 3, 'weight': 3}]
+
+    landscape = Highland(herb_info, carn_info)
+
+    landscape.feeding()
+
+    herb1 = landscape.herb_pop[0]
+    herb2 = landscape.herb_pop[1]
+    herb3 = landscape.herb_pop[2]
+
+    herb1.fitness()
+    herb2.fitness()
+    herb3.fitness()
+
+    assert herb1.fit < herb2.fit < herb3.fit
+
+
+def test_carn_feeding_sorting():
+    """
+    Test that Carnevore are sorted by their fitness in the feeding function
+    """
+    herb_info = [{'age': 1, 'weight': 1}, {'age': 2, 'weight': 2}, {'age': 3, 'weight': 3}]
+    carn_info = [{'age': 1, 'weight': 1}, {'age': 2, 'weight': 2}, {'age': 3, 'weight': 3}]
+
+    landscape = Highland(herb_info, carn_info)
+
+    landscape.feeding()
+
+    carn1 = landscape.carn_pop[0]
+    carn2 = landscape.carn_pop[1]
+    carn3 = landscape.carn_pop[2]
+
+    carn1.fitness()
+    carn2.fitness()
+    carn3.fitness()
+
+    assert carn1.fit > carn2.fit > carn3.fit
+
+#def test_carn_weight_zero():
+
+
+#def test_herb_dies():
