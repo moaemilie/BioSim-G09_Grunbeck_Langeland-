@@ -270,5 +270,38 @@ def test_carn_kill():
     assert sheep.weight == 0
 
 
-#def test_herb_dies():
+def test_herb_death():
+    """
+    Test that the herbivores with zero weight and dies random is removed from the population
+    """
+    herb_info = [{'age': 1, 'weight': 0}, {'age': 1, 'weight': 5}]
+    carn_info = []
 
+    landscape = Highland(herb_info, carn_info)
+    num_herb_before = len(landscape.herb_pop)
+
+    landscape.death()
+
+    num_herb_after = len(landscape.herb_pop)
+
+    assert num_herb_before > num_herb_after
+
+
+def test_carn_death():
+    """
+    Test that the carnivores with zero weight and dies random is removed from the population
+    """
+    herb_info = []
+    carn_info = [{'age': 1, 'weight': 0}, {'age': 1, 'weight': 5}]
+
+    landscape = Highland(herb_info, carn_info)
+    num_carn_before = len(landscape.carn_pop)
+
+    landscape.death()
+
+    num_carn_after = len(landscape.carn_pop)
+
+    assert num_carn_before > num_carn_after
+
+
+def test_birth
