@@ -30,8 +30,8 @@ class Island:
         List
                 2D list with the landscape classes for every cell.
         """
-        self.island_map = self.island_map.split('\n')
-        self.island_map = [list(line) for line in self.island_map]
+        #self.island_map = self.island_map.split('\n')
+        self.island_map = [list(line) for line in self.island_map.split('\n')]
 
         for string in self.island_map:
             for letter in string:
@@ -63,15 +63,15 @@ class Island:
         return self.map_rows, self.map_columns
 
     def add_animals(self, coordinates, new_herbs=[], new_carns=[]):
-        x_coor = coordinates[0]
-        y_coor = coordinates[1]
-        if y_coor >= self.map_rows or x_coor >= self.map_columns:
+        x_coord = coordinates[0]
+        y_coord = coordinates[1]
+        if y_coord >= self.map_rows or x_coord >= self.map_columns:
             raise ValueError(f'Coordinate out of range {coordinates}')
 
-        if isinstance(self.island_map[x_coor - 1][y_coor - 1], Water):
+        if isinstance(self.island_map[x_coord - 1][y_coord - 1], Water):
             raise ValueError(f'Can not place animals in water {coordinates}')
 
-        origin_cell = self.island_map[x_coor - 1][y_coor - 1]
+        origin_cell = self.island_map[x_coord - 1][y_coord - 1]
         origin_cell.herb_pop.extend(new_herbs)
         origin_cell.carn_pop.extend(new_carns)
 
@@ -86,7 +86,7 @@ class Island:
                 dictionary with the neighbouring cells.
         """
 
-        def get_neighbors(row, col):
+        def get_neighbors(coord_1, coord_2):
             """
 
             Finds neighbouring cells.
@@ -101,11 +101,11 @@ class Island:
             dic
                     dictionary with the neighbouring cells.
             """
-            return {'left': self.island_map[row][col + 1], 'right': self.island_map[row][col - 1],
-                    'up': self.island_map[row + 1][col], 'down': self.island_map[row - 1][col]}
+            return {'left': self.island_map[coord_1][coord_2 + 1], 'right': self.island_map[coord_1][coord_2 - 1],
+                    'up': self.island_map[coord_1 + 1][coord_2], 'down': self.island_map[coord_1 - 1][coord_2]}
 
-        def move_animals(row, col, pop):
-            neighbors = get_neighbors(row, col)
+        def move_animals(coord_1, coord_2, pop):
+            neighbors = get_neighbors(coord_1, coord_2)
             """
             Moves the animals from a cell.
 

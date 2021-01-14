@@ -34,6 +34,8 @@ class Landscape:
     def __init__(self, ini_herbs, ini_carns):
         self.herb_pop = [Herbivore(ini_herbs[animal]) for animal in range(len(ini_herbs))]
         self.carn_pop = [Carnivore(ini_carns[animal]) for animal in range(len(ini_carns))]
+        self.herb_immigrants = []
+        self.carn_immigrants = []
 
     def get_num_herb(self):
         """
@@ -152,6 +154,12 @@ class Landscape:
         for herb, carn in zip(self.herb_pop, self.carn_pop):
             herb.fitness()
             carn.fitness()
+
+    def add_immigrants(self):
+        self.herb_pop.extend(self.herb_immigrants)
+        self.carn_pop.extend(self.carn_immigrants)
+        self.herb_immigrants = []
+        self.carn_immigrants = []
 
 
 class Lowland(Landscape):
