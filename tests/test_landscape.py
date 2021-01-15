@@ -253,16 +253,17 @@ def test_carn_weight_zero():
 
 def test_carn_kill(mocker):
     """
-    Test that the herbivore doesnt die if the herbivore weight is zero.
+    Test that the herbivores weight is zero if rge carnivore eats it.
     """
     herb_info = [{'age': 1, 'weight': 1}]
     carn_info = [{'age': 10, 'weight': 10}]
 
     landscape = Highland(herb_info, carn_info)
 
-    mocker.patch('biosim.animals.Carnivore.kill', 'return', True)
+    mocker.patch('biosim.animals.Carnivore.kill', True)
 
     landscape.feeding()
+    sheep = landscape.herb_pop[0]
 
     assert sheep.weight == 0
 
@@ -301,4 +302,31 @@ def test_carn_death():
     assert num_carn_before > num_carn_after
 
 
-#def test_birth
+def tests_carnivore_kill():
+    """
+    Test that the
+    """
+
+def test_birth():
+    """
+    Test that there wil be born animals for both carnivores and herbivores, when they are healthy.
+    """
+    herb_info = [{'age': 10, 'weight': 20}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 30},
+                 {'age': 10, 'weight': 20}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 30}]
+    carn_info = [{'age': 10, 'weight': 20}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 30},
+                 {'age': 10, 'weight': 20}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 30}]
+
+    landscape = Highland(herb_info, carn_info)
+    n_herbs = landscape.get_num_herb()
+    n_carns = landscape.get_num_carn()
+
+    for year in range(100):
+        landscape.birth()
+
+    n_herbs_afther = landscape.get_num_herb()
+    n_carns_afther = landscape.get_num_carn()
+
+    assert n_herbs < n_herbs_afther and n_carns < n_carns_afther
+
+
+
