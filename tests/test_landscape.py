@@ -20,6 +20,8 @@ from biosim.landscape import Water
 from biosim.animals import Herbivore
 from biosim.animals import Carnivore
 
+import pytest_mock
+
 def test_set_f_max():
     """
     Tests if the default f_max is being replaced by the new one.
@@ -119,8 +121,13 @@ def test_feeding_herb_no_weight():
     Test that a herbivore does not eat when his weight is 0 or less.
     """
     landscape = Lowland([{'age': 5, 'weight': 0}], [])
+    sheep = landscape.herb_pop[0]
+    start_weight = sheep.weight
 
     landscape.feeding()
+    end_weight = sheep.weight
+
+    assert start_weight == end_weight
 
 
 def test_feeding_no_food():
@@ -185,3 +192,116 @@ def test_feeding_to_much_food():
     landscape.feeding()
 
     assert landscape.default_f_max['f_max'] == 500 - sheep.default_params['F']
+
+
+def test_herb_feeding_sorting():
+    """
+    Test that herbivores are sorted reversed by their fitness in the feeding function
+    """
+    herb_info = [{'age': 1, 'weight': 1}, {'age': 2, 'weight': 2}, {'age': 3, 'weight': 3}]
+    carn_info = [{'age': 1, 'weight': 1}, {'age': 2, 'weight': 2}, {'age': 3, 'weight': 3}]
+
+    landscape = Highland(herb_info, carn_info)
+
+    landscape.feeding()
+
+    herb1 = landscape.herb_pop[0]
+    herb2 = landscape.herb_pop[1]
+    herb3 = landscape.herb_pop[2]
+
+    herb1.fitness()
+    herb2.fitness()
+    herb3.fitness()
+
+    assert herb1.fit < herb2.fit < herb3.fit
+
+
+def test_carn_feeding_sorting():
+    """
+    Test that Carnevore are sorted by their fitness in the feeding function
+    """
+    herb_info = [{'age': 1, 'weight': 1}, {'age': 2, 'weight': 2}, {'age': 3, 'weight': 3}]
+    carn_info = [{'age': 1, 'weight': 1}, {'age': 2, 'weight': 2}, {'age': 3, 'weight': 3}]
+
+    landscape = Highland(herb_info, carn_info)
+
+    landscape.feeding()
+
+    carn1 = landscape.carn_pop[0]
+    carn2 = landscape.carn_pop[1]
+    carn3 = landscape.carn_pop[2]
+
+    carn1.fitness()
+    carn2.fitness()
+    carn3.fitness()
+
+    assert carn1.fit > carn2.fit > carn3.fit
+
+
+def test_carn_weight_zero():
+    """
+    Test that the herbivore doesnt die if the herbivore weight is zero.
+    """
+    herb_info = [{'age': 1, 'weight': 1}]
+    carn_info = [{'age': 5, 'weight': 0}]
+
+    landscape = Highland(herb_info, carn_info)
+    sheep = landscape.herb_pop[0]
+
+    landscape.feeding()
+
+    assert sheep.weight != 0
+
+
+def test_carn_kill():
+    """
+    Test that the herbivore doesnt die if the herbivore weight is zero.
+    """
+    herb_info = [{'age': 1, 'weight': 1}]
+    carn_info = [{'age': 10, 'weight': 10}]
+
+    landscape = Highland(herb_info, carn_info)
+    sheep = landscape.herb_pop[0]
+    wolf = landscape.carn_pop[0]
+
+    pytest_mock(wolf.kill, True)
+    landscape.feeding()
+
+    assert sheep.weight == 0
+
+
+def test_herb_death():
+    """
+    Test that the herbivores with zero weight and dies random is removed from the population
+    """
+    herb_info = [{'age': 1, 'weight': 0}, {'age': 1, 'weight': 5}]
+    carn_info = []
+
+    landscape = Highland(herb_info, carn_info)
+    num_herb_before = len(landscape.herb_pop)
+
+    landscape.death()
+
+    num_herb_after = len(landscape.herb_pop)
+
+    assert num_herb_before > num_herb_after
+
+
+def test_carn_death():
+    """
+    Test that the carnivores with zero weight and dies random is removed from the population
+    """
+    herb_info = []
+    carn_info = [{'age': 1, 'weight': 0}, {'age': 1, 'weight': 5}]
+
+    landscape = Highland(herb_info, carn_info)
+    num_carn_before = len(landscape.carn_pop)
+
+    landscape.death()
+
+    num_carn_after = len(landscape.carn_pop)
+
+    assert num_carn_before > num_carn_after
+
+
+def test_birth
