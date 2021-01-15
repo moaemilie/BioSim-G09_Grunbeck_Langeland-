@@ -42,9 +42,9 @@ class Island:
             if string != 'W':
                 raise ValueError('Map must be surrounded by water')
 
-        landscapes = {'W': Water([], []), 'L': Lowland([], []), 'H': Highland([], []), 'D': Desert([], [])}
+        landscapes = {'W': Water, 'L': Lowland, 'H': Highland, 'D': Desert}
 
-        self.island_map = [[landscapes[string] for string in line] for line in self.island_map]
+        self.island_map = [[landscapes[string]([], []) for string in line] for line in self.island_map]
 
         return self.island_map
 
@@ -62,18 +62,34 @@ class Island:
         self.map_columns = len(self.island_map[0])
         return self.map_rows, self.map_columns
 
-    def add_animals(self, coordinates, new_herbs=[], new_carns=[]):
-        x_coord = coordinates[0]
-        y_coord = coordinates[1]
-        if y_coord >= self.map_rows or x_coord >= self.map_columns:
+    def set_landscape_parameters(self, land_type, new_f_max):
+        landscapes = {'L': Lowland, 'H': Highland}
+        landscapes[land_type].set_f_max(new_f_max)
+
+    def add_animals(self, coordinates, new_herbs=None, new_carns=None):
+        if new_herbs is None:
+            new_herbs = []
+        elif new_carns is None:
+            new_carns = []
+        x_coord = coordinates[0] - 1
+        y_coord = coordinates[1] - 1
+        if 0 >= y_coord >= self.map_rows or 0 >= x_coord >= self.map_columns:
             raise ValueError(f'Coordinate out of range {coordinates}')
 
-        if isinstance(self.island_map[x_coord - 1][y_coord - 1], Water):
+        if isinstance(self.island_map[x_coord][y_coord], Water):
             raise ValueError(f'Can not place animals in water {coordinates}')
 
-        origin_cell = self.island_map[x_coord - 1][y_coord - 1]
-        origin_cell.herb_pop.extend(new_herbs)
-        origin_cell.carn_pop.extend(new_carns)
+        origin_cell = self.island_map[x_coord][y_coord]
+        origin_cell.add_animals(new_herbs, new_carns)
+        #origin_cell.add_animals(new_carns)
+
+    def get_num_herb(self):
+        return sum([sum([self.island_map[row][col].get_num_herb() for col in range(self.map_columns)])
+                    for row in range(self.map_rows)])
+
+    def get_num_carn(self):
+        return sum([sum([self.island_map[row][col].get_num_carn() for col in range(self.map_columns)])
+                    for row in range(self.map_rows)])
 
     def move(self):
         """

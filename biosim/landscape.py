@@ -166,8 +166,11 @@ class Landscape:
         self.herb_immigrants = []
         self.carn_immigrants = []
 
-
-    def add_animals(self, new_herbs=[], new_carns=[]):
+    def add_animals(self, new_herbs=None, new_carns=None):
+        if new_herbs is None:
+            new_herbs = []
+        elif new_carns is None:
+            new_carns = []
         self.herb_pop.extend([Herbivore(new_herbs[animal]) for animal in range(len(new_herbs))])
         self.carn_pop.extend([Carnivore(new_carns[animal]) for animal in range(len(new_carns))])
 
@@ -175,24 +178,24 @@ class Landscape:
 class Lowland(Landscape):
     default_f_max = {'f_max': 800}
 
-    def __init__(self, num_herb, num_carn):
-        super().__init__(num_herb, num_carn)
+    def __init__(self, ini_herbs, ini_carns):
+        super().__init__(ini_herbs, ini_carns)
 
 
 class Highland(Landscape):
     default_f_max = {'f_max': 300}
 
-    def __init__(self, herb_pop, carn_pop):
-        super().__init__(herb_pop, carn_pop)
+    def __init__(self, ini_herbs, ini_carns):
+        super().__init__(ini_herbs, ini_carns)
 
 
 class Desert(Landscape):
 
-    def __init__(self, herb_pop, carn_pop):
-        super().__init__(herb_pop, carn_pop)
+    def __init__(self, ini_herbs, ini_carns):
+        super().__init__(ini_herbs, ini_carns)
 
 
 class Water(Landscape):
 
-    def __init__(self, herb_pop, carn_pop):
-        super().__init__(herb_pop, carn_pop)
+    def __init__(self, ini_herbs, ini_carns):
+        super().__init__(ini_herbs, ini_carns)

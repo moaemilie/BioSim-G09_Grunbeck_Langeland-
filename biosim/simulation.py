@@ -11,12 +11,15 @@ from biosim.landscape import Highland
 from biosim.landscape import Desert
 from biosim.landscape import Water
 
-class BioSim():
+class BioSim:
     def __init__(self, island_map, ini_pop):
         self.island_map = island_map
         self.coordinates = ini_pop[0]['loc']
         self.pop = ini_pop[0]['pop']
 
+    @staticmethod
+    def set_landscape_parameters(land_type, new_f_max):
+        Island.set_landscape_parameters(land_type, new_f_max)
 
     def simulate(self, num_years, vis_years):
 
@@ -30,11 +33,6 @@ class BioSim():
 
     def add_population(self, new_herbs = [], new_carns = []):
         #add_animals
-
-
-    def set_landscape_parameters(self, land_type, new_f_max):
-        landscapes = {'L': Lowland.set_f_max(new_f_max), 'H': Highland.set_f_max(new_f_max)}
-        landscapes[land_type]
 
 
     def set_animal_parameters(self, dict):
