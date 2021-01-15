@@ -31,7 +31,11 @@ class Landscape:
                 raise KeyError('Invalid parameter name: ' + key)
         cls.default_f_max = new_f_max
 
-    def __init__(self, ini_herbs, ini_carns):
+    def __init__(self, ini_herbs = None, ini_carns = None):
+        if ini_herbs is None:
+            ini_herbs = []
+        elif ini_carns is None:
+            ini_carns = []
         self.herb_pop = [Herbivore(ini_herbs[animal]) for animal in range(len(ini_herbs))]
         self.carn_pop = [Carnivore(ini_carns[animal]) for animal in range(len(ini_carns))]
         self.herb_immigrants = []
@@ -78,12 +82,14 @@ class Landscape:
         for herb, carn in zip(self.herb_pop, self.carn_pop):
             herb.aging()
             carn.aging()
+        return self.herb_pop, self.carn_pop
 
 
     def weightloss(self):
         for herb, carn in zip(self.herb_pop, self.carn_pop):
             herb.weightloss()
             carn.weightloss()
+        return self.herb_pop, self.carn_pop
 
 
     def fitness(self):
@@ -98,7 +104,7 @@ class Landscape:
             for herb, carn in zip(self.herb_pop, self.carn_pop):
                 herb.fitness()
                 carn.fitness()
-
+            return self.herb_pop, self.carn_pop
 
     def birth(self):
         """
@@ -122,7 +128,7 @@ class Landscape:
 
         self.herb_pop.extend(herb_newborns(self.herb_pop))
         self.carn_pop.extend(carn_newborns(self.carn_pop))
-
+        return self.herb_pop, self.carn_pop
 
     def feeding(self):
         """
@@ -165,6 +171,7 @@ class Landscape:
                     herb.weight = 0
                     carn.fitness()
 
+        return self.herb_pop, self.carn_pop
 
     def death(self):
         """
@@ -176,13 +183,14 @@ class Landscape:
 
         self.herb_pop = survivors(self.herb_pop)
         self.carn_pop = survivors(self.carn_pop)
-
+        return self.herb_pop, self.carn_pop
 
     def add_immigrants(self):
         self.herb_pop.extend(self.herb_immigrants)
         self.carn_pop.extend(self.carn_immigrants)
         self.herb_immigrants = []
         self.carn_immigrants = []
+        return self.herb_pop, self.carn_pop
 
 
     def add_animals(self, new_herbs=None, new_carns=None):
@@ -192,7 +200,7 @@ class Landscape:
             new_carns = []
         self.herb_pop.extend([Herbivore(new_herbs[animal]) for animal in range(len(new_herbs))])
         self.carn_pop.extend([Carnivore(new_carns[animal]) for animal in range(len(new_carns))])
-
+        return self.herb_pop, self.carn_pop
 
 class Lowland(Landscape):
     default_f_max = {'f_max': 800}

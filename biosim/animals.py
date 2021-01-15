@@ -58,7 +58,7 @@ class Animals:
             with number of years
         """
         self.age += 1
-        return self.age
+
 
 
     def weightloss(self):
