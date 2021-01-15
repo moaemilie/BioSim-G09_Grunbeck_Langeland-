@@ -20,27 +20,39 @@ class BioSim:
         random.seed(seed)
         self.sim_island = Island(island_map)
         self.sim_island.make_map()
-        self.sim_island.add_animals(ini_pop)
+        if self.pop[0]['species'] == 'Herbivore':
+            self.sim_island.add_animals(self.coordinates, self.pop, None)
+        else:
+            self.sim_island.add_animals(self.coordinates, None, self.pop)
+
 
     @staticmethod
     def set_landscape_parameters(land_type, new_f_max):
         Island.set_landscape_parameters(land_type,new_f_max)
 
+
     @staticmethod
     def set_animal_parameters(animal_type, new_params):
         Island.set_animal_parameters(animal_type, new_params)
 
-    def simulate(self, num_years, vis_years):
 
-        island = Island(self.sim_island)
-        island.make_map()
-        if self.pop['species'] == 'Herbivore':
-            island.add_animals(self.coordinates, self.pop, None)
-        else:
-            island.add_animals(self.coordinates, None, self.pop)
+    def simulate(self, num_years):
+        def simulate_year():
+            self.sim_island.aging()
+            self.sim_island.weightloss()
+            self.sim_island.fitness()
+            self.sim_island.birth()
+            self.sim_island.feeding()
+            self.sim_island.death()
+            self.sim_island.move()
+            self.sim_island.add_immigrants()
+            print(self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
+        for year in range(num_years):
+            simulate_year()
+
 
     def add_population(self, population):
-        if population['species'] == 'Herbivore':
+        if population[0]['pop'][0]['species'] == 'Herbivore':
             self.sim_island.add_animals(population[0]['loc'], population[0]['pop'], None)
         else:
             self.sim_island.add_animals(population[0]['loc'], None, population[0]['pop'])

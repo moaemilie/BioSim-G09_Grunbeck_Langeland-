@@ -60,6 +60,7 @@ class Island:
 
         return self.island_map
 
+
     def add_animals(self, coordinates, new_herbs=None, new_carns=None):
         if new_herbs is None:
             new_herbs = []
@@ -76,13 +77,52 @@ class Island:
         origin_cell = self.island_map[x_coord][y_coord]
         origin_cell.add_animals(new_herbs, new_carns)
 
+
     def get_num_herb(self):
         return sum([sum([self.island_map[row][col].get_num_herb() for col in range(self.map_columns)])
                     for row in range(self.map_rows)])
 
+
     def get_num_carn(self):
         return sum([sum([self.island_map[row][col].get_num_carn() for col in range(self.map_columns)])
                     for row in range(self.map_rows)])
+
+
+    def aging(self):
+        for row in range(self.map_rows):
+            for col in range(self.map_columns):
+                self.island_map[row][col].aging()
+
+
+    def weightloss(self):
+        for row in range(self.map_rows):
+            for col in range(self.map_columns):
+                self.island_map[row][col].weightloss()
+
+
+    def fitness(self):
+        for row in range(self.map_rows):
+            for col in range(self.map_columns):
+                self.island_map[row][col].fitness()
+
+
+    def birth(self):
+        for row in range(self.map_rows):
+            for col in range(self.map_columns):
+                self.island_map[row][col].birth()
+
+
+    def feeding(self):
+        for row in range(self.map_rows):
+            for col in range(self.map_columns):
+                self.island_map[row][col].feeding()
+
+
+    def death(self):
+        for row in range(self.map_rows):
+            for col in range(self.map_columns):
+                self.island_map[row][col].death()
+
 
     def move(self):
         """
@@ -110,11 +150,16 @@ class Island:
             dic
                     dictionary with the neighbouring cells.
             """
+
+            #edges_rows = [(pos, self.map_rows - 1) for pos in range(self.map_rows)] + [(pos, 0) for pos in range(self.map_rows)]
+            #edges_columns = [(0, pos) for pos in range(self.map_columns)] + [(self.map_columns-1, pos) for pos in range(self.map_columns)]
+            #edges = edges_rows + edges_columns
+
+            #if (coord_1, coord_2) not in edges:
             return {'left': self.island_map[coord_1][coord_2 + 1], 'right': self.island_map[coord_1][coord_2 - 1],
                     'up': self.island_map[coord_1 + 1][coord_2], 'down': self.island_map[coord_1 - 1][coord_2]}
 
         def move_animals(coord_1, coord_2, pop):
-            neighbors = get_neighbors(coord_1, coord_2)
             """
             Moves the animals from a cell.
 
@@ -128,9 +173,10 @@ class Island:
             list
                     list with animals that stays in the cell.
             """
+            neighbors = get_neighbors(coord_1, coord_2)
             stay = []
             for animal in pop:
-                p_move = animal.mu * animal.fit
+                p_move = animal.default_params['mu'] * animal.fit
                 chosen_neighbor = neighbors[random.choice(('left', 'right', 'up', 'down'))]
                 if isinstance(chosen_neighbor, Water) or random.random() > p_move:
                     stay.append(animal)
@@ -140,7 +186,16 @@ class Island:
                     chosen_neighbor.carn_immigrants.append(animal)
             return stay
 
-        for row in range(self.map_rows):
-            for col in range(self.map_columns):
+        for row in range(1, self.map_rows - 2, 1):
+            for col in range(1, self.map_columns - 2, 1):
                 self.island_map[row][col].herb_pop = move_animals(row, col, self.island_map[row][col].herb_pop)
                 self.island_map[row][col].carn_pop = move_animals(row, col, self.island_map[row][col].carn_pop)
+
+
+    def add_immigrants(self):
+        for row in range(self.map_rows):
+            for col in range(self.map_columns):
+                self.island_map[row][col].add_immigrants()
+
+
+

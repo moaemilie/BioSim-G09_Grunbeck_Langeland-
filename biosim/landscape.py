@@ -64,6 +64,8 @@ class Landscape:
         """
         return len(self.carn_pop)
 
+
+
     def aging(self):
         """
         Adds a year for all animals in the population for every time its called.
@@ -77,16 +79,26 @@ class Landscape:
             herb.aging()
             carn.aging()
 
-    def death(self):
-        """
 
-        """
+    def weightloss(self):
+        for herb, carn in zip(self.herb_pop, self.carn_pop):
+            herb.weightloss()
+            carn.weightloss()
 
-        def survivors(pop):
-            return [animal for animal in pop if not animal.death()]
 
-        self.herb_pop = survivors(self.herb_pop)
-        self.carn_pop = survivors(self.carn_pop)
+    def fitness(self):
+            """
+             Calculates the fitness for every animal in the population.
+
+             Returns
+             -------
+             Float
+                 with new fitness between 0 and 1
+             """
+            for herb, carn in zip(self.herb_pop, self.carn_pop):
+                herb.fitness()
+                carn.fitness()
+
 
     def birth(self):
         """
@@ -111,6 +123,7 @@ class Landscape:
         self.herb_pop.extend(herb_newborns(self.herb_pop))
         self.carn_pop.extend(carn_newborns(self.carn_pop))
 
+
     def feeding(self):
         """
         Feeds herbivores and carnivores in a cell.
@@ -133,14 +146,14 @@ class Landscape:
                     herb.eating(self.default_f_max['f_max'])
                 herb.fitness()
 
-            def sort_pop(pop, reverse=False):
-                for j in reversed(range(len(pop))):
-                    for k in range(j):
-                        if pop[k + 1].fit < pop[k].fit and reverse is False:
-                            pop[k], pop[k + 1] = pop[k + 1], pop[k]
-                        elif pop[k + 1].fit > pop[k].fit and reverse is True:
-                            pop[k], pop[k + 1] = pop[k + 1], pop[k]
-                return pop
+        def sort_pop(pop, reverse=False):
+            for j in reversed(range(len(pop))):
+                for k in range(j):
+                    if pop[k + 1].fit < pop[k].fit and reverse is False:
+                        pop[k], pop[k + 1] = pop[k + 1], pop[k]
+                    elif pop[k + 1].fit > pop[k].fit and reverse is True:
+                        pop[k], pop[k + 1] = pop[k + 1], pop[k]
+            return pop
 
         self.herb_pop = sort_pop(self.herb_pop)
         self.carn_pop = sort_pop(self.carn_pop, reverse=True)
@@ -152,24 +165,25 @@ class Landscape:
                     herb.weight = 0
                     carn.fitness()
 
-    def fitness(self):
-        """
-         Calculates the fitness for every animal in the population.
 
-         Returns
-         -------
-         Float
-             with new fitness between 0 and 1
-         """
-        for herb, carn in zip(self.herb_pop, self.carn_pop):
-            herb.fitness()
-            carn.fitness()
+    def death(self):
+        """
+
+        """
+
+        def survivors(pop):
+            return [animal for animal in pop if not animal.death()]
+
+        self.herb_pop = survivors(self.herb_pop)
+        self.carn_pop = survivors(self.carn_pop)
+
 
     def add_immigrants(self):
         self.herb_pop.extend(self.herb_immigrants)
         self.carn_pop.extend(self.carn_immigrants)
         self.herb_immigrants = []
         self.carn_immigrants = []
+
 
     def add_animals(self, new_herbs=None, new_carns=None):
         if new_herbs is None:
@@ -195,12 +209,14 @@ class Highland(Landscape):
 
 
 class Desert(Landscape):
+    default_f_max = {'f_max': 0}
 
     def __init__(self, ini_herbs, ini_carns):
         super().__init__(ini_herbs, ini_carns)
 
 
 class Water(Landscape):
+    default_f_max = {'f_max': 0}
 
     def __init__(self, ini_herbs, ini_carns):
         super().__init__(ini_herbs, ini_carns)

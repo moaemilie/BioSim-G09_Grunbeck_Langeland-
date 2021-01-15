@@ -46,6 +46,34 @@ class Animals:
         self.babyweight = None
         self.fodder = None
 
+
+
+    def aging(self):
+        """
+        Adds one year every time its called.
+
+        Returns
+        -------
+        Int
+            with number of years
+        """
+        self.age += 1
+        return self.age
+
+
+    def weightloss(self):
+        """
+        Calculates the weight of an animal.
+
+        Returns
+        -------
+        Int
+            with weight for the animal
+        """
+        self.weight -= self.weight * self.default_params["eta"]
+        return self.weight
+
+
     def fitness(self):
         """
         Calculates the fitness of an animal.
@@ -64,61 +92,6 @@ class Animals:
                                            (self.weight - self.default_params["w_half"])))))
         return self.fit
 
-    def aging(self):
-        """
-        Adds one year every time its called.
-
-        Returns
-        -------
-        Int
-            with number of years
-        """
-        self.age += 1
-        return self.age
-
-    def weightloss(self):
-        """
-        Calculates the weight of an animal.
-
-        Returns
-        -------
-        Int
-            with weight for the animal
-        """
-        self.weight -= self.weight * self.default_params["eta"]
-        return self.weight
-
-    def death(self):
-        """
-        Decides if an animal should die or not.
-
-        Returns
-        -------
-        Bool
-                True if animal dies
-        """
-        if self.weight <= 0:
-            p_death = 1.0
-        else:
-            p_death = (self.default_params["omega"] * (1 - self.fit))
-        return random.random() <= p_death
-
-    def eating(self, fodder):
-        """
-        Animal gains a certain amount every year by eating.
-
-        Parameters
-        ----------
-        fodder: int
-                with the amount of food consumed by an animal.
-
-        Returns
-        -------
-        int
-            New weight of animal
-        """
-        self.weight += self.default_params["beta"] * fodder
-        return self.weight
 
     def birth(self, n):
         """
@@ -146,6 +119,40 @@ class Animals:
             self.weight -= baby_weight * self.default_params["xi"]
             self.babyweight = baby_weight
         return chance
+
+
+    def eating(self, fodder):
+        """
+        Animal gains a certain amount every year by eating.
+
+        Parameters
+        ----------
+        fodder: int
+                with the amount of food consumed by an animal.
+
+        Returns
+        -------
+        int
+            New weight of animal
+        """
+        self.weight += self.default_params["beta"] * fodder
+        return self.weight
+
+
+    def death(self):
+        """
+        Decides if an animal should die or not.
+
+        Returns
+        -------
+        Bool
+                True if animal dies
+        """
+        if self.weight <= 0:
+            p_death = 1.0
+        else:
+            p_death = (self.default_params["omega"] * (1 - self.fit))
+        return random.random() <= p_death
 
 
 class Herbivore(Animals):
