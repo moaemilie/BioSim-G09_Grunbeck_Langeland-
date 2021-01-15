@@ -176,6 +176,7 @@ class Landscape:
                     carn.fitness()
             self.herb_pop = [herbo for herbo in self.herb_pop if herbo not in dead_herb]
 
+
     def death(self):
         """
 
@@ -188,12 +189,12 @@ class Landscape:
         self.carn_pop = survivors(self.carn_pop)
         return self.herb_pop, self.carn_pop
 
+
     def add_immigrants(self):
         self.herb_pop.extend(self.herb_immigrants)
         self.carn_pop.extend(self.carn_immigrants)
         self.herb_immigrants = []
         self.carn_immigrants = []
-        return self.herb_pop, self.carn_pop
 
 
     def add_animals(self, new_herbs=None, new_carns=None):
@@ -208,28 +209,28 @@ class Landscape:
 class Lowland(Landscape):
     default_f_max = {'f_max': 800}
 
-    def __init__(self, ini_herbs, ini_carns):
+    def __init__(self, ini_herbs = None, ini_carns = None):
         super().__init__(ini_herbs, ini_carns)
 
 
 class Highland(Landscape):
     default_f_max = {'f_max': 300}
 
-    def __init__(self, ini_herbs, ini_carns):
+    def __init__(self, ini_herbs = None, ini_carns = None):
         super().__init__(ini_herbs, ini_carns)
 
 
 class Desert(Landscape):
     default_f_max = {'f_max': 0}
 
-    def __init__(self, ini_herbs, ini_carns):
+    def __init__(self, ini_herbs = None, ini_carns = None):
         super().__init__(ini_herbs, ini_carns)
 
 
 class Water(Landscape):
     default_f_max = {'f_max': 0}
 
-    def __init__(self, ini_herbs, ini_carns):
+    def __init__(self, ini_herbs = None, ini_carns = None):
         super().__init__(ini_herbs, ini_carns)
 
 
