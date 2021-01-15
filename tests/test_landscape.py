@@ -89,13 +89,13 @@ def test_aging():
 
 def test_aging_negative_age():
     """
-    Test that the if input age is negative the animals wil die.
+    Test that the if input age is negative the animals wil die
     """
     herb_info = [{'age': -5, 'weight': 6}, ]
     carn_info = [{'age': -20, 'weight': 6}, ]
     landscape = Lowland(herb_info, carn_info)
 
-    landscape.aging()
+    landscape.death()
 
     assert len(landscape.herb_pop) == 0 and len(landscape.carn_pop) == 0
 
@@ -168,10 +168,10 @@ def test_birth():
     """
     Test that there wil be born animals for both carnivores and herbivores, when they are healthy.
     """
-    herb_info = [{'age': 10, 'weight': 20}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 30},
-                 {'age': 10, 'weight': 20}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 30}]
-    carn_info = [{'age': 10, 'weight': 20}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 30},
-                 {'age': 10, 'weight': 20}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 30}]
+    herb_info = [{'age': 20, 'weight': 50}, {'age': 30, 'weight': 60}, {'age': 20, 'weight': 70},
+                 {'age': 10, 'weight': 10}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 9}]
+    carn_info = [{'age': 20, 'weight': 50}, {'age': 30, 'weight': 60}, {'age': 20, 'weight': 70},
+                 {'age': 10, 'weight': 10}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 9}]
 
     landscape = Highland(herb_info, carn_info)
     n_herbs = landscape.get_num_herb()
@@ -237,7 +237,7 @@ def test_feeding_little_food():
 
     landscape.feeding()
 
-    assert sheep.fodder == landscape.default_f_max['f_max']
+    assert sheep.fodder == 50
 
 
 def test_no_food_left():
@@ -381,7 +381,12 @@ def test_carn_gain_weight(mocker):
 
     mocker.patch('biosim.animals.Carnivore.kill', ReturnValue = True)
 
+    sheep = landscape.herb_pop[0]
     wolf = landscape.carn_pop[0]
+
+    new_f_max = {'f_max': 0}
+
+    landscape.set_f_max(new_f_max)
 
     landscape.feeding()
 

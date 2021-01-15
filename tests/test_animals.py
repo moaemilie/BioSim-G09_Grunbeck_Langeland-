@@ -162,17 +162,16 @@ def test_birth_p0():
     assert not sheep.birth(1)
 
 
-def test_birth_p1():
+def test_birth_p1(mocker):
     """
     Test if the function birth() with a probability 1 always return True.
     """
-    sheep = Herbivore({'age': 5, 'weight': 10})
-    mock(sheep.fitness, 0.1)
-    n = 100
+    sheep = Herbivore({'age': 5, 'weight': 50})
+    mocker.patch('biosim.animals.Carnivore.fitness', ReturnValue=0.1)
     assert sheep.birth(100)
 
 
-def test_birth_p0_5():
+def test_birth_p0_5(mocker):
     """
     Test that the birth function return True half the time
     """
@@ -183,7 +182,7 @@ def test_birth_p0_5():
     for round in range(100):
         counter = 0
         for sheep in sheeps:
-            mock(sheep.fitness, 0.5/((n-1)*0.2))
+            mocker.patch('biosim.animals.Carnivore.fitness', ReturnValue=0.5/((n-1)*0.2))
             counter += sheep.birth(n)
         list_counter.append(counter)
 
