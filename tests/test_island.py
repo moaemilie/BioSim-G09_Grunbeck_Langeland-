@@ -70,7 +70,7 @@ def test_add_animals_outside_map(new_island, population):
     Test that you get an error if you place the animals outside the map.
     """
     with pytest.raises(IndexError):
-        new_island.add_animals((5, 5), population)
+        new_island.add_animals((5, 5), population[0], population[1])
 
 
 def test_add_animals_in_water(new_island, population):
@@ -78,19 +78,33 @@ def test_add_animals_in_water(new_island, population):
     Test that you get an error if you place the animals in water.
     """
     with pytest.raises(ValueError):
-        new_island.add_animals((1, 1), population)
+        new_island.add_animals((1, 1), population[0], population[1])
 
 
 def test_add_animals(new_island, population):
-    new_island.add_animals((2, 2), population)
+    new_island.add_animals((2, 2), population[0], population[1])
     num_herb = len(new_island.island_map[1][1].herb_pop)
     num_carn = len(new_island.island_map[1][1].carn_pop)
     assert num_herb == 1 and num_carn == 1
 
 
 def test_get_num_herb(new_island, population):
-    new_island.add_animals((2, 2), population)
+    new_island.add_animals((2, 2), population[0], population[1])
     assert new_island.get_num_herb() == 1
+
+
+def test_get_num_carn(new_island, population):
+    new_island.add_animals((2, 2), population[0], population[1])
+    assert new_island.get_num_carn() == 1
+
+
+def test_aging(new_island, population):
+    new_island.add_animals((2, 2), population[0], population[1])
+    new_island.aging()
+    assert (new_island.island_map[1][1].herb_pop[0].age, new_island.island_map[1][1].carn_pop[0].age) == (6, 6)
+
+
+
 
 # def test_move(new_island):
 #    assert pass
