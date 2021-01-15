@@ -36,7 +36,8 @@ class Animals:
                            'phi_age', 'w_half', 'phi_weight', 'mu', 'gamma',
                            'zeta', 'xi', 'omega', 'F', 'DeltaPhiMax'):
                 raise KeyError('Invalid parameter name: ' + key)
-        cls.default_params = new_params
+            else:
+                cls.default_params[key] = new_params[key]
 
     def __init__(self, animal_info):
         self.age = animal_info['age']
