@@ -57,10 +57,7 @@ class Animals:
         Int
             with number of years
         """
-        if self.age < 0:
-            self.death()
-        else:
-            self.age += 1
+        self.age += 1
 
 
 
@@ -142,7 +139,6 @@ class Animals:
             New weight of animal
         """
         self.weight += self.default_params["beta"] * fodder
-        return self.weight
 
 
     def death(self):

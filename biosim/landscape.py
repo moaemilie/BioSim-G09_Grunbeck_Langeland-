@@ -57,6 +57,7 @@ class Landscape:
         """
         return len(self.herb_pop)
 
+
     def get_num_carn(self):
         """
         Counts how many carnivores its in the population.
@@ -179,6 +180,7 @@ class Landscape:
 
     def death(self):
         """
+        Uppdates the populations with the animals that survive.
 
         """
 
@@ -187,10 +189,12 @@ class Landscape:
 
         self.herb_pop = survivors(self.herb_pop)
         self.carn_pop = survivors(self.carn_pop)
-        return self.herb_pop, self.carn_pop
 
 
     def add_immigrants(self):
+        """
+        adds immigrants to the two populations
+        """
         self.herb_pop.extend(self.herb_immigrants)
         self.carn_pop.extend(self.carn_immigrants)
         self.herb_immigrants = []
@@ -198,6 +202,9 @@ class Landscape:
 
 
     def add_animals(self, new_herbs=None, new_carns=None):
+        """
+        Adds new animals to the two populations.
+        """
         if new_herbs is None:
             new_herbs = []
         elif new_carns is None:
