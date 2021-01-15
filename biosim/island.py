@@ -40,7 +40,6 @@ class Island:
         List
                 2D list with the landscape classes for every cell.
         """
-        #self.island_map = self.island_map.split('\n')
         self.island_map = [list(line) for line in self.island_map.split('\n')]
 
         for string in self.island_map:
@@ -56,21 +55,10 @@ class Island:
 
         self.island_map = [[landscapes[string]([], []) for string in line] for line in self.island_map]
 
-        return self.island_map
-
-    def find_num_row_col(self):
-        """
-
-        Calculates the number of columns and rows in the created map.
-
-        Returns
-        -------
-        int, int
-                number of rows, number of columns
-        """
         self.map_rows = len(self.island_map)
         self.map_columns = len(self.island_map[0])
-        return self.map_rows, self.map_columns
+
+        return self.island_map
 
     def add_animals(self, coordinates, new_herbs=None, new_carns=None):
         if new_herbs is None:
@@ -87,7 +75,6 @@ class Island:
 
         origin_cell = self.island_map[x_coord][y_coord]
         origin_cell.add_animals(new_herbs, new_carns)
-        #origin_cell.add_animals(new_carns)
 
     def get_num_herb(self):
         return sum([sum([self.island_map[row][col].get_num_herb() for col in range(self.map_columns)])
