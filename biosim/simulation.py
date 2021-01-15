@@ -12,6 +12,7 @@ from biosim.landscape import Desert
 from biosim.landscape import Water
 import random
 
+
 class BioSim:
     def __init__(self, island_map, ini_pop, seed):
         self.coordinates = ini_pop[0]['loc']
@@ -23,7 +24,7 @@ class BioSim:
 
     @staticmethod
     def set_landscape_parameters(land_type, new_f_max):
-        Island.set_landscape_parameters(new_f_max)
+        Island.set_landscape_parameters(land_type,new_f_max)
 
     @staticmethod
     def set_animal_parameters(animal_type, new_params):
@@ -31,25 +32,15 @@ class BioSim:
 
     def simulate(self, num_years, vis_years):
 
-        island = Island(self.island_map)
+        island = Island(self.sim_island)
         island.make_map()
         if self.pop['species'] == 'Herbivore':
-            island.add_animals(self.coordinates, num_herb = self.pop, num_carn = None)
+            island.add_animals(self.coordinates, self.pop, None)
         else:
-            island.add_animals(self.coordinates, num_herb = None, num_carn = self.pop)
+            island.add_animals(self.coordinates, None, self.pop)
 
     def add_population(self, population):
         if population['species'] == 'Herbivore':
-            self.sim_island.add_animals(population[0]['loc'], num_herb = population[0]['pop'], num_carn = None)
+            self.sim_island.add_animals(population[0]['loc'], population[0]['pop'], None)
         else:
-            self.sim_island.add_animals(population[0]['loc'], num_herb = None, num_carn = population[0]['pop'])
-
-
-
-
-
-
-
-
-
-
+            self.sim_island.add_animals(population[0]['loc'], None, population[0]['pop'])
