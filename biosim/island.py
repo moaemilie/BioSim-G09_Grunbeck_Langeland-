@@ -60,7 +60,6 @@ class Island:
 
         return self.island_map
 
-
     def add_animals(self, coordinates, new_herbs=None, new_carns=None):
         if new_herbs is None:
             new_herbs = []
@@ -69,7 +68,7 @@ class Island:
         x_coord = coordinates[0] - 1
         y_coord = coordinates[1] - 1
         if 0 >= y_coord >= self.map_rows or 0 >= x_coord >= self.map_columns:
-            raise ValueError(f'Coordinate out of range {coordinates}')
+            raise IndexError(f'Coordinate out of range {coordinates}')
 
         if isinstance(self.island_map[x_coord][y_coord], Water):
             raise ValueError(f'Can not place animals in water {coordinates}')
@@ -77,16 +76,13 @@ class Island:
         origin_cell = self.island_map[x_coord][y_coord]
         origin_cell.add_animals(new_herbs, new_carns)
 
-
     def get_num_herb(self):
         return sum([sum([self.island_map[row][col].get_num_herb() for col in range(self.map_columns)])
                     for row in range(self.map_rows)])
 
-
     def get_num_carn(self):
         return sum([sum([self.island_map[row][col].get_num_carn() for col in range(self.map_columns)])
                     for row in range(self.map_rows)])
-
 
     def aging(self):
         for row in range(self.map_rows):
@@ -151,11 +147,11 @@ class Island:
                     dictionary with the neighbouring cells.
             """
 
-            #edges_rows = [(pos, self.map_rows - 1) for pos in range(self.map_rows)] + [(pos, 0) for pos in range(self.map_rows)]
-            #edges_columns = [(0, pos) for pos in range(self.map_columns)] + [(self.map_columns-1, pos) for pos in range(self.map_columns)]
-            #edges = edges_rows + edges_columns
+            # edges_rows = [(pos, self.map_rows - 1) for pos in range(self.map_rows)] + [(pos, 0) for pos in range(self.map_rows)]
+            # edges_columns = [(0, pos) for pos in range(self.map_columns)] + [(self.map_columns-1, pos) for pos in range(self.map_columns)]
+            # edges = edges_rows + edges_columns
 
-            #if (coord_1, coord_2) not in edges:
+            # if (coord_1, coord_2) not in edges:
             return {'left': self.island_map[coord_1][coord_2 + 1], 'right': self.island_map[coord_1][coord_2 - 1],
                     'up': self.island_map[coord_1 + 1][coord_2], 'down': self.island_map[coord_1 - 1][coord_2]}
 
@@ -197,5 +193,3 @@ class Island:
             for col in range(self.map_columns):
                 self.island_map[row][col].add_immigrants()
         return self.island_map
-
-

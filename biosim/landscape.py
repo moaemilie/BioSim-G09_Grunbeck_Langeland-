@@ -168,7 +168,6 @@ class Landscape:
         self.carn_pop = sort_pop(self.carn_pop, reverse=True)
 
         for carn in self.carn_pop:
-            if
             dead_herb = []
             for herb in self.herb_pop:
                 if carn.kill(herb.fit) and herb.weight > 0:
