@@ -89,7 +89,7 @@ class Landscape:
         for herb, carn in zip(self.herb_pop, self.carn_pop):
             herb.weightloss()
             carn.weightloss()
-        return self.herb_pop, self.carn_pop
+
 
 
     def fitness(self):
@@ -104,7 +104,7 @@ class Landscape:
             for herb, carn in zip(self.herb_pop, self.carn_pop):
                 herb.fitness()
                 carn.fitness()
-            return self.herb_pop, self.carn_pop
+
 
     def birth(self):
         """
@@ -128,7 +128,7 @@ class Landscape:
 
         self.herb_pop.extend(herb_newborns(self.herb_pop))
         self.carn_pop.extend(carn_newborns(self.carn_pop))
-        return self.herb_pop, self.carn_pop
+
 
     def feeding(self):
         """
@@ -143,6 +143,8 @@ class Landscape:
         self.set_f_max(self.default_f_max)
 
         for herb in self.herb_pop:
+            if self.default_f_max['f_max'] == 0:
+                break
             if herb.weight > 0:
                 if self.default_f_max['f_max'] >= herb.default_params["F"]:
                     herb.eating(herb.default_params["F"])
@@ -150,6 +152,7 @@ class Landscape:
                 elif self.default_f_max['f_max'] < herb.default_params["F"] and self.default_f_max['f_max'] != 0:
                     herb.fodder = self.default_f_max['f_max']
                     herb.eating(self.default_f_max['f_max'])
+                    self.default_f_max['f_max'] = 0
                 herb.fitness()
 
         def sort_pop(pop, reverse=False):
@@ -165,13 +168,14 @@ class Landscape:
         self.carn_pop = sort_pop(self.carn_pop, reverse=True)
 
         for carn in self.carn_pop:
+            if
+            dead_herb = []
             for herb in self.herb_pop:
                 if carn.kill(herb.fit) and herb.weight > 0:
                     carn.eating(herb.weight)
-                    herb.weight = 0
+                    dead_herb.append(herb)
                     carn.fitness()
-
-        return self.herb_pop, self.carn_pop
+            self.herb_pop = [herbo for herbo in self.herb_pop if herbo not in dead_herb]
 
     def death(self):
         """
@@ -200,7 +204,7 @@ class Landscape:
             new_carns = []
         self.herb_pop.extend([Herbivore(new_herbs[animal]) for animal in range(len(new_herbs))])
         self.carn_pop.extend([Carnivore(new_carns[animal]) for animal in range(len(new_carns))])
-        return self.herb_pop, self.carn_pop
+
 
 class Lowland(Landscape):
     default_f_max = {'f_max': 800}
@@ -228,3 +232,13 @@ class Water(Landscape):
 
     def __init__(self, ini_herbs, ini_carns):
         super().__init__(ini_herbs, ini_carns)
+
+
+if __name__ == "__main__":
+    new_herbs = [{'age': 10, 'weight': 50} for _ in range(10)]
+
+    L = Lowland(ini_herbs=new_herbs, ini_carns=None)
+    print(len(L.herb_pop))
+    for _ in range(100):
+        L.birth()
+    print(len(L.herb_pop))
