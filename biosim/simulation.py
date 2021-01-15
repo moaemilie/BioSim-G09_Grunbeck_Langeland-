@@ -10,12 +10,14 @@ from biosim.landscape import Lowland
 from biosim.landscape import Highland
 from biosim.landscape import Desert
 from biosim.landscape import Water
+import random
 
 class BioSim:
-    def __init__(self, island_map, ini_pop):
+    def __init__(self, island_map, ini_pop, seed):
         self.island_map = island_map
         self.coordinates = ini_pop[0]['loc']
         self.pop = ini_pop[0]['pop']
+        random.seed(seed)
 
     @staticmethod
     def set_landscape_parameters(land_type, new_f_max):
