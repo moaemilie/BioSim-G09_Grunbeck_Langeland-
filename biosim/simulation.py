@@ -21,7 +21,10 @@ class BioSim:
 
     @staticmethod
     def set_landscape_parameters(land_type, new_f_max):
-        Island.set_landscape_parameters(land_type, new_f_max)
+        Island.set_landscape_parameters(new_f_max)
+
+    def set_animal_parameters(self, animal_type, new_params):
+        Island.set_animal_parameters(animal_type, new_params)
 
     def simulate(self, num_years, vis_years):
 
@@ -37,7 +40,7 @@ class BioSim:
         #add_animals
 
 
-    def set_animal_parameters(self, dict):
+
 
 
 

@@ -37,6 +37,11 @@ class Landscape:
         self.herb_immigrants = []
         self.carn_immigrants = []
 
+    @staticmethod
+    def set_animal_parameters(animal_type, new_params):
+        animals = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
+        animals[animal_type].set_params(new_params)
+
     def get_num_herb(self):
         """
        Counts how many herbivores its in the population.

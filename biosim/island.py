@@ -5,6 +5,7 @@
 
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
+from biosim.landscape import Landscape
 from biosim.landscape import Lowland
 from biosim.landscape import Highland
 from biosim.landscape import Desert
@@ -20,6 +21,15 @@ class Island:
         self.island_map = island_map
         self.map_rows = None
         self.map_columns = None
+
+    @staticmethod
+    def set_landscape_parameters(land_type, new_f_max):
+        landscapes = {'L': Lowland, 'H': Highland}
+        landscapes[land_type].set_f_max(new_f_max)
+
+    @staticmethod
+    def set_animal_parameters(animal_type, new_params):
+        Landscape.set_animal_parameters(animal_type, new_params)
 
     def make_map(self):
         """
@@ -61,10 +71,6 @@ class Island:
         self.map_rows = len(self.island_map)
         self.map_columns = len(self.island_map[0])
         return self.map_rows, self.map_columns
-
-    def set_landscape_parameters(self, land_type, new_f_max):
-        landscapes = {'L': Lowland, 'H': Highland}
-        landscapes[land_type].set_f_max(new_f_max)
 
     def add_animals(self, coordinates, new_herbs=None, new_carns=None):
         if new_herbs is None:
