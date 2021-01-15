@@ -57,7 +57,10 @@ class Animals:
         Int
             with number of years
         """
-        self.age += 1
+        if self.age < 0:
+            self.death()
+        else:
+            self.age += 1
 
 
 
@@ -70,8 +73,11 @@ class Animals:
         Int
             with weight for the animal
         """
-        self.weight -= self.weight * self.default_params["eta"]
-        return self.weight
+        if self.weight <= 0:
+            self.death()
+        else:
+            self.weight -= self.weight * self.default_params["eta"]
+
 
 
     def fitness(self):
@@ -148,7 +154,7 @@ class Animals:
         Bool
                 True if animal dies
         """
-        if self.weight <= 0:
+        if self.weight <= 0 or self.age < 0:
             p_death = 1
         else:
             p_death = (self.default_params["omega"] * (1 - self.fit))
