@@ -162,14 +162,31 @@ def test_feeding_little_food():
 
     new_f_max = {'f_max': 50}
     landscape.set_f_max(new_f_max)
-    new_params = {'w_birth': 8, 'sigma_birth': 1.5, 'beta': 0.9, 'eta': 0.05, 'a_half': 40,
-                      'phi_age': 0.6, 'w_half': 10, 'phi_weight': 0.1, 'mu': 0.25, 'gamma': 0.2,
-                      'zeta': 3.5, 'xi': 1.2, 'omega': 0.4, 'F': 100, 'DeltaPhiMax': None}
+    new_params = {'F': 100}
     sheep.set_params(new_params)
 
     landscape.feeding()
 
     assert sheep.fodder == landscape.default_f_max['f_max']
+
+
+def test_no_food_left():
+    """
+    Test that if an animal eats the rest of the food its nothing left
+    """
+    animal_info = [{'age': 5, 'weight': 6}]
+
+    landscape = Highland(animal_info, [])
+    sheep = landscape.herb_pop[0]
+
+    new_f_max = {'f_max': 50}
+    landscape.set_f_max(new_f_max)
+    new_params = {'F': 100}
+    sheep.set_params(new_params)
+
+    landscape.feeding()
+
+    assert landscape.default_f_max['f_max'] == 0
 
 
 def test_feeding_to_much_food():
@@ -238,7 +255,7 @@ def test_carn_feeding_sorting():
 
 def test_carn_weight_zero():
     """
-    Test that the herbivore doesnt die if the herbivore weight is zero.
+    Test that the herbivore doesnt die if the carnevore weight is zero.
     """
     herb_info = [{'age': 1, 'weight': 1}]
     carn_info = [{'age': 5, 'weight': 0}]
@@ -253,19 +270,36 @@ def test_carn_weight_zero():
 
 def test_carn_kill(mocker):
     """
-    Test that the herbivores weight is zero if rge carnivore eats it.
+    Test that if a carnevore kills a herbevore that the herbevore is removed from the population
     """
     herb_info = [{'age': 1, 'weight': 1}]
-    carn_info = [{'age': 10, 'weight': 10}]
+    carn_info = [{'age': 30, 'weight': 30}]
 
     landscape = Highland(herb_info, carn_info)
 
     mocker.patch('biosim.animals.Carnivore.kill', True)
 
     landscape.feeding()
-    sheep = landscape.herb_pop[0]
 
-    assert sheep.weight == 0
+    assert len(landscape.herb_pop)
+
+
+def test_carn_gain_weight(mocker):
+    """
+    Test that the carnivore gains the correct weight after eating a herbivore
+    """
+    herb_info = [{'age': 1, 'weight': 1}]
+    carn_info = [{'age': 30, 'weight': 30}]
+
+    landscape = Highland(herb_info, carn_info)
+
+    mocker.patch('biosim.animals.Carnivore.kill', True)
+
+    wolf = landscape.carn_pop[0]
+
+    landscape.feeding()
+
+    assert wolf.weight == 30 + wolf.default_params["beta"] * 1
 
 
 def test_herb_death():
