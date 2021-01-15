@@ -184,9 +184,7 @@ def test_feeding_to_much_food():
     new_f_max = {'f_max': 500}
     landscape.set_f_max(new_f_max)
 
-    new_params = {'w_birth': 8, 'sigma_birth': 1.5, 'beta': 0.9, 'eta': 0.05, 'a_half': 40,
-                  'phi_age': 0.6, 'w_half': 10, 'phi_weight': 0.1, 'mu': 0.25, 'gamma': 0.2,
-                  'zeta': 3.5, 'xi': 1.2, 'omega': 0.4, 'F': 100, 'DeltaPhiMax': None}
+    new_params = {'F': 100}
     sheep.set_params(new_params)
 
     landscape.feeding()
@@ -253,7 +251,7 @@ def test_carn_weight_zero():
     assert sheep.weight != 0
 
 
-def test_carn_kill():
+def test_carn_kill(mocker):
     """
     Test that the herbivore doesnt die if the herbivore weight is zero.
     """
@@ -261,10 +259,9 @@ def test_carn_kill():
     carn_info = [{'age': 10, 'weight': 10}]
 
     landscape = Highland(herb_info, carn_info)
-    sheep = landscape.herb_pop[0]
-    wolf = landscape.carn_pop[0]
 
-    pytest_mock(wolf.kill, True)
+    mocker.patch('biosim.animals.Carnivore.kill', 'return', True)
+
     landscape.feeding()
 
     assert sheep.weight == 0
@@ -304,4 +301,4 @@ def test_carn_death():
     assert num_carn_before > num_carn_after
 
 
-def test_birth
+#def test_birth

@@ -26,8 +26,8 @@ def test_set_parameters():
                       'phi_age': 1, 'w_half': 1, 'phi_weight': 1, 'mu': 1, 'gamma': 1,
                       'zeta': 1, 'xi': 1, 'omega': 1, 'F': 1, 'DeltaPhiMax': 1}
 
-    Animals.set_params(new_params)
-    assert Animals.default_params == new_params
+    Herbivore.set_params(new_params)
+    assert Herbivore.default_params == new_params
 
 
 def test_set_wrong_parameters():
@@ -39,7 +39,7 @@ def test_set_wrong_parameters():
                       'zeta': 1, 'xi': 1, 'omega': 1, 'F': 1, 'My': 1}
 
     with pytest.raises(KeyError):
-        Animals.set_params(new_params)
+        Herbivore.set_params(new_params)
 
 
 def test_new_params():
