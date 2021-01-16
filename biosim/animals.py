@@ -39,7 +39,6 @@ class Animals:
         self.weight = animal_info['weight']
         self.fit = self.fitness()
         self.babyweight = None
-        self.fodder = None
 
     def aging(self):
         """
@@ -49,7 +48,7 @@ class Animals:
 
     def weightloss(self):
         """
-        Updates the weight of the animal.
+        Looses a little of the weight of the animal.
         """
         if self.weight <= 0:
             self.death()
@@ -58,7 +57,12 @@ class Animals:
 
     def fitness(self):
         """
-        Calculates the fitness of an animal.
+        Calculates the fitness for every animal in the population.
+
+        Returns
+        -------
+        Float
+        with new fitness between 0 and 1
         """
         if self.weight <= 0:
             self.fit = 0
@@ -67,6 +71,7 @@ class Animals:
                     1 + math.exp(self.default_params["phi_age"] * (self.age - self.default_params["a_half"]))) *
                         (1 / (1 + math.exp((-self.default_params["phi_weight"]) *
                                            (self.weight - self.default_params["w_half"])))))
+        return self.fit
 
     def birth(self, n):
         """
@@ -166,7 +171,7 @@ class Carnivore(Animals):
         Bool
                 True if carnivore can kill.
         """
-        if fit_herb >= self.fit or self.weight <= 0:
+        if fit_herb >= self.fit or round(self.weight) <= 0:
             p_kill = 0
         elif 0 < self.fit - fit_herb < self.default_params["DeltaPhiMax"]:
             p_kill = (self.fit - fit_herb) / (self.default_params["DeltaPhiMax"])
