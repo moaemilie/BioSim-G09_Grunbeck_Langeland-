@@ -103,7 +103,41 @@ def test_aging(new_island, population):
     new_island.aging()
     assert (new_island.island_map[1][1].herb_pop[0].age, new_island.island_map[1][1].carn_pop[0].age) == (6, 6)
 
+def test_weightloss(new_island, population):
+    new_island.add_animals((2, 2), population[0], population[1])
+    new_island.weightloss()
+    herb_eta = new_island.island_map[1][1].herb_pop[0].default_params['eta']
+    carn_eta = new_island.island_map[1][1].carn_pop[0].default_params['eta']
+    expected = (20-(20*herb_eta), 20-(20*carn_eta))
+    assert (new_island.island_map[1][1].herb_pop[0].weight, new_island.island_map[1][1].carn_pop[0].weight) == expected
 
+#def test_fitness(new_island, population):
+#    new_island.add_animals((2, 2), population[0], population[1])
+#    new_island.fitness()
+#    assert
+
+def test_birth(new_island, population, mocker):
+    new_island.add_animals((2, 2), population[0], population[1])
+
+    def mock_birth(self, n):
+        return True
+
+    mocker.patch('biosim.animals.Herbivore.birth', mock_birth)
+    mocker.patch('biosim.animals.Carnivore.birth', mock_birth)
+    new_island.birth()
+
+    assert (new_island[1][1].get_num_herb + 1, new_island[1][1].get_num_carn + 1) == (2, 2)
+
+
+def feeding(new_island, population):
+    new_island.add_animals((2, 2), population[0], population[1])
+    new_island.feeding()
+    assert
+
+def death(new_island, population):
+    new_island.add_animals((2, 2), population[0], population[1])
+    new_island.feeding()
+    assert
 
 
 # def test_move(new_island):
