@@ -196,8 +196,9 @@ def test_birth_p1(mocker):
     carn_info = [{'age': 10, 'weight': 10}]
 
     landscape = Highland(herb_info, carn_info)
-
+    sheep = landscape.herb_pop[0]
     mocker.patch('biosim.animals.Herbivore.birth', ReturnValue = True)
+    sheep.babyweight = 9
 
     landscape.birth()
 
