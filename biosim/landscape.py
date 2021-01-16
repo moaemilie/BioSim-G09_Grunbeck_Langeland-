@@ -177,7 +177,7 @@ class Landscape:
 
     def death(self):
         """
-        Uppdates the populations with the animals that survive.
+        Updates the populations with the animals that survive.
 
         """
 
@@ -186,6 +186,19 @@ class Landscape:
 
         self.herb_pop = survivors(self.herb_pop)
         self.carn_pop = survivors(self.carn_pop)
+
+
+    def move_landscape(self):
+        """
+        Decides if the landscape is water.
+
+        Returns
+        -------
+        Bool
+                True if landscape is not water.
+        """
+        return not isinstance(self, Water)
+
 
 
     def add_immigrants(self):

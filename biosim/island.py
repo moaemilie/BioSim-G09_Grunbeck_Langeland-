@@ -173,7 +173,7 @@ class Island:
             stay = []
             for animal in pop:
                 chosen_neighbor = neighbors[random.choice(('left', 'right', 'up', 'down'))]
-                if isinstance(chosen_neighbor, Water) or animal.move_animal() is False:
+                if chosen_neighbor.move_landscape() is False or animal.move_animal() is False:
                     stay.append(animal)
                 elif isinstance(animal, Herbivore):
                     chosen_neighbor.herb_immigrants.append(animal)
