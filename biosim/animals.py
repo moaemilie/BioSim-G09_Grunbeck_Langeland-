@@ -24,7 +24,7 @@ class Animals:
         Parameters
         ----------
         new_params: dict
-            New parametres
+            New parameters
 
         Returns
         -------
@@ -93,9 +93,9 @@ class Animals:
         """
         Decides if a new animal should be added to the simulation.
 
-        Input
+        Parameters
         -------
-        int
+        n: int
                 with probability of birth
 
         Returns
@@ -181,9 +181,9 @@ class Carnivore(Animals):
         """
         Tests if the carnivore can kill a herbivore.
 
-        Input
+        Parameters
         -------
-        int
+        fit_herb: int
                 fitness of a herbivore
 
         Returns
