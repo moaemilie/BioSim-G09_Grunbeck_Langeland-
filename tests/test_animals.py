@@ -119,9 +119,23 @@ def test_birth_p1(mocker):
 
 def test_birth_t_test(mocker):
     """
-    Using a one sample t-test to see if the birth mean is statisticaly different from a known mean.
+    Using a one sample t-test to see if the pobability of geting anything else than 0.5 when sat p = 0.5 is very low.
     """
-    stats.ttest_1samp(TestSample1, popmean=0)
+
+    n = 100
+    TestSample1 = []
+    alpa = 0.05
+    sheeps = [Herbivore({'age':5,'weight':10}) for _ in range(n)]
+    for round in range(100):
+        for sheep in sheeps:
+            mocker.patch('biosim.animals.Carnivore.fitness', ReturnValue=0.5/((n-1)*0.2))
+            if sheep.birth(n) == True:
+                TestSample1.append(1)
+            else:
+                TestSample1.append(0)
+    result = stats.ttest_1samp(TestSample1, 0.5)
+    pvalue = result[1]
+    assert pvalue < alpa
 
 
 def test_eating():
