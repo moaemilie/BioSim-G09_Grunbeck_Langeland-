@@ -62,14 +62,6 @@ def test_new_params():
     assert not new_fitness == default_fitness
 
 
-def test_animal_fitness():
-    """
-    Tests that the fitness always lies between 0 and 1
-    """
-    sheep = Herbivore({'age':4,'weight':30})
-    assert sheep.fitness() >= 0 and sheep.fitness() <= 1
-
-
 def test_animal_aging():
     """
     Tests that the aging function counts correctly
@@ -90,6 +82,113 @@ def test_weightloss():
     delta_weight = 30 * sheep.default_params['eta']
     animal_weight = 30
     assert sheep.weightloss() == animal_weight - delta_weight
+
+
+def test_animal_fitness():
+    """
+    Tests that the fitness always lies between 0 and 1
+    """
+    sheep = Herbivore({'age':4,'weight':30})
+    assert sheep.fitness() >= 0 and sheep.fitness() <= 1
+
+
+def test_low_animalweight_birth():
+    """
+    Test that the birth function return False if the animal weight it lower than the babyweight.
+    """
+    sheep = Herbivore({'age': 20,'weight': 1})
+    assert not sheep.birth(10)
+
+
+def test_birth_p0():
+    """
+    Test that the birth function returns False when there is only one animal. (propability of birth = 0).
+    """
+    sheep = Herbivore({'age': 10, 'weight': 30})
+    assert not sheep.birth(1)
+
+
+def test_birth_p1(mocker):
+    """
+    Test if the function birth() with a probability 1 always return True.
+    """
+    sheep = Herbivore({'age': 5, 'weight': 50})
+    mocker.patch('biosim.animals.Carnivore.fitness', ReturnValue=0.1)
+    assert sheep.birth(100)
+
+
+def test_birth_t_test(mocker):
+    """
+    Using a one sample t-test to see if the pobability of geting anything else than 0.5 when sat p = 0.5 is very low.
+    """
+
+    n = 100
+    TestSample1 = []
+    alpa = 0.05
+    sheeps = [Herbivore({'age':5,'weight':10}) for _ in range(n)]
+    for round in range(100):
+        for sheep in sheeps:
+            mocker.patch('biosim.animals.Carnivore.fitness', ReturnValue=0.5/((n-1)*0.2))
+            if sheep.birth(n) == True:
+                TestSample1.append(1)
+            else:
+                TestSample1.append(0)
+    result = stats.ttest_1samp(TestSample1, 0.5)
+    pvalue = result[1]
+    assert pvalue < alpa
+
+
+def test_eating():
+    """
+    Tests that the eating function works as exspected.
+    """
+    sheep = Herbivore({'age':0,'weight':30})
+    F_line = 2
+    delta_eating = 2 * sheep.default_params['eta']
+    new_weight = sheep.weight + delta_eating
+    assert new_weight == sheep.eating(F_line)
+
+
+def test_kill_p0():
+    """
+    Test that herbivore does not get killed if fitness is higher than the fitness of the carnivore
+    """
+    wolf = Carnivore({'age':5,'weight':10})
+    sheep = Herbivore({'age':5,'weight':10})
+    sheep.fitness()
+    assert not wolf.kill(sheep.fit)
+
+
+def test_kill_p1():
+    """
+    Test that if p=1 that the function always returns true.
+    """
+    wolf = Carnivore({'age':5,'weight':10})
+    sheep = Herbivore({'age':5,'weight':1})
+
+    new_params = {'w_birth': 6, 'sigma_birth': 1, 'beta': 0.75, 'eta': 0.125, 'a_half': 40,
+                      'phi_age': 0.3, 'w_half': 4, 'phi_weight': 0.4, 'mu': 0.4, 'gamma': 0.8,
+                      'zeta': 3.5, 'xi': 1.1, 'omega': 0.8, 'F': 50, 'DeltaPhiMax': 0.5}
+    wolf.set_params(new_params)
+
+    sheep.fitness()
+    assert wolf.kill(sheep.fit)
+
+
+def test_kill_when_zero_weight():
+    """
+    Test that if the carenvores weight is zero the kill function wil return False.
+    """
+    wolf = Carnivore({'age': 20, 'weight': 0})
+    assert not wolf.kill(0.5)
+
+
+def test_kill_when_negative_weight():
+    """
+    Test that if the carenvores weight is zero the kill function wil return False.
+    """
+    wolf = Carnivore({'age': 20, 'weight': -5})
+    assert not wolf.kill(0.5)
 
 
 def test_death_distribution():
@@ -134,98 +233,5 @@ def test_death_certain():
     for _ in range(100):
         assert sheep.death()
 
-
-def test_eating():
-    """
-    Tests that the eating function works as exspected.
-    """
-    sheep = Herbivore({'age':0,'weight':30})
-    F_line = 2
-    delta_eating = 2 * sheep.default_params['eta']
-    new_weight = sheep.weight + delta_eating
-    assert new_weight == sheep.eating(F_line)
-
-
-def test_low_animalweight_birth():
-    """
-    Test that the birth function return False if the animal weight it lower than the babyweight.
-    """
-    sheep = Herbivore({'age': 20,'weight': 1})
-    assert not sheep.birth(10)
-
-
-def test_birth_p0():
-    """
-    Test that the birth function returns False when there is only one animal. (propability of birth = 0).
-    """
-    sheep = Herbivore({'age': 10, 'weight': 30})
-    assert not sheep.birth(1)
-
-
-def test_birth_p1(mocker):
-    """
-    Test if the function birth() with a probability 1 always return True.
-    """
-    sheep = Herbivore({'age': 5, 'weight': 50})
-    mocker.patch('biosim.animals.Carnivore.fitness', ReturnValue=0.1)
-    assert sheep.birth(100)
-
-
-def test_birth_p0_5(mocker):
-    """
-    Test that the birth function return True half the time
-    """
-    n = 100
-    counter = 0
-    list_counter = []
-    sheeps = [Herbivore({'age':5,'weight':10}) for _ in range(n)]
-    for round in range(100):
-        counter = 0
-        for sheep in sheeps:
-            mocker.patch('biosim.animals.Carnivore.fitness', ReturnValue=0.5/((n-1)*0.2))
-            counter += sheep.birth(n)
-        list_counter.append(counter)
-
-
-def test_kill_p0():
-    """
-    Test that herbivore does not get killed if fitness is higher than the fitness of the carnivore
-    """
-    wolf = Carnivore({'age':5,'weight':10})
-    sheep = Herbivore({'age':5,'weight':10})
-    sheep.fitness()
-    assert not wolf.kill(sheep.fit)
-
-
-def test_kill_p1():
-    """
-    Test that if p=1 that the function always returns true.
-    """
-    wolf = Carnivore({'age':5,'weight':10})
-    sheep = Herbivore({'age':5,'weight':1})
-
-    new_params = {'w_birth': 6, 'sigma_birth': 1, 'beta': 0.75, 'eta': 0.125, 'a_half': 40,
-                      'phi_age': 0.3, 'w_half': 4, 'phi_weight': 0.4, 'mu': 0.4, 'gamma': 0.8,
-                      'zeta': 3.5, 'xi': 1.1, 'omega': 0.8, 'F': 50, 'DeltaPhiMax': 0.5}
-    wolf.set_params(new_params)
-
-    sheep.fitness()
-    assert wolf.kill(sheep.fit)
-
-
-def test_kill_when_zero_weight():
-    """
-    Test that if the carenvores weight is zero the kill function wil return False.
-    """
-    wolf = Carnivore({'age': 20, 'weight': 0})
-    assert not wolf.kill(0.5)
-
-
-def test_kill_when_negative_weight():
-    """
-    Test that if the carenvores weight is zero the kill function wil return False.
-    """
-    wolf = Carnivore({'age': 20, 'weight': -5})
-    assert not wolf.kill(0.5)
 
 
