@@ -217,3 +217,46 @@ def test_move_in_chosen_direction(new_island, population, mocker):
     num_on_island = new_island.get_num_herb() + new_island.get_num_carn()
 
     assert num_in_cell_pre_move == 0, num_in_cell_post_move == 2
+
+
+def test_animal_not_move_to_water():
+geogr = """\
+           WWW
+           WHW
+           WWW"""
+geogr = textwrap.dedent(geogr)
+new_island = Island(geogr)
+print(new_island.island_map)
+new_island.make_map()
+
+new_island.add_animals((2,2), [{'species': 'Herbivore', 'age': 5, 'weight': 20}], [{'species': 'Carnivore', 'age': 5, 'weight': 20}] )
+
+
+cell = new_island.island_map[1][1]
+for year in range(10):
+    new_island.move()
+    assert (len(cell.herb_pop)) == 1
+
+
+def test_move_animal():
+
+
+    geogr = """\
+               WWW
+               WHW
+               WWW"""
+    geogr = textwrap.dedent(geogr)
+    new_island = Island(geogr)
+    print(new_island.island_map)
+    new_island.make_map()
+
+    new_island.add_animals((2,2), [{'species': 'Herbivore', 'age': 5, 'weight': 20}], [{'species': 'Carnivore', 'age': 5, 'weight': 20}] )
+
+    counter = 0
+    years = 10
+
+    for year in range(years):
+        new_island.move()
+            counter += 1
+
+    assert counter ==
