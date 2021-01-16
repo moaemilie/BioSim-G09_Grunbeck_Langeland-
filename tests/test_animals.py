@@ -218,7 +218,7 @@ def test_death_distribution():
 
 def test_weight_loss_death():
     """
-    Test that if the the weight loss makes the weight is bellow zero that the animal dies.
+    Test that the animal dies if the weight loss makes the weight go bellow zero.
     """
     sheep = Herbivore({'age':30,'weight':0})
     sheep.weightloss()
@@ -232,6 +232,17 @@ def test_death_certain():
     sheep = Herbivore({'age': 4,'weight': 0})
     for _ in range(100):
         assert sheep.death()
+
+
+def test_move_animal():
+    """
+    Test that the animal moves if the the formula for p_move equals 1.
+    """
+    sheep = Herbivore({'age': 4,'weight': 10})
+    sheep.fit = 0.5
+    sheep.set_params({'mu': (1/sheep.fit)}
+    assert sheep.move_animal()
+
 
 
 
