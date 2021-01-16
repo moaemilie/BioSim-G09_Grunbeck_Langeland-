@@ -186,6 +186,24 @@ def test_birth():
     assert n_herbs < n_herbs_afther and n_carns < n_carns_afther
 
 
+def test_birth_p1(mocker):
+    """
+    Test that there wil be added an animal if its 100% likely that birth function in animal returns True.
+    """
+
+
+    herb_info = [{'age': 20, 'weight': 50}]
+    carn_info = [{'age': 10, 'weight': 10}]
+
+    landscape = Highland(herb_info, carn_info)
+
+    mocker.patch('biosim.animals.Herbivore.birth', ReturnValue = True)
+
+    landscape.birth()
+
+    assert len(landscape.herb_pop) == 2
+
+
 def test_feeding_herb_no_weight():
     """
     Test that a herbivore does not eat when his weight is 0 or less.
@@ -393,6 +411,26 @@ def test_carn_gain_weight(mocker):
     assert wolf.weight == 30 + wolf.default_params["beta"] * 1
 
 
+def test_carn_appetite(mocker):
+    """
+    Tests that the carnevore stops eating after its full.
+    """
+    herb_info = [{'age': 1, 'weight': 7}, {'age': 1, 'weight': 7}, {'age': 1, 'weight': 7}]
+    carn_info = [{'age': 30, 'weight': 30}]
+
+    landscape = Highland(herb_info, carn_info)
+
+    mocker.patch('biosim.animals.Carnivore.kill', ReturnValue=True)
+
+    wolf = landscape.carn_pop[0]
+
+    wolf.set_params({'F': 5})
+
+    landscape.feeding()
+
+    assert len(landscape.herb_pop) == 2
+
+
 def test_herb_death():
     """
     Test that the herbivores with zero weight and dies random is removed from the population
@@ -445,12 +483,13 @@ def test_immigants_added():
     assert len(landscape.herb_pop) == 1 and len(landscape.carn_pop) == 1
 
 
-def test_add_imigrants_default_value():
+def test_add_immigrants_default_value():
     """
     Test that you can sett nothing as innpult and the default value wil be used
     """
 
     landscape = Highland()
+
 
     landscape.herb_immigrants = [{'age': 30, 'weight': 30}]
     landscape.carn_immigrants = [{'age': 30, 'weight': 30}]
