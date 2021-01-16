@@ -47,7 +47,6 @@ class Animals:
         self.fodder = None
 
 
-
     def aging(self):
         """
         Adds one year every time its called.
@@ -58,7 +57,6 @@ class Animals:
             with number of years
         """
         self.age += 1
-
 
 
     def weightloss(self):
@@ -74,7 +72,6 @@ class Animals:
             self.death()
         else:
             self.weight -= self.weight * self.default_params["eta"]
-
 
 
     def fitness(self):
