@@ -18,12 +18,7 @@ class Landscape:
     @classmethod
     def set_f_max(cls, new_f_max):
         """
-        Sets new f_max parameter for Lowland and Highland.
-
-        Returns
-        -------
-        dict
-            f_max parameter for landscapes
+        Sets new f_max parameter.
         """
 
         for key in new_f_max:
@@ -70,19 +65,17 @@ class Landscape:
     def aging(self):
         """
         Adds a year for all animals in the population for every time its called.
-
-        Returns
-        -------
-        int
-            Number of years
         """
         for herb, carn in zip(self.herb_pop, self.carn_pop):
             herb.aging()
             carn.aging()
-        return self.herb_pop, self.carn_pop
+
 
 
     def weightloss(self):
+        """
+
+        """
         for herb, carn in zip(self.herb_pop, self.carn_pop):
             herb.weightloss()
             carn.weightloss()
@@ -90,27 +83,17 @@ class Landscape:
 
 
     def fitness(self):
-            """
-             Calculates the fitness for every animal in the population.
-
-             Returns
-             -------
-             Float
-                 with new fitness between 0 and 1
-             """
-            for herb, carn in zip(self.herb_pop, self.carn_pop):
-                herb.fitness()
-                carn.fitness()
+        """
+        Calculates the fitness for every animal in the population.
+        """
+        for herb, carn in zip(self.herb_pop, self.carn_pop):
+            herb.fitness()
+            carn.fitness()
 
 
     def birth(self):
         """
         Adds new animals to the population.
-
-        Returns
-        -------
-        list
-            Updated populations
         """
 
         def herb_newborns(pop):
@@ -129,14 +112,9 @@ class Landscape:
     def feeding(self):
         """
         Feeds herbivores and carnivores in a cell.
-
-        Returns
-        -------
-        list
-            Updated populations
         """
 
-        self.set_f_max(self.default_f_max)
+        self.set_f_max(self.default_f_max) # Feil! Blir satt til 0 hver gang hvis maten er 0.
 
         for herb in self.herb_pop:
             if self.default_f_max['f_max'] == 0:
@@ -146,7 +124,6 @@ class Landscape:
                     herb.eating(herb.default_params["F"])
                     self.default_f_max['f_max'] -= herb.default_params["F"]
                 elif self.default_f_max['f_max'] < herb.default_params["F"] and self.default_f_max['f_max'] != 0:
-                    herb.fodder = self.default_f_max['f_max']
                     herb.eating(self.default_f_max['f_max'])
                     self.default_f_max['f_max'] = 0
                 herb.fitness()
@@ -164,13 +141,13 @@ class Landscape:
         self.carn_pop = sort_pop(self.carn_pop, reverse=True)
 
         for carn in self.carn_pop:
-            carn.fooder = 0
+            carn_fodder = 0
             dead_herb = []
             for herb in self.herb_pop:
-                if carn.kill(herb.fit) and herb.weight > 0 and carn.fooder <= carn.default_params["F"]:
+                if carn.kill(herb.fit) and herb.weight > 0 and carn_fodder <= carn.default_params["F"]:
                     carn.eating(herb.weight)
                     dead_herb.append(herb)
-                    carn.fooder += herb.weight
+                    carn_fodder += herb.weight
                     carn.fitness()
             self.herb_pop = [herbo for herbo in self.herb_pop if herbo not in dead_herb]
 
