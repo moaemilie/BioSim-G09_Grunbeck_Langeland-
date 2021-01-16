@@ -157,7 +157,7 @@ class Animals:
                 True if animal moves
         """
         p_move = self.default_params['mu'] * self.fit
-        return random.random() < p_move
+        return random.random() <= p_move
 
 
 class Herbivore(Animals):

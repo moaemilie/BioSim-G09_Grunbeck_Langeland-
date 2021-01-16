@@ -466,6 +466,30 @@ def test_carn_death():
     assert num_carn_before > num_carn_after
 
 
+def test_move_not_water():
+    """
+    Test that move_landscape returns True if the landscape type is not water.
+    """
+    herb_info = [{'age': 1, 'weight': 10}, {'age': 1, 'weight': 50}]
+    carn_info = [{'age': 1, 'weight': 10}, {'age': 1, 'weight': 50}]
+
+    landscape = Highland(herb_info, carn_info)
+
+    assert landscape.move_landscape()
+
+
+def test_move_water():
+    """
+    Test that move_landscape returns False if the landscape type is water.
+    """
+    herb_info = [{'age': 1, 'weight': 10}, {'age': 1, 'weight': 50}]
+    carn_info = [{'age': 1, 'weight': 10}, {'age': 1, 'weight': 50}]
+
+    landscape = Water(herb_info, carn_info)
+
+    assert not landscape.move_landscape()
+
+
 def test_immigants_added():
     """
     Test that the immigrants are added to the population
