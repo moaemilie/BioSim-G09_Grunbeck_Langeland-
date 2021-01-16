@@ -220,22 +220,21 @@ def test_move_in_chosen_direction(new_island, population, mocker):
 
 
 def test_animal_not_move_to_water():
-geogr = """\
-           WWW
-           WHW
-           WWW"""
-geogr = textwrap.dedent(geogr)
-new_island = Island(geogr)
-print(new_island.island_map)
-new_island.make_map()
+    geogr = """\
+               WWW
+               WHW
+               WWW"""
+    geogr = textwrap.dedent(geogr)
+    new_island = Island(geogr)
+    new_island.make_map()
 
-new_island.add_animals((2,2), [{'species': 'Herbivore', 'age': 5, 'weight': 20}], [{'species': 'Carnivore', 'age': 5, 'weight': 20}] )
+    new_island.add_animals((2,2), [{'species': 'Herbivore', 'age': 5, 'weight': 20}], [{'species': 'Carnivore', 'age': 5, 'weight': 20}] )
 
 
-cell = new_island.island_map[1][1]
-for year in range(10):
-    new_island.move()
-    assert (len(cell.herb_pop)) == 1
+    cell = new_island.island_map[1][1]
+    for year in range(10):
+        new_island.move_island()
+        assert (len(cell.herb_pop)) == 1
 
 
 def test_move_animal():
@@ -247,7 +246,6 @@ def test_move_animal():
                WWW"""
     geogr = textwrap.dedent(geogr)
     new_island = Island(geogr)
-    print(new_island.island_map)
     new_island.make_map()
 
     new_island.add_animals((2,2), [{'species': 'Herbivore', 'age': 5, 'weight': 20}], [{'species': 'Carnivore', 'age': 5, 'weight': 20}] )
@@ -257,6 +255,6 @@ def test_move_animal():
 
     for year in range(years):
         new_island.move()
-            counter += 1
+        counter += 1
 
-    assert counter ==
+    assert counter == 1
