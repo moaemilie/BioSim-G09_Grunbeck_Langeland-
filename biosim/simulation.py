@@ -44,7 +44,7 @@ class BioSim:
             self.sim_island.birth()
             self.sim_island.feeding()
             self.sim_island.death()
-            self.sim_island.move()
+            self.sim_island.move_island()
             self.sim_island.add_immigrants()
             print(self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
         for year in range(num_years):

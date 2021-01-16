@@ -120,7 +120,7 @@ class Island:
                 self.island_map[row][col].death()
         return self.island_map
 
-    def move(self):
+    def move_island(self):
         """
 
         Moves the animals
@@ -155,7 +155,7 @@ class Island:
             return {'left': self.island_map[coord_1][coord_2 + 1], 'right': self.island_map[coord_1][coord_2 - 1],
                     'up': self.island_map[coord_1 + 1][coord_2], 'down': self.island_map[coord_1 - 1][coord_2]}
 
-        def move_animals(coord_1, coord_2, pop):
+        def move_one_animal(coord_1, coord_2, pop):
             """
             Moves the animals from a cell.
 
@@ -172,9 +172,8 @@ class Island:
             neighbors = get_neighbors(coord_1, coord_2)
             stay = []
             for animal in pop:
-                p_move = animal.default_params['mu'] * animal.fit
                 chosen_neighbor = neighbors[random.choice(('left', 'right', 'up', 'down'))]
-                if isinstance(chosen_neighbor, Water) or random.random() > p_move:
+                if isinstance(chosen_neighbor, Water) or animal.move_animal() is False:
                     stay.append(animal)
                 elif isinstance(animal, Herbivore):
                     chosen_neighbor.herb_immigrants.append(animal)
@@ -184,8 +183,8 @@ class Island:
 
         for row in range(1, self.map_rows - 2, 1):
             for col in range(1, self.map_columns - 2, 1):
-                self.island_map[row][col].herb_pop = move_animals(row, col, self.island_map[row][col].herb_pop)
-                self.island_map[row][col].carn_pop = move_animals(row, col, self.island_map[row][col].carn_pop)
+                self.island_map[row][col].herb_pop = move_one_animal(row, col, self.island_map[row][col].herb_pop)
+                self.island_map[row][col].carn_pop = move_one_animal(row, col, self.island_map[row][col].carn_pop)
         return self.island_map
 
     def add_immigrants(self):

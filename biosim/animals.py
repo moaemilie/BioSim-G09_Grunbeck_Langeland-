@@ -46,7 +46,6 @@ class Animals:
         self.babyweight = None
         self.fodder = None
 
-
     def aging(self):
         """
         Adds one year every time its called.
@@ -57,7 +56,6 @@ class Animals:
             with number of years
         """
         self.age += 1
-
 
     def weightloss(self):
         """
@@ -73,7 +71,6 @@ class Animals:
         else:
             self.weight -= self.weight * self.default_params["eta"]
 
-
     def fitness(self):
         """
         Calculates the fitness of an animal.
@@ -87,11 +84,10 @@ class Animals:
             self.fit = 0
         else:
             self.fit = (1 / (
-                        1 + math.exp(self.default_params["phi_age"] * (self.age - self.default_params["a_half"]))) *
+                    1 + math.exp(self.default_params["phi_age"] * (self.age - self.default_params["a_half"]))) *
                         (1 / (1 + math.exp((-self.default_params["phi_weight"]) *
                                            (self.weight - self.default_params["w_half"])))))
         return self.fit
-
 
     def birth(self, n):
         """
@@ -120,7 +116,6 @@ class Animals:
             self.babyweight = baby_weight
         return chance
 
-
     def eating(self, fodder):
         """
         Animal gains a certain amount every year by eating.
@@ -137,10 +132,9 @@ class Animals:
         """
         self.weight += self.default_params["beta"] * fodder
 
-
     def death(self):
         """
-        Decides if an animal should die or not.
+        Decides if a animal should die or not.
 
         Returns
         -------
@@ -152,6 +146,18 @@ class Animals:
         else:
             p_death = (self.default_params["omega"] * (1 - self.fit))
         return random.random() <= p_death
+
+    def move_animal(self):
+        """
+        Decides if a animal should move or not.
+
+        Returns
+        -------
+        Bool
+                True if animal moves
+        """
+        p_move = self.default_params['mu'] * self.fit
+        return random.random() < p_move
 
 
 class Herbivore(Animals):
