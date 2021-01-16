@@ -131,7 +131,7 @@ class Island:
                 dictionary with the neighbouring cells.
         """
 
-        def get_neighbors(coord_1, coord_2):
+        def choose_neighbor(coord_1, coord_2):
             """
 
             Finds neighbouring cells.
@@ -146,14 +146,10 @@ class Island:
             dic
                     dictionary with the neighbouring cells.
             """
+            neighbors = {'left': self.island_map[coord_1][coord_2 + 1], 'right': self.island_map[coord_1][coord_2 - 1],
+                         'up': self.island_map[coord_1 + 1][coord_2], 'down': self.island_map[coord_1 - 1][coord_2]}
 
-            # edges_rows = [(pos, self.map_rows - 1) for pos in range(self.map_rows)] + [(pos, 0) for pos in range(self.map_rows)]
-            # edges_columns = [(0, pos) for pos in range(self.map_columns)] + [(self.map_columns-1, pos) for pos in range(self.map_columns)]
-            # edges = edges_rows + edges_columns
-
-            # if (coord_1, coord_2) not in edges:
-            return {'left': self.island_map[coord_1][coord_2 + 1], 'right': self.island_map[coord_1][coord_2 - 1],
-                    'up': self.island_map[coord_1 + 1][coord_2], 'down': self.island_map[coord_1 - 1][coord_2]}
+            return neighbors[random.choice(('left', 'right', 'up', 'down'))]
 
         def move_one_animal(coord_1, coord_2, pop):
             """
@@ -169,16 +165,16 @@ class Island:
             list
                     list with animals that stays in the cell.
             """
-            neighbors = get_neighbors(coord_1, coord_2)
+            chosen = choose_neighbor(coord_1, coord_2)
             stay = []
             for animal in pop:
-                chosen_neighbor = neighbors[random.choice(('left', 'right', 'up', 'down'))]
-                if chosen_neighbor.move_landscape() is False or animal.move_animal() is False:
+
+                if chosen.move_landscape() is False or animal.move_animal() is False:
                     stay.append(animal)
                 elif isinstance(animal, Herbivore):
-                    chosen_neighbor.herb_immigrants.append(animal)
+                    chosen.herb_immigrants.append(animal)
                 elif isinstance(animal, Carnivore):
-                    chosen_neighbor.carn_immigrants.append(animal)
+                    chosen.carn_immigrants.append(animal)
             return stay
 
         for row in range(1, self.map_rows - 2, 1):

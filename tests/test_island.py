@@ -190,6 +190,30 @@ def test_birth(new_island, mocker):
     assert new_island.get_num_herb() == 2 * 2, new_island.get_num_carn() == 2 * 2
 
 
-def test_move(new_island):
+def test_actually_move(new_island, population, mocker):
 
-   assert
+    mocker.patch('biosim.animals.Animals.move_animal', ReturnValue=True)
+
+    new_island.add_animals((2, 2), population[0], population[1])
+
+    new_island.move_island()
+
+    num_in_cell = new_island.island_map[1][1].get_num_herb() + new_island.island_map[1][1].get_num_carn()
+    num_on_island = new_island.get_num_herb() + new_island.get_num_carn()
+
+    assert num_in_cell == 0, num_on_island == 2
+
+
+def test_move_in_chosen_direction(new_island, population, mocker):
+
+    new_island.add_animals((2, 2), population[0], population[1])
+
+    mocker.patch('biosim.island.Island.move_island.choose_neighbor', ReturnValue=new_island.island_map[2][1])
+
+    new_island.move_island()
+
+    num_in_cell_pre_move = new_island.island_map[1][1].get_num_herb() + new_island.island_map[1][1].get_num_carn()
+    num_in_cell_post_move = new_island.island_map[2][1].get_num_herb() + new_island.island_map[2][1].get_num_carn()
+    num_on_island = new_island.get_num_herb() + new_island.get_num_carn()
+
+    assert num_in_cell_pre_move == 0, num_in_cell_post_move == 2
