@@ -19,17 +19,12 @@ class Animals:
     @classmethod
     def set_params(cls, new_params):
         """
-        Sets new parametres.
+        Updates the parameters with new ones.
 
         Parameters
         ----------
         new_params: dict
             New parameters
-
-        Returns
-        -------
-        dict
-            Dictionary with new class parameters.
     """
         for key in new_params:
             if key not in ('w_birth', 'sigma_birth', 'beta', 'eta', 'a_half',
@@ -48,23 +43,13 @@ class Animals:
 
     def aging(self):
         """
-        Adds one year every time its called.
-
-        Returns
-        -------
-        Int
-            with number of years
+        Uppdates the year ona animal with one year every time its called.
         """
         self.age += 1
 
     def weightloss(self):
         """
-        Calculates the weight of an animal.
-
-        Returns
-        -------
-        Int
-            with weight for the animal
+        Updates the weight of the animal.
         """
         if self.weight <= 0:
             self.death()
@@ -74,11 +59,6 @@ class Animals:
     def fitness(self):
         """
         Calculates the fitness of an animal.
-
-        Returns
-        -------
-        Float
-            with new fitness between 0 and 1
         """
         if self.weight <= 0:
             self.fit = 0
@@ -87,7 +67,6 @@ class Animals:
                     1 + math.exp(self.default_params["phi_age"] * (self.age - self.default_params["a_half"]))) *
                         (1 / (1 + math.exp((-self.default_params["phi_weight"]) *
                                            (self.weight - self.default_params["w_half"])))))
-        return self.fit
 
     def birth(self, n):
         """
@@ -118,17 +97,13 @@ class Animals:
 
     def eating(self, fodder):
         """
-        Animal gains a certain amount every year by eating.
+        Adds weight to the animal dependent on the food its given.
 
         Parameters
         ----------
         fodder: int
                 with the amount of food consumed by an animal.
 
-        Returns
-        -------
-        int
-            New weight of animal
         """
         self.weight += self.default_params["beta"] * fodder
 
