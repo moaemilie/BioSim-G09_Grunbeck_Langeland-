@@ -105,8 +105,8 @@ class Landscape:
         """
         Feeds herbivores and carnivores in a cell.
         """
-        self.set_f_max(self.default_f_max)  # Feil! Blir satt til 0 hver gang hvis maten er 0.
-        fodder = self.default_f_max
+
+        fodder = self.default_f_max['f_max']
 
         for herb in self.herb_pop:
             if fodder == 0:

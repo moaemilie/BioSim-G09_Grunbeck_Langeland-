@@ -121,7 +121,7 @@ class Animals:
         Bool
                 True if animal dies
         """
-        if self.weight <= 0 or self.age < 0:
+        if round(self.weight) <= 0 or self.age < 0:
             p_death = 1
         else:
             p_death = (self.default_params["omega"] * (1 - self.fit))
