@@ -45,7 +45,7 @@ class Island:
         for string in self.island_map:
             for letter in string:
                 if letter not in ('W', 'H', 'L', 'D'):
-                    raise NameError('Invalid landscape letter: ' + letter)
+                    raise ValueError('Invalid landscape letter: ' + letter)
 
         for string in self.island_map[0][:] + self.island_map[-1][:] + self.island_map[:][0] + self.island_map[:][-1]:
             if string != 'W':
@@ -68,7 +68,7 @@ class Island:
         x_coord = coordinates[0] - 1
         y_coord = coordinates[1] - 1
         if 0 >= y_coord >= self.map_rows or 0 >= x_coord >= self.map_columns:
-            raise IndexError(f'Coordinate out of range {coordinates}')
+            raise ValueError(f'Coordinate out of range {coordinates}')
 
         if isinstance(self.island_map[x_coord][y_coord], Water):
             raise ValueError(f'Can not place animals in water {coordinates}')
