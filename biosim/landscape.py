@@ -9,7 +9,7 @@ from biosim.animals import Herbivore
 from biosim.animals import Carnivore
 import random
 
-random.seed(123456)
+
 
 
 class Landscape:

@@ -8,7 +8,7 @@ __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 import math
 import random
 
-random.seed(123456)
+
 
 
 class Animals:
