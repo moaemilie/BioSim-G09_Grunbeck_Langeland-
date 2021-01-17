@@ -87,37 +87,37 @@ class Island:
     def aging(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
-                self.island_map[row][col].aging()
+                self.island_map[row][col].aging_landscape()
         return self.island_map
 
     def weightloss(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
-                self.island_map[row][col].weightloss()
+                self.island_map[row][col].weightloss_landscape()
         return self.island_map
 
     def fitness(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
-                self.island_map[row][col].fitness()
+                self.island_map[row][col].fitness_landscape()
         return self.island_map
 
     def birth(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
-                self.island_map[row][col].birth()
+                self.island_map[row][col].birth_landscape()
         return self.island_map
 
     def feeding(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
-                self.island_map[row][col].feeding()
+                self.island_map[row][col].eating_landscape()
         return self.island_map
 
     def death(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
-                self.island_map[row][col].death()
+                self.island_map[row][col].death_landscape()
         return self.island_map
 
     def move_island(self):
@@ -186,5 +186,5 @@ class Island:
     def add_immigrants(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
-                self.island_map[row][col].add_immigrants()
+                self.island_map[row][col].add_immigrants_landscape()
         return self.island_map

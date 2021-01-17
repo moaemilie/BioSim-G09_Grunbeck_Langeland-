@@ -59,31 +59,31 @@ class Landscape:
         """
         return len(self.carn_pop)
 
-    def aging(self):
+    def aging_landscape(self):
         """
         Adds a year for all animals in the population for every time its called.
         """
         for herb, carn in zip(self.herb_pop, self.carn_pop):
-            herb.aging()
-            carn.aging()
+            herb.aging_animal()
+            carn.aging_animal()
 
-    def weightloss(self):
+    def weightloss_landscape(self):
         """
 
         """
         for herb, carn in zip(self.herb_pop, self.carn_pop):
-            herb.weightloss()
-            carn.weightloss()
+            herb.weightloss_animal()
+            carn.weightloss_animal()
 
-    def fitness(self):
+    def fitness_landscape(self):
         """
         Calculates the fitness for every animal in the population.
         """
         for herb, carn in zip(self.herb_pop, self.carn_pop):
-            herb.fitness()
-            carn.fitness()
+            herb.fitness_animal()
+            carn.fitness_animal()
 
-    def birth(self):
+    def birth_landscape(self):
         """
         Adds new animals to the population.
         """
@@ -91,17 +91,17 @@ class Landscape:
         def herb_newborns(pop):
             return [Herbivore({'species': 'Herbivore',
                                'age': 0,
-                               'weight': parent.babyweight}) for parent in pop if parent.birth(self.get_num_herb())]
+                               'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_herb())]
 
         def carn_newborns(pop):
             return [Carnivore({'species': 'Herbivore',
                                'age': 0,
-                               'weight': parent.babyweight}) for parent in pop if parent.birth(self.get_num_carn())]
+                               'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_carn())]
 
         self.herb_pop.extend(herb_newborns(self.herb_pop))
         self.carn_pop.extend(carn_newborns(self.carn_pop))
 
-    def feeding(self):
+    def eating_landscape(self):
         """
         Feeds herbivores and carnivores in a cell.
         """
@@ -113,12 +113,12 @@ class Landscape:
                 break
             if herb.weight > 0:
                 if fodder >= herb.default_params["F"]:
-                    herb.eating(herb.default_params["F"])
+                    herb.eating_animal(herb.default_params["F"])
                     fodder -= herb.default_params["F"]
                 elif fodder < herb.default_params["F"] and fodder != 0:
-                    herb.eating(fodder)
+                    herb.eating_animal(fodder)
                     fodder = 0
-                herb.fitness()
+                herb.fitness_animal()
 
         def sort_pop(pop, reverse=False):
             for j in reversed(range(len(pop))):
@@ -137,22 +137,22 @@ class Landscape:
             dead_herb = []
             for herb in self.herb_pop:
                 if carn.kill(herb.fit) and carn_fodder + herb.weight <= carn.default_params["F"]:
-                    carn.eating(herb.weight)
+                    carn.eating_animal(herb.weight)
                     dead_herb.append(herb)
                     carn_fodder += herb.weight
-                    carn.fitness()
+                    carn.fitness_animal()
                 #elif carn_fodder + herb.weight > carn.default_params["F"]:
                    # break
             self.herb_pop = [herbo for herbo in self.herb_pop if herbo not in dead_herb]
 
-    def death(self):
+    def death_landscape(self):
         """
         Updates the populations with the animals that survive.
 
         """
 
         def survivors(pop):
-            return [animal for animal in pop if not animal.death()]
+            return [animal for animal in pop if not animal.death_animal()]
 
         self.herb_pop = survivors(self.herb_pop)
         self.carn_pop = survivors(self.carn_pop)
@@ -168,7 +168,7 @@ class Landscape:
         """
         return not isinstance(self, Water)
 
-    def add_immigrants(self):
+    def add_immigrants_landscape(self):
         """
         adds immigrants to the two populations
         """

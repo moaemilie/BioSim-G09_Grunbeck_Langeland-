@@ -52,7 +52,7 @@ def test_new_params():
     new_params = {'a_half': 50}
     sheep.set_params(new_params)
 
-    assert sheep.fitness() != sheep_default_fitness
+    assert sheep.fitness_animal() != sheep_default_fitness
 
 
 def test_animal_aging():
@@ -63,7 +63,7 @@ def test_animal_aging():
     sheep = Herbivore({'age':0,'weight':2})
 
     for _ in range(years):
-        sheep.aging()
+        sheep.aging_animal()
     assert sheep.age == 4
 
 
@@ -74,7 +74,7 @@ def test_weightloss():
     sheep = Herbivore({'age':4,'weight':30})
     delta_weight = 30 * sheep.default_params['eta']
     animal_weight = 30
-    sheep.weightloss()
+    sheep.weightloss_animal()
     assert sheep.weight == animal_weight - delta_weight
 
 
@@ -86,7 +86,7 @@ def test_animal_fitness():
     for year in range(10):
         sheep.weight += 1
         sheep.age += 1
-        assert sheep.fitness() >= 0 and sheep.fitness() <= 1
+        assert sheep.fitness_animal() >= 0 and sheep.fitness_animal() <= 1
 
 
 def test_low_animalweight_birth():
@@ -94,7 +94,7 @@ def test_low_animalweight_birth():
     Test that the birth function return False if the animal weight it lower than the babyweight.
     """
     sheep = Herbivore({'age': 20,'weight': 1})
-    assert not sheep.birth(10)
+    assert not sheep.birth_animal(10)
 
 
 def test_birth_p0():
@@ -102,7 +102,7 @@ def test_birth_p0():
     Test that the birth function returns False when there is only one animal. (propability of birth = 0).
     """
     sheep = Herbivore({'age': 10, 'weight': 30})
-    assert not sheep.birth(1)
+    assert not sheep.birth_animal(1)
 
 
 def test_birth_p1(mocker):
@@ -110,8 +110,8 @@ def test_birth_p1(mocker):
     Test if the function birth() with a probability 1 always return True.
     """
     sheep = Herbivore({'age': 5, 'weight': 50})
-    mocker.patch('biosim.animals.Carnivore.fitness', ReturnValue=0.1)
-    assert sheep.birth(100)
+    mocker.patch('biosim.animals.Carnivore.fitness_animal', ReturnValue=0.1)
+    assert sheep.birth_animal(100)
 
 
 def test_birth_t_test(mocker):
@@ -125,8 +125,8 @@ def test_birth_t_test(mocker):
     sheeps = [Herbivore({'age':5,'weight':10}) for _ in range(n)]
     for round in range(100):
         for sheep in sheeps:
-            mocker.patch('biosim.animals.Carnivore.fitness', ReturnValue=0.5/((n-1)*0.2))
-            if sheep.birth(n) == True:
+            mocker.patch('biosim.animals.Carnivore.fitness_animal', ReturnValue=0.5/((n-1)*0.2))
+            if sheep.birth_animal(n) == True:
                 TestSample1.append(1)
             else:
                 TestSample1.append(0)
@@ -143,7 +143,7 @@ def test_eating_weightgain():
     fodder = 2
     delta_weight = fodder * sheep.default_params['beta']
     new_weight = sheep.weight + delta_weight
-    sheep.eating(fodder)
+    sheep.eating_animal(fodder)
     assert new_weight == sheep.weight
 
 
@@ -164,8 +164,8 @@ def test_kill():
     """
     wolf = Carnivore({'age':5,'weight':10})
     sheep = Herbivore({'age':5,'weight':10})
-    wolf.fitness()
-    sheep.fitness()
+    wolf.fitness_animal()
+    sheep.fitness_animal()
     for year in range(5):
         assert not wolf.kill(sheep.fit)
 
@@ -182,7 +182,7 @@ def test_kill_p1():
                       'zeta': 3.5, 'xi': 1.1, 'omega': 0.8, 'F': 50, 'DeltaPhiMax': 0.5}
     wolf.set_params(new_params)
 
-    sheep.fitness()
+    sheep.fitness_animal()
     assert wolf.kill(sheep.fit)
 
 
@@ -212,9 +212,9 @@ def test_death_distribution():
     n = 0
 
     for sheep in sheeps:
-        sheep.fitness()
+        sheep.fitness_animal()
         p_sum += (sheep.default_params["omega"] * (1 - sheep.fit))
-        n += sheep.death()
+        n += sheep.death_animal()
 
     p_mean = p_sum / num_animals
 
@@ -232,8 +232,8 @@ def test_weight_loss_death():
     Test that the animal dies if the weight loss makes the weight go bellow zero.
     """
     sheep = Herbivore({'age':30,'weight':0})
-    sheep.weightloss()
-    assert sheep.death()
+    sheep.weightloss_animal()
+    assert sheep.death_animal()
 
 
 def test_death_certain():
@@ -242,7 +242,7 @@ def test_death_certain():
     """
     sheep = Herbivore({'age': 4,'weight': 0})
     for _ in range(100):
-        assert sheep.death()
+        assert sheep.death_animal()
 
 
 def test_move_animal():

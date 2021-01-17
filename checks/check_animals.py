@@ -16,10 +16,10 @@ cell = Lowland(10, 10)
 
 for _ in range(10):
     print(cell.get_num_herb(), cell.get_num_carn())
-    cell.aging()
-    cell.death()
-    cell.birth()
-    cell.feeding()
-    cell.fitness()
+    cell.aging_landscape()
+    cell.death_landscape()
+    cell.birth_landscape()
+    cell.eating_landscape()
+    cell.fitness_landscape()
 
 

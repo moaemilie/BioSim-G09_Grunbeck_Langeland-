@@ -76,7 +76,7 @@ def test_aging():
     carn_age = landscape.carn_pop[0].age
 
     for _ in range(years):
-        landscape.aging()
+        landscape.aging_landscape()
 
     herb_new_age = landscape.herb_pop[0].age
     carn_new_age = landscape.carn_pop[0].age
@@ -95,7 +95,7 @@ def test_aging_negative_age():
     carn_info = [{'age': -20, 'weight': 6}, ]
     landscape = Lowland(herb_info, carn_info)
 
-    landscape.death()
+    landscape.death_landscape()
 
     assert len(landscape.herb_pop) == 0 and len(landscape.carn_pop) == 0
 
@@ -110,7 +110,7 @@ def test_aging_higher():
     carn_age = landscape.carn_pop[0].age
 
     for _ in range(years):
-        landscape.aging()
+        landscape.aging_landscape()
 
     herb_new_age = landscape.herb_pop[0].age
     carn_new_age = landscape.carn_pop[0].age
@@ -133,7 +133,7 @@ def test_weightloss():
     carn_first_weight = 6
 
     for years in range(10):
-        landscape.weightloss()
+        landscape.weightloss_landscape()
 
     assert sheep.weight < herb_first_weight and wolf.weight < carn_first_weight
 
@@ -150,7 +150,7 @@ def test_weightloss_zero_weight():
     wolf = landscape.carn_pop[0]
 
     for year in range(10):
-        landscape.weightloss()
+        landscape.weightloss_landscape()
 
     assert sheep.weight == 0 and wolf.weight == 0
 
@@ -159,28 +159,34 @@ def test_fitness_value_herb():
     """
     Tests that the fitness for a herbivore always lies between 0 and 1
     """
-    herb_info = [{'age': 5, 'weight': 6}, {'age': 10, 'weight': 5}]
-    carn_info = [{'age': 20, 'weight': 6}, {'age': 3, 'weight': 7}]
+    herb_info = [{'age': 5, 'weight': 6}]
+    carn_info = []
     landscape = Lowland(herb_info, carn_info)
 
+    sheep = landscape.herb_pop[0]
+
     for year in range(10):
-        landscape.aging()
-        landscape.weightloss()
-        assert [0 <= herb.fitness() <= 1 for herb in landscape.herb_pop]
+        landscape.aging_landscape()
+        landscape.weightloss_landscape()
+        landscape.fitness_landscape()
+        assert 0 <= sheep.fit <= 1
 
 
 def test_fitness_value_carn():
         """
         Tests that the fitness for a carnivore always lies between 0 and 1
         """
-        herb_info = [{'age': 5, 'weight': 6}, {'age': 10, 'weight': 5}]
-        carn_info = [{'age': 20, 'weight': 6}, {'age': 3, 'weight': 7}]
+        herb_info = []
+        carn_info = [{'age': 20, 'weight': 6}]
         landscape = Lowland(herb_info, carn_info)
 
+        wolf = landscape.carn_pop[0]
+
         for year in range(10):
-            landscape.aging()
-            landscape.weightloss()
-            assert [0 <= carn.fitness() <= 1 for carn in landscape.carn_pop]
+            landscape.aging_landscape()
+            landscape.weightloss_landscape()
+            landscape.fitness_landscape()
+            assert 0 <= wolf.fit <= 1
 
 
 def test_birth():
@@ -197,7 +203,7 @@ def test_birth():
     n_carns = landscape.get_num_carn()
 
     for year in range(10):
-        landscape.birth()
+        landscape.birth_landscape()
 
     n_herbs_afther = landscape.get_num_herb()
     n_carns_afther = landscape.get_num_carn()
@@ -214,10 +220,10 @@ def test_birth_p1(mocker):
 
     landscape = Highland(herb_info, carn_info)
     sheep = landscape.herb_pop[0]
-    mocker.patch('biosim.animals.Herbivore.birth', ReturnValue = True)
+    mocker.patch('biosim.animals.Herbivore.birth_animal', ReturnValue = True)
     sheep.babyweight = 9
 
-    landscape.birth()
+    landscape.birth_landscape()
 
     assert len(landscape.herb_pop) == 2
 
@@ -240,7 +246,7 @@ def test_feeding_F_max_resets():
 
     years = 5
     for year in range(years):
-        landscape.feeding()
+        landscape.eating_landscape()
 
     assert sheep_1.weight and sheep_2.weight and sheep_3.weight == begining_weight + years * sheep_1.default_params['beta'] * sheep_1.default_params['F']
 
@@ -254,7 +260,7 @@ def test_feeding_herb_no_weight():
     start_weight = 0
 
     for year in range(10):
-        landscape.feeding()
+        landscape.eating_landscape()
         assert start_weight == sheep.weight
 
 
@@ -266,15 +272,15 @@ def test_feeding_no_food():
 
     landscape = Highland(animal_info, [])
     sheep = landscape.herb_pop[0]
-    sheep.fitness()
+    sheep.fitness_animal()
     fitness_before = sheep.fit
 
     new_f_max = {'f_max': 0}
     landscape.set_f_max(new_f_max)
 
     for year in range(10):
-        landscape.feeding()
-        sheep.fitness()
+        landscape.eating_landscape()
+        sheep.fitness_animal()
         assert sheep.fit == fitness_before
 
 
@@ -293,7 +299,7 @@ def test_feeding_little_food():
     sheep.set_params(new_params)
     begining_weight = sheep.weight
 
-    landscape.feeding()
+    landscape.eating_landscape()
 
     assert sheep.weight == sheep.default_params['beta'] * new_f_max['f_max'] + begining_weight
 
@@ -315,7 +321,7 @@ def test_no_food_left():
 
     start_weight_2 = sheep_2.weight
 
-    landscape.feeding()
+    landscape.eating_landscape()
     assert sheep_2.weight == start_weight_2
 
 
@@ -335,7 +341,7 @@ def test_feeding_to_much_food():
     new_params = {'F': 100}
     sheep_1.set_params(new_params)
 
-    landscape.feeding()
+    landscape.eating_landscape()
 
     assert sheep_1.weight == sheep_2.weight
 
@@ -351,7 +357,7 @@ def test_herb_feed_desert():
 
     weight_first = sheep.weight
 
-    landscape.feeding()
+    landscape.eating_landscape()
 
     assert sheep.weight == weight_first
 
@@ -365,15 +371,13 @@ def test_herb_feeding_sorting():
 
     landscape = Highland(herb_info, carn_info)
 
-    landscape.feeding()
+    landscape.eating_landscape()
 
     herb1 = landscape.herb_pop[0]
     herb2 = landscape.herb_pop[1]
     herb3 = landscape.herb_pop[2]
 
-    herb1.fitness()
-    herb2.fitness()
-    herb3.fitness()
+    landscape.fitness_landscape()
 
     assert herb1.fit < herb2.fit < herb3.fit
 
@@ -387,15 +391,13 @@ def test_carn_feeding_sorting():
 
     landscape = Highland(herb_info, carn_info)
 
-    landscape.feeding()
+    landscape.eating_landscape()
 
     carn1 = landscape.carn_pop[0]
     carn2 = landscape.carn_pop[1]
     carn3 = landscape.carn_pop[2]
 
-    carn1.fitness()
-    carn2.fitness()
-    carn3.fitness()
+    landscape.fitness_landscape()
 
     assert carn1.fit > carn2.fit > carn3.fit
 
@@ -412,7 +414,7 @@ def test_carn_weight_zero():
     wolf = landscape.carn_pop[0]
 
     for year in range(10):
-        landscape.feeding()
+        landscape.eating_landscape()
         assert not wolf.kill(sheep.fit)
 
 
@@ -432,7 +434,7 @@ def test_carn_kill(mocker):
 
     mocker.patch('biosim.animals.Carnivore.kill', ReturnValue = True)
 
-    landscape.feeding()
+    landscape.eating_landscape()
 
     assert len(landscape.herb_pop) == 0
 
@@ -455,7 +457,7 @@ def test_carn_gain_weight(mocker):
 
     landscape.set_f_max(new_f_max)
 
-    landscape.feeding()
+    landscape.eating_landscape()
 
     assert wolf.weight == 30 + wolf.default_params["beta"] * 1
 
@@ -476,7 +478,7 @@ def test_carn_appetite(mocker):
 
     wolf.set_params({'F': 7})
 
-    landscape.feeding()
+    landscape.eating_landscape()
 
     assert len(landscape.herb_pop) == 2
 
@@ -491,7 +493,7 @@ def test_herb_death():
     landscape = Highland(herb_info, carn_info)
     num_herb_before = len(landscape.herb_pop)
 
-    landscape.death()
+    landscape.death_landscape()
 
     num_herb_after = len(landscape.herb_pop)
 
@@ -508,7 +510,7 @@ def test_carn_death():
     landscape = Highland(herb_info, carn_info)
     num_carn_before = len(landscape.carn_pop)
 
-    landscape.death()
+    landscape.death_landscape()
 
     num_carn_after = len(landscape.carn_pop)
 
@@ -552,7 +554,7 @@ def test_immigants_added():
     landscape.carn_immigrants = [{'age': 30, 'weight': 30}]
 
 
-    landscape.add_immigrants()
+    landscape.add_immigrants_landscape()
 
     assert len(landscape.herb_pop) == 1 and len(landscape.carn_pop) == 1
 
@@ -568,7 +570,7 @@ def test_add_immigrants_default_value():
     landscape.herb_immigrants = [{'age': 30, 'weight': 30}]
     landscape.carn_immigrants = [{'age': 30, 'weight': 30}]
 
-    landscape.add_immigrants()
+    landscape.add_immigrants_landscape()
 
     assert len(landscape.herb_pop) == 1 and len(landscape.carn_pop) == 1
 

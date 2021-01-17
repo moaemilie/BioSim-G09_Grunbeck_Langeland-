@@ -37,25 +37,25 @@ class Animals:
     def __init__(self, animal_info):
         self.age = animal_info['age']
         self.weight = animal_info['weight']
-        self.fit = self.fitness()
+        self.fit = self.fitness_animal()
         self.babyweight = None
 
-    def aging(self):
+    def aging_animal(self):
         """
         Uppdates the year ona animal with one year every time its called.
         """
         self.age += 1
 
-    def weightloss(self):
+    def weightloss_animal(self):
         """
         Looses a little of the weight of the animal.
         """
         if round(self.weight) <= 0:
-            self.death()
+            self.death_animal()
         else:
             self.weight -= self.weight * self.default_params["eta"]
 
-    def fitness(self):
+    def fitness_animal(self):
         """
         Calculates the fitness for every animal in the population.
 
@@ -73,7 +73,7 @@ class Animals:
                                            (self.weight - self.default_params["w_half"])))))
         return self.fit
 
-    def birth(self, n):
+    def birth_animal(self, n):
         """
         Decides if a new animal should be added to the simulation.
 
@@ -100,7 +100,7 @@ class Animals:
             self.babyweight = baby_weight
         return chance
 
-    def eating(self, fodder):
+    def eating_animal(self, fodder):
         """
         Adds weight to the animal dependent on the food its given.
 
@@ -112,7 +112,7 @@ class Animals:
         """
         self.weight += self.default_params["beta"] * fodder
 
-    def death(self):
+    def death_animal(self):
         """
         Decides if a animal should die or not.
 
