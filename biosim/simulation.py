@@ -58,3 +58,4 @@ class BioSim:
             self.sim_island.add_animals(population[0]['loc'], None, population[0]['pop'])
 
 
+

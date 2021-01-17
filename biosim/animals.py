@@ -92,7 +92,7 @@ class Animals:
         p_birth = min(1, self.default_params["gamma"] * self.fit * (n - 1))
 
         if self.weight < self.default_params["zeta"] * (
-                self.default_params["w_birth"] + self.default_params["sigma_birth"]) or self.weight < baby_weight:
+                self.default_params["w_birth"] + self.default_params["sigma_birth"]) or self.weight < baby_weight * self.default_params["xi"]:
             p_birth = 0
         chance = random.random() <= p_birth
         if chance:
