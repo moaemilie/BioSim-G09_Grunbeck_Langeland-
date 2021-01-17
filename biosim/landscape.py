@@ -16,15 +16,15 @@ class Landscape:
     default_f_max = {'f_max': None}
 
     @classmethod
-    def set_f_max(cls, new_f_max):
+    def set_f_max(cls, params):
         """
         Sets new f_max parameter.
         """
 
-        for key in new_f_max:
+        for key in params:
             if key != 'f_max':
                 raise KeyError('Invalid parameter name: ' + key)
-        cls.default_f_max = new_f_max
+        cls.default_f_max = params
 
     def __init__(self, ini_herbs=[], ini_carns=[]):
         self.herb_pop = [Herbivore(ini_herbs[animal]) for animal in range(len(ini_herbs))]
@@ -33,9 +33,9 @@ class Landscape:
         self.carn_immigrants = []
 
     @staticmethod
-    def set_animal_parameters(animal_type, new_params):
+    def set_animal_parameters(species, params):
         animals = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
-        animals[animal_type].set_params(new_params)
+        animals[species].set_params(params)
 
     def get_num_herb(self):
         """
