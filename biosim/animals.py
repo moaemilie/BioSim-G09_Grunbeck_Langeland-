@@ -19,17 +19,12 @@ class Animals:
     @classmethod
     def set_params(cls, new_params):
         """
-        Sets new parametres.
+        Updates the parameters with new ones.
 
         Parameters
         ----------
         new_params: dict
-            New parametres
-
-        Returns
-        -------
-        dict
-            Dictionary with new class parameters.
+            New parameters
     """
         for key in new_params:
             if key not in ('w_birth', 'sigma_birth', 'beta', 'eta', 'a_half',
@@ -44,27 +39,16 @@ class Animals:
         self.weight = animal_info['weight']
         self.fit = self.fitness()
         self.babyweight = None
-        self.fodder = None
 
     def aging(self):
         """
-        Adds one year every time its called.
-
-        Returns
-        -------
-        Int
-            with number of years
+        Uppdates the year ona animal with one year every time its called.
         """
         self.age += 1
 
     def weightloss(self):
         """
-        Calculates the weight of an animal.
-
-        Returns
-        -------
-        Int
-            with weight for the animal
+        Looses a little of the weight of the animal.
         """
         if self.weight <= 0:
             self.death()
@@ -73,12 +57,12 @@ class Animals:
 
     def fitness(self):
         """
-        Calculates the fitness of an animal.
+        Calculates the fitness for every animal in the population.
 
         Returns
         -------
         Float
-            with new fitness between 0 and 1
+        with new fitness between 0 and 1
         """
         if self.weight <= 0:
             self.fit = 0
@@ -93,9 +77,9 @@ class Animals:
         """
         Decides if a new animal should be added to the simulation.
 
-        Input
+        Parameters
         -------
-        int
+        n: int
                 with probability of birth
 
         Returns
@@ -118,17 +102,13 @@ class Animals:
 
     def eating(self, fodder):
         """
-        Animal gains a certain amount every year by eating.
+        Adds weight to the animal dependent on the food its given.
 
         Parameters
         ----------
         fodder: int
                 with the amount of food consumed by an animal.
 
-        Returns
-        -------
-        int
-            New weight of animal
         """
         self.weight += self.default_params["beta"] * fodder
 
@@ -181,9 +161,9 @@ class Carnivore(Animals):
         """
         Tests if the carnivore can kill a herbivore.
 
-        Input
+        Parameters
         -------
-        int
+        fit_herb: int
                 fitness of a herbivore
 
         Returns
@@ -191,7 +171,7 @@ class Carnivore(Animals):
         Bool
                 True if carnivore can kill.
         """
-        if fit_herb >= self.fit or self.weight <= 0:
+        if fit_herb >= self.fit or round(self.weight) <= 0:
             p_kill = 0
         elif 0 < self.fit - fit_herb < self.default_params["DeltaPhiMax"]:
             p_kill = (self.fit - fit_herb) / (self.default_params["DeltaPhiMax"])
