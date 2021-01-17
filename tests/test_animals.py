@@ -240,7 +240,7 @@ def test_move_animal():
     """
     sheep = Herbivore({'age': 4,'weight': 10})
     sheep.fit = 0.5
-    sheep.set_params({'mu': (1/sheep.fit)}
+    sheep.set_params({'mu': (1/sheep.fit)})
     assert sheep.move_animal()
 
 

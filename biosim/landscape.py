@@ -26,7 +26,7 @@ class Landscape:
                 raise KeyError('Invalid parameter name: ' + key)
         cls.default_f_max = new_f_max
 
-    def __init__(self, ini_herbs = [], ini_carns = []):
+    def __init__(self, ini_herbs=[], ini_carns=[]):
         self.herb_pop = [Herbivore(ini_herbs[animal]) for animal in range(len(ini_herbs))]
         self.carn_pop = [Carnivore(ini_carns[animal]) for animal in range(len(ini_carns))]
         self.herb_immigrants = []
@@ -48,7 +48,6 @@ class Landscape:
         """
         return len(self.herb_pop)
 
-
     def get_num_carn(self):
         """
         Counts how many carnivores its in the population.
@@ -60,8 +59,6 @@ class Landscape:
         """
         return len(self.carn_pop)
 
-
-
     def aging(self):
         """
         Adds a year for all animals in the population for every time its called.
@@ -69,8 +66,6 @@ class Landscape:
         for herb, carn in zip(self.herb_pop, self.carn_pop):
             herb.aging()
             carn.aging()
-
-
 
     def weightloss(self):
         """
@@ -80,8 +75,6 @@ class Landscape:
             herb.weightloss()
             carn.weightloss()
 
-
-
     def fitness(self):
         """
         Calculates the fitness for every animal in the population.
@@ -89,7 +82,6 @@ class Landscape:
         for herb, carn in zip(self.herb_pop, self.carn_pop):
             herb.fitness()
             carn.fitness()
-
 
     def birth(self):
         """
@@ -113,18 +105,19 @@ class Landscape:
         """
         Feeds herbivores and carnivores in a cell.
         """
-        self.set_f_max(self.default_f_max) # Feil! Blir satt til 0 hver gang hvis maten er 0.
+        self.set_f_max(self.default_f_max)  # Feil! Blir satt til 0 hver gang hvis maten er 0.
+        fodder = self.default_f_max
 
         for herb in self.herb_pop:
-            if self.default_f_max['f_max'] == 0:
+            if fodder == 0:
                 break
             if herb.weight > 0:
-                if self.default_f_max['f_max'] >= herb.default_params["F"]:
+                if fodder >= herb.default_params["F"]:
                     herb.eating(herb.default_params["F"])
-                    self.default_f_max['f_max'] -= herb.default_params["F"]
-                elif self.default_f_max['f_max'] < herb.default_params["F"] and self.default_f_max['f_max'] != 0:
-                    herb.eating(self.default_f_max['f_max'])
-                    self.default_f_max['f_max'] = 0
+                    fodder -= herb.default_params["F"]
+                elif fodder < herb.default_params["F"] and fodder != 0:
+                    herb.eating(fodder)
+                    fodder = 0
                 herb.fitness()
 
         def sort_pop(pop, reverse=False):
@@ -150,7 +143,6 @@ class Landscape:
                     carn.fitness()
             self.herb_pop = [herbo for herbo in self.herb_pop if herbo not in dead_herb]
 
-
     def death(self):
         """
         Updates the populations with the animals that survive.
@@ -163,7 +155,6 @@ class Landscape:
         self.herb_pop = survivors(self.herb_pop)
         self.carn_pop = survivors(self.carn_pop)
 
-
     def move_landscape(self):
         """
         Decides if the landscape is water.
@@ -175,8 +166,6 @@ class Landscape:
         """
         return not isinstance(self, Water)
 
-
-
     def add_immigrants(self):
         """
         adds immigrants to the two populations
@@ -185,7 +174,6 @@ class Landscape:
         self.carn_pop.extend(self.carn_immigrants)
         self.herb_immigrants = []
         self.carn_immigrants = []
-
 
     def add_animals(self, new_herbs=None, new_carns=None):
         """
@@ -202,27 +190,26 @@ class Landscape:
 class Lowland(Landscape):
     default_f_max = {'f_max': 800}
 
-    def __init__(self, ini_herbs = [], ini_carns = []):
+    def __init__(self, ini_herbs=[], ini_carns=[]):
         super().__init__(ini_herbs, ini_carns)
 
 
 class Highland(Landscape):
     default_f_max = {'f_max': 300}
 
-    def __init__(self, ini_herbs = [], ini_carns = []):
+    def __init__(self, ini_herbs=[], ini_carns=[]):
         super().__init__(ini_herbs, ini_carns)
 
 
 class Desert(Landscape):
     default_f_max = {'f_max': 0}
 
-    def __init__(self, ini_herbs = [], ini_carns = []):
+    def __init__(self, ini_herbs=[], ini_carns=[]):
         super().__init__(ini_herbs, ini_carns)
 
 
 class Water(Landscape):
     default_f_max = {'f_max': 0}
 
-    def __init__(self, ini_herbs = [], ini_carns = []):
+    def __init__(self, ini_herbs=[], ini_carns=[]):
         super().__init__(ini_herbs, ini_carns)
-
