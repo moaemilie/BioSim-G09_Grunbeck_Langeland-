@@ -136,11 +136,13 @@ class Landscape:
             carn_fodder = 0
             dead_herb = []
             for herb in self.herb_pop:
-                if carn.kill(herb.fit) and herb.weight > 0 and carn_fodder <= carn.default_params["F"]:
+                if carn.kill(herb.fit) and carn_fodder + herb.weight <= carn.default_params["F"]:
                     carn.eating(herb.weight)
                     dead_herb.append(herb)
                     carn_fodder += herb.weight
                     carn.fitness()
+                #elif carn_fodder + herb.weight > carn.default_params["F"]:
+                   # break
             self.herb_pop = [herbo for herbo in self.herb_pop if herbo not in dead_herb]
 
     def death(self):

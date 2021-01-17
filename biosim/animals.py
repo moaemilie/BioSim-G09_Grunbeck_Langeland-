@@ -50,7 +50,7 @@ class Animals:
         """
         Looses a little of the weight of the animal.
         """
-        if self.weight <= 0:
+        if round(self.weight) <= 0:
             self.death()
         else:
             self.weight -= self.weight * self.default_params["eta"]
