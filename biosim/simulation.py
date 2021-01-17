@@ -15,16 +15,14 @@ import random
 
 class BioSim:
     def __init__(self, island_map, ini_pop, seed):
-        self.coordinates = ini_pop[0]['loc']
-        self.pop = ini_pop[0]['pop']
         random.seed(seed)
         self.sim_island = Island(island_map)
         self.sim_island.make_map()
-        if self.pop[0]['species'] == 'Herbivore':
-            self.sim_island.add_animals(self.coordinates, self.pop, None)
-        else:
-            self.sim_island.add_animals(self.coordinates, None, self.pop)
-
+        if ini_pop != []:
+            if ini_pop[0]['pop'][0]['species'] == 'Herbivore':
+                self.sim_island.add_animals(ini_pop[0]['loc'], ini_pop[0]['pop'], None)
+            else:
+                self.sim_island.add_animals(ini_pop[0]['loc'], None, ini_pop[0]['pop'])
 
     @staticmethod
     def set_landscape_parameters(land_type, new_f_max):
@@ -57,5 +55,16 @@ class BioSim:
         else:
             self.sim_island.add_animals(population[0]['loc'], None, population[0]['pop'])
 
+    @property
+    def num_animals(self):
+        """
+        Total number of animals on island.
+        """
+        return self.sim_island.get_num_carn() + self.sim_island.get_num_herb()
 
-
+    @property
+    def num_animals_per_species(self):
+        """
+        Total number of animals on island per species
+        """
+        return {'Herbivore': self.sim_island.get_num_herb(), 'Carnivore': self.sim_island.get_num_carn()}
