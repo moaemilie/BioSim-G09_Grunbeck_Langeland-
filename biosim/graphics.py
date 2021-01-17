@@ -5,5 +5,5 @@
 
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
-class Graphics():
+class Graphics:
     def __init__(self):
