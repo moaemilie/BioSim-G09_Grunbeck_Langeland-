@@ -177,7 +177,7 @@ class Landscape:
         self.herb_immigrants = []
         self.carn_immigrants = []
 
-    def add_animals(self, new_herbs=None, new_carns=None):
+    def add_animals_landscape(self, new_herbs=None, new_carns=None):
         """
         Adds new animals to the two populations.
         """

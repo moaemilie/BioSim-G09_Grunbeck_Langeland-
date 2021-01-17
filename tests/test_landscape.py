@@ -587,7 +587,7 @@ def test_add_animals():
     new_herbs = [{'age': 2, 'weight': 2}]
     new_carns = [{'age': 2, 'weight': 2}]
 
-    landscape.add_animals(new_herbs, new_carns)
+    landscape.add_animals_landscape(new_herbs, new_carns)
 
     assert len(landscape.herb_pop) == 2 and len(landscape.carn_pop) == 2
 

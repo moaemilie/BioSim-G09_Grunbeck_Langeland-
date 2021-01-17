@@ -60,7 +60,7 @@ class Island:
 
         return self.island_map
 
-    def add_animals(self, coordinates, new_herbs=None, new_carns=None):
+    def add_animals_island(self, coordinates, new_herbs=None, new_carns=None):
         if new_herbs is None:
             new_herbs = []
         elif new_carns is None:
@@ -74,7 +74,7 @@ class Island:
             raise ValueError(f'Can not place animals in water {coordinates}')
 
         origin_cell = self.island_map[x_coord][y_coord]
-        origin_cell.add_animals(new_herbs, new_carns)
+        origin_cell.add_animals_landscape(new_herbs, new_carns)
 
     def get_num_herb(self):
         return sum([sum([self.island_map[row][col].get_num_herb() for col in range(self.map_columns)])
@@ -84,37 +84,37 @@ class Island:
         return sum([sum([self.island_map[row][col].get_num_carn() for col in range(self.map_columns)])
                     for row in range(self.map_rows)])
 
-    def aging(self):
+    def aging_island(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].aging_landscape()
         return self.island_map
 
-    def weightloss(self):
+    def weightloss_island(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].weightloss_landscape()
         return self.island_map
 
-    def fitness(self):
+    def fitness_island(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].fitness_landscape()
         return self.island_map
 
-    def birth(self):
+    def birth_island(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].birth_landscape()
         return self.island_map
 
-    def feeding(self):
+    def feeding_island(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].eating_landscape()
         return self.island_map
 
-    def death(self):
+    def death_island(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].death_landscape()
@@ -183,7 +183,7 @@ class Island:
                 self.island_map[row][col].carn_pop = move_one_animal(row, col, self.island_map[row][col].carn_pop)
         return self.island_map
 
-    def add_immigrants(self):
+    def add_immigrants_island(self):
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].add_immigrants_landscape()

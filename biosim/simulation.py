@@ -20,9 +20,9 @@ class BioSim:
         self.sim_island.make_map()
         if ini_pop != []:
             if ini_pop[0]['pop'][0]['species'] == 'Herbivore':
-                self.sim_island.add_animals(ini_pop[0]['loc'], ini_pop[0]['pop'], None)
+                self.sim_island.add_animals_island(ini_pop[0]['loc'], ini_pop[0]['pop'], None)
             else:
-                self.sim_island.add_animals(ini_pop[0]['loc'], None, ini_pop[0]['pop'])
+                self.sim_island.add_animals_island(ini_pop[0]['loc'], None, ini_pop[0]['pop'])
 
     @staticmethod
     def set_landscape_parameters(land_type, new_f_max):
@@ -36,14 +36,14 @@ class BioSim:
 
     def simulate(self, num_years):
         def simulate_year():
-            self.sim_island.aging()
-            self.sim_island.weightloss()
-            self.sim_island.fitness()
-            self.sim_island.birth()
-            self.sim_island.feeding()
-            self.sim_island.death()
+            self.sim_island.aging_island()
+            self.sim_island.weightloss_island()
+            self.sim_island.fitness_island()
+            self.sim_island.birth_island()
+            self.sim_island.feeding_island()
+            self.sim_island.death_island()
             self.sim_island.move_island()
-            self.sim_island.add_immigrants()
+            self.sim_island.add_immigrants_island()
             print(self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
         for year in range(num_years):
             simulate_year()
@@ -51,9 +51,9 @@ class BioSim:
 
     def add_population(self, population):
         if population[0]['pop'][0]['species'] == 'Herbivore':
-            self.sim_island.add_animals(population[0]['loc'], population[0]['pop'], None)
+            self.sim_island.add_animals_island(population[0]['loc'], population[0]['pop'], None)
         else:
-            self.sim_island.add_animals(population[0]['loc'], None, population[0]['pop'])
+            self.sim_island.add_animals_island(population[0]['loc'], None, population[0]['pop'])
 
     @property
     def num_animals(self):
