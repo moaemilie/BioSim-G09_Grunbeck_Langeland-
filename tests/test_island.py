@@ -75,11 +75,20 @@ def test_surrounded_by_water():
         new_island.make_map()
 
 
-def test_correct_num_row_col(new_island):
+def test_correct_num_row_col():
     """
     Test if correct amount of rows and columns are found.
     """
-    assert (new_island.map_rows, new_island.map_rows) == (4, 4)
+    geogr = """\
+               WWWW
+               WLLW
+               WHLW
+               WHHW
+               WWWW"""
+    geogr = textwrap.dedent(geogr)
+    new_island = Island(geogr)
+    new_island.make_map()
+    assert (new_island.map_rows, new_island.map_columns) == (5, 4)
 
 
 def test_add_animals_outside_map(new_island, population):

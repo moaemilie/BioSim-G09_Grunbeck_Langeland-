@@ -72,7 +72,7 @@ class Island:
             new_carns = []
         r_coord = coordinates[0] - 1
         c_coord = coordinates[1] - 1
-        if 0 > r_coord >= self.map_rows or 0 >= c_coord >= self.map_columns:
+        if r_coord >= self.map_rows or 0 > r_coord or c_coord >= self.map_columns or 0 > c_coord:
             raise ValueError(f'Coordinate out of range {coordinates}')
 
         elif isinstance(self.island_map[r_coord][c_coord], Water):
