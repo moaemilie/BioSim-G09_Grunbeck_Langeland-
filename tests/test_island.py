@@ -41,7 +41,7 @@ def test_wrong_map():
                WWWW"""
     geogr = textwrap.dedent(geogr)
     new_island = Island(geogr)
-    with pytest.raises(NameError):
+    with pytest.raises(ValueError):
         new_island.make_map()
 
 
@@ -71,7 +71,7 @@ def test_add_animals_outside_map(new_island, population):
     """
     Test that you get an error if you place the animals outside the map.
     """
-    with pytest.raises(IndexError):
+    with pytest.raises(ValueError):
         new_island.add_animals((5, 5), population[0], population[1])
 
 
