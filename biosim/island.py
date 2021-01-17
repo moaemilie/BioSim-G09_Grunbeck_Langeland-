@@ -23,13 +23,13 @@ class Island:
         self.map_columns = None
 
     @staticmethod
-    def set_landscape_parameters(land_type, new_f_max):
-        landscapes = {'L': Lowland, 'H': Highland}
-        landscapes[land_type].set_f_max(new_f_max)
+    def set_animal_parameters(species, params):
+        Landscape.set_animal_parameters(species, params)
 
     @staticmethod
-    def set_animal_parameters(animal_type, new_params):
-        Landscape.set_animal_parameters(animal_type, new_params)
+    def set_landscape_parameters(landscape, params):
+        landscapes = {'L': Lowland, 'H': Highland}
+        landscapes[landscape].set_f_max(params)
 
     def make_map(self):
         """
@@ -53,8 +53,6 @@ class Island:
         for string in self.island_map[0][:] + self.island_map[-1][:] + self.island_map[:][0] + self.island_map[:][-1]:
             if string != 'W':
                 raise ValueError('Map must be surrounded by water.')
-
-
 
         landscapes = {'W': Water, 'L': Lowland, 'H': Highland, 'D': Desert}
 
