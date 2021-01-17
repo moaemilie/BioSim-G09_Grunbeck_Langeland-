@@ -46,20 +46,13 @@ def test_new_params():
     """
     Test that if the default params is being replaced by new params, that the new params is being used.
     """
-    sheep1 = Herbivore({'age':5,'weight':6})
-    sheep1.fitness()
-    default_fitness = sheep1.fit
+    sheep = Herbivore({'age':5,'weight':6})
+    sheep_default_fitness = (1 / (1 + math.exp(0.6 * (5 - 40))) *(1 / (1 + math.exp((-0.1) *(6 - 10)))))
 
-    new_params = {'w_birth': 1, 'sigma_birth': 1, 'beta': 1, 'eta': 1, 'a_half': 1,
-                  'phi_age': 1, 'w_half': 1, 'phi_weight': 1, 'mu': 1, 'gamma': 1,
-                  'zeta': 1, 'xi': 1, 'omega': 1, 'F': 1, 'DeltaPhiMax': 1}
+    new_params = {'a_half': 50}
+    sheep.set_params(new_params)
 
-    sheep2 = Herbivore({'age': 5, 'weight': 6})
-    sheep2.set_params(new_params)
-    sheep2.fitness()
-    new_fitness = sheep2.fit
-
-    assert not new_fitness == default_fitness
+    assert sheep.fitness() != sheep_default_fitness
 
 
 def test_animal_aging():
@@ -81,7 +74,8 @@ def test_weightloss():
     sheep = Herbivore({'age':4,'weight':30})
     delta_weight = 30 * sheep.default_params['eta']
     animal_weight = 30
-    assert sheep.weightloss() == animal_weight - delta_weight
+    sheep.weightloss()
+    assert sheep.weight == animal_weight - delta_weight
 
 
 def test_animal_fitness():
@@ -89,7 +83,10 @@ def test_animal_fitness():
     Tests that the fitness always lies between 0 and 1
     """
     sheep = Herbivore({'age':4,'weight':30})
-    assert sheep.fitness() >= 0 and sheep.fitness() <= 1
+    for year in range(10):
+        sheep.weight += 1
+        sheep.age += 1
+        assert sheep.fitness() >= 0 and sheep.fitness() <= 1
 
 
 def test_low_animalweight_birth():
@@ -138,25 +135,39 @@ def test_birth_t_test(mocker):
     assert pvalue < alpa
 
 
-def test_eating():
+def test_eating_weightgain():
     """
-    Tests that the eating function works as exspected.
+    Tests that the animal gains the correct value afther eating
     """
     sheep = Herbivore({'age':0,'weight':30})
-    F_line = 2
-    delta_eating = 2 * sheep.default_params['eta']
-    new_weight = sheep.weight + delta_eating
-    assert new_weight == sheep.eating(F_line)
+    fodder = 2
+    delta_weight = fodder * sheep.default_params['beta']
+    new_weight = sheep.weight + delta_weight
+    sheep.eating(fodder)
+    assert new_weight == sheep.weight
 
 
 def test_kill_p0():
     """
     Test that herbivore does not get killed if fitness is higher than the fitness of the carnivore
     """
+    wolf = Carnivore({'age':1,'weight':1})
+    sheep = Herbivore({'age':20,'weight':10})
+    wolf.fit = 0.2
+    sheep.fit = 0.9
+    assert not wolf.kill(sheep.fit)
+
+
+def test_kill():
+    """
+    Test that herbivore does not get killed if fitness is higher than the fitness of the carnivore
+    """
     wolf = Carnivore({'age':5,'weight':10})
     sheep = Herbivore({'age':5,'weight':10})
+    wolf.fitness()
     sheep.fitness()
-    assert not wolf.kill(sheep.fit)
+    for year in range(5):
+        assert not wolf.kill(sheep.fit)
 
 
 def test_kill_p1():

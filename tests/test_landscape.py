@@ -122,15 +122,15 @@ def test_weightloss():
     """
     Test that the weight is lower after the weight loss function
     """
-    herb_info = [{'age': 5, 'weight': 6},]
-    carn_info = [{'age': 20, 'weight': 6},]
+    herb_info = [{'age': 5, 'weight': 6}]
+    carn_info = [{'age': 20, 'weight': 6}]
     landscape = Lowland(herb_info, carn_info)
 
     sheep = landscape.herb_pop[0]
     wolf = landscape.carn_pop[0]
 
-    herb_first_weight = sheep.weight
-    carn_first_weight = wolf.weight
+    herb_first_weight = 6
+    carn_first_weight = 6
 
     for years in range(10):
         landscape.weightloss()
@@ -222,7 +222,27 @@ def test_birth_p1(mocker):
     assert len(landscape.herb_pop) == 2
 
 
-def test_feeding_herb_years():
+def test_feeding_F_max_resets():
+    """
+    Tests that the F_max resets for every year.
+    """
+    herb_info = [{'age': 20, 'weight': 50}, {'age': 20, 'weight': 50}, {'age': 20, 'weight': 50}]
+    carn_info = []
+    landscape = Highland(herb_info, carn_info)
+    sheep_1 = landscape.herb_pop[0]
+    sheep_2 = landscape.herb_pop[1]
+    sheep_3 = landscape.herb_pop[2]
+
+    begining_weight = sheep_1.weight
+
+    sheep_1.set_params({'F': 50})
+    landscape.set_f_max({'f_max': 150})
+
+    years = 5
+    for year in range(years):
+        landscape.feeding()
+
+    assert sheep_1.weight and sheep_2.weight and sheep_3.weight == begining_weight + years * sheep_1.default_params['beta'] * sheep_1.default_params['F']
 
 
 def test_feeding_herb_no_weight():
@@ -231,7 +251,7 @@ def test_feeding_herb_no_weight():
     """
     landscape = Lowland([{'age': 5, 'weight': 0}], [])
     sheep = landscape.herb_pop[0]
-    start_weight = sheep.weight
+    start_weight = 0
 
     for year in range(10):
         landscape.feeding()
@@ -271,49 +291,53 @@ def test_feeding_little_food():
     landscape.set_f_max(new_f_max)
     new_params = {'F': 100}
     sheep.set_params(new_params)
+    begining_weight = sheep.weight
 
     landscape.feeding()
 
-    assert sheep.fodder == 50
+    assert sheep.weight == sheep.default_params['beta'] * new_f_max['f_max'] + begining_weight
 
 
 def test_no_food_left():
     """
-    Test that if an animal eats the rest of the food its nothing left
+    Test that if an animal eats the rest of the food its nothing left for the rest of the animals.
     """
-    animal_info = [{'age': 5, 'weight': 6}]
+    animal_info = [{'age': 5, 'weight': 6}, {'age': 5, 'weight': 6}]
 
     landscape = Highland(animal_info, [])
-    sheep = landscape.herb_pop[0]
+    sheep_1= landscape.herb_pop[0]
+    sheep_2 = landscape.herb_pop[1]
 
-    new_f_max = {'f_max': 50}
+    new_f_max = {'f_max': 10}
     landscape.set_f_max(new_f_max)
-    new_params = {'F': 100}
-    sheep.set_params(new_params)
+    new_params = {'F': 10}
+    sheep_1.set_params(new_params)
+
+    start_weight_2 = sheep_2.weight
 
     landscape.feeding()
-
-    assert landscape.default_f_max['f_max'] == 0
+    assert sheep_2.weight == start_weight_2
 
 
 def test_feeding_to_much_food():
     """
-    Test that if its to much food the function eats F and leaves the food that's left.
+    Test that if its to much food the function eats F and leaves the food that's left to the nest herbivore.
     """
-    animal_info = [{'age': 5, 'weight': 6}]
+    animal_info = [{'age': 5, 'weight': 6}, {'age': 5, 'weight': 6}]
 
     landscape = Highland(animal_info, [])
-    sheep = landscape.herb_pop[0]
+    sheep_1 = landscape.herb_pop[0]
+    sheep_2 = landscape.herb_pop[1]
 
-    new_f_max = {'f_max': 500}
+    new_f_max = {'f_max': 200}
     landscape.set_f_max(new_f_max)
 
     new_params = {'F': 100}
-    sheep.set_params(new_params)
+    sheep_1.set_params(new_params)
 
     landscape.feeding()
 
-    assert landscape.default_f_max['f_max'] == 500 - sheep.default_params['F']
+    assert sheep_1.weight == sheep_2.weight
 
 
 def test_herb_feed_desert():
@@ -396,7 +420,7 @@ def test_carn_kill(mocker):
     """
     Test that if a carnevore kills a herbevore that the herbevore is removed from the population
     """
-    herb_info = [{'age': 1, 'weight': 1}]
+    herb_info = [{'age': 1, 'weight': 1}, {'age': 1, 'weight': 1}, {'age': 1, 'weight': 1}]
     carn_info = [{'age': 30, 'weight': 30}]
 
     landscape = Highland(herb_info, carn_info)
