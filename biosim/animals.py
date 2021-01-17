@@ -17,7 +17,7 @@ class Animals:
                       'zeta': None, 'xi': None, 'omega': None, 'F': None, 'DeltaPhiMax': None}
 
     @classmethod
-    def set_params(cls, new_params):
+    def set_params(cls, params):
         """
         Updates the parameters with new ones.
 
@@ -26,13 +26,13 @@ class Animals:
         new_params: dict
             New parameters
     """
-        for key in new_params:
+        for key in params:
             if key not in ('w_birth', 'sigma_birth', 'beta', 'eta', 'a_half',
                            'phi_age', 'w_half', 'phi_weight', 'mu', 'gamma',
                            'zeta', 'xi', 'omega', 'F', 'DeltaPhiMax'):
                 raise KeyError('Invalid parameter name: ' + key)
             else:
-                cls.default_params[key] = new_params[key]
+                cls.default_params[key] = params[key]
 
     def __init__(self, animal_info):
         self.age = animal_info['age']
