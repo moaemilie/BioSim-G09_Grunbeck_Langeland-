@@ -424,6 +424,11 @@ def test_carn_kill(mocker):
     carn_info = [{'age': 30, 'weight': 30}]
 
     landscape = Highland(herb_info, carn_info)
+    sheep = landscape.herb_pop[0]
+    wolf = landscape.carn_pop[0]
+
+    sheep.set_params({'F':0})
+    wolf.set_params({'F':200})
 
     mocker.patch('biosim.animals.Carnivore.kill', ReturnValue = True)
 
@@ -466,9 +471,10 @@ def test_carn_appetite(mocker):
 
     mocker.patch('biosim.animals.Carnivore.kill', ReturnValue=True)
 
+    landscape.set_animal_parameters('Herbivore', {'F': 0})
     wolf = landscape.carn_pop[0]
 
-    wolf.set_params({'F': 5})
+    wolf.set_params({'F': 7})
 
     landscape.feeding()
 
