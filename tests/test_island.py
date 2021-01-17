@@ -30,13 +30,28 @@ def population():
     return [{'species': 'Herbivore', 'age': 5, 'weight': 20}], [{'species': 'Carnivore', 'age': 5, 'weight': 20}]
 
 
-def test_wrong_map():
+def test_wrong_map_letter():
     """
     Test that you get a KeyError if there is a unknown letter in the map.
     """
     geogr = """\
                WWWW
                WLPW
+               WHLW
+               WWWW"""
+    geogr = textwrap.dedent(geogr)
+    new_island = Island(geogr)
+    with pytest.raises(ValueError):
+        new_island.make_map()
+
+
+def test_wrong_map_row_length():
+    """
+    Test that you get a KeyError if the rows of the map input have different lengths.
+    """
+    geogr = """\
+               WWWW
+               WLLHW
                WHLW
                WWWW"""
     geogr = textwrap.dedent(geogr)
@@ -72,7 +87,7 @@ def test_add_animals_outside_map(new_island, population):
     Test that you get an error if you place the animals outside the map.
     """
     with pytest.raises(ValueError):
-        new_island.add_animals_island((5, 5), population[0], population[1])
+        new_island.add_animals_island((5, 4), population[0], population[1])
 
 
 def test_add_animals_in_water(new_island, population):
@@ -190,15 +205,25 @@ def test_birth(new_island, mocker):
     assert new_island.get_num_herb() == 2 * 2, new_island.get_num_carn() == 2 * 2
 
 
-def test_actually_move(new_island, population, mocker):
+def test_actually_move(population, mocker):
+    geogr = """\
+               WWWWWW
+               WHHLLW
+               WLHHLW
+               WHHLLW
+               WWWWWW"""
+    geogr = textwrap.dedent(geogr)
+    new_island = Island(geogr)
+    new_island.make_map()
 
     mocker.patch('biosim.animals.Animals.move_animal', ReturnValue=True)
 
-    new_island.add_animals_island((2, 2), population[0], population[1])
+    new_island.add_animals_island((3, 3), population[0], population[1])
 
     new_island.move_island()
+    new_island.add_immigrants_island()
 
-    num_in_cell = new_island.island_map[1][1].get_num_herb() + new_island.island_map[1][1].get_num_carn()
+    num_in_cell = new_island.island_map[2][2].get_num_herb() + new_island.island_map[1][1].get_num_carn()
     num_on_island = new_island.get_num_herb() + new_island.get_num_carn()
 
     assert num_in_cell == 0, num_on_island == 2
@@ -217,17 +242,27 @@ def test_animal_not_move_to_water(population):
 
     for year in range(10):
         new_island.move_island()
+        new_island.add_immigrants_island()
         assert (len(new_island.island_map[1][1].herb_pop)) == 1
 
 
-def test_move_to_neighbor_cells(new_island, population, mocker):
+def test_move_to_neighbor_cells(population, mocker):
+    geogr = """\
+               WWWWWW
+               WHHLLW
+               WLHHLW
+               WHHLLW
+               WWWWWW"""
+    geogr = textwrap.dedent(geogr)
+    new_island = Island(geogr)
+    new_island.make_map()
 
     mocker.patch('biosim.animals.Animals.move_animal', ReturnValue=True)
-    new_island.add_animals_island((2, 2), population[0])
+    new_island.add_animals_island((3, 3), population[0])
     new_island.move_island()
     new_island.add_immigrants_island()
-    num_in_neighbor_cells = sum([new_island.island_map[2][3].get_num_herb(), new_island.island_map[2][1].get_num_herb(),
-                                 new_island.island_map[3][2].get_num_herb(), new_island.island_map[1][2].get_num_herb()])
+    num_in_neighbor_cells = sum([new_island.island_map[3][4].get_num_herb(), new_island.island_map[3][2].get_num_herb(),
+                                 new_island.island_map[2][3].get_num_herb(), new_island.island_map[4][3].get_num_herb()])
     assert num_in_neighbor_cells == 1
 
 

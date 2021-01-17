@@ -42,14 +42,19 @@ class Island:
         """
         self.island_map = [list(line) for line in self.island_map.split('\n')]
 
+        first_line = len(self.island_map[0])
         for string in self.island_map:
+            if len(string) != first_line:
+                raise ValueError('Map rows must be of same length.')
             for letter in string:
                 if letter not in ('W', 'H', 'L', 'D'):
                     raise ValueError('Invalid landscape letter: ' + letter)
 
         for string in self.island_map[0][:] + self.island_map[-1][:] + self.island_map[:][0] + self.island_map[:][-1]:
             if string != 'W':
-                raise ValueError('Map must be surrounded by water')
+                raise ValueError('Map must be surrounded by water.')
+
+
 
         landscapes = {'W': Water, 'L': Lowland, 'H': Highland, 'D': Desert}
 
@@ -65,15 +70,15 @@ class Island:
             new_herbs = []
         elif new_carns is None:
             new_carns = []
-        x_coord = coordinates[0] - 1
-        y_coord = coordinates[1] - 1
-        if 0 >= y_coord >= self.map_rows or 0 >= x_coord >= self.map_columns:
+        r_coord = coordinates[0] - 1
+        c_coord = coordinates[1] - 1
+        if 0 > r_coord >= self.map_rows or 0 >= c_coord >= self.map_columns:
             raise ValueError(f'Coordinate out of range {coordinates}')
 
-        if isinstance(self.island_map[x_coord][y_coord], Water):
+        elif isinstance(self.island_map[r_coord][c_coord], Water):
             raise ValueError(f'Can not place animals in water {coordinates}')
 
-        origin_cell = self.island_map[x_coord][y_coord]
+        origin_cell = self.island_map[r_coord][c_coord]
         origin_cell.add_animals_landscape(new_herbs, new_carns)
 
     def get_num_herb(self):
