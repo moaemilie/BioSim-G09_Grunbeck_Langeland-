@@ -204,7 +204,7 @@ def test_actually_move(new_island, population, mocker):
     assert num_in_cell == 0, num_on_island == 2
 
 
-def test_animal_not_move_to_water():
+def test_animal_not_move_to_water(population):
     geogr = """\
                WWW
                WHW
@@ -213,36 +213,36 @@ def test_animal_not_move_to_water():
     new_island = Island(geogr)
     new_island.make_map()
 
-    new_island.add_animals((2,2), [{'species': 'Herbivore', 'age': 5, 'weight': 20}], [{'species': 'Carnivore', 'age': 5, 'weight': 20}] )
+    new_island.add_animals((2,2), population[0], population[1] )
 
     for year in range(10):
         new_island.move_island()
         assert (len(new_island.island_map[1][1].herb_pop)) == 1
 
 
-def test_move_animal(new_island, population):
-
-    new_island.add_animals((2,2), [{'species': 'Herbivore', 'age': 5, 'weight': 20}], [{'species': 'Carnivore', 'age': 5, 'weight': 20}] )
-
-    counter = 0
-    years = 10
-
-    for year in range(years):
-        new_island.move_island()
-        counter += 1
-
-    [new_island.island_map[1][1] for year in range(10)]
-    assert
-
-
-def test_move_to_neighbor_cell(new_island, population, mocker):
+def test_move_to_neighbor_cells(new_island, population, mocker):
 
     mocker.patch('biosim.animals.Animals.move_animal', ReturnValue=True)
     new_island.add_animals((2, 2), population[0])
     new_island.move_island()
+    new_island.add_immigrants()
     num_in_neighbor_cells = sum([new_island.island_map[2][3].get_num_herb(), new_island.island_map[2][1].get_num_herb(),
                                  new_island.island_map[3][2].get_num_herb(), new_island.island_map[1][2].get_num_herb()])
-    assert num_in_neighbor_cells == 2
+    assert num_in_neighbor_cells == 1
+
+
+# def test_move_only_once_a_year(new_island, population, mocker):
+#
+#     mocker.patch('biosim.animals.Animals.move_animal', ReturnValue=True)
+#
+#     new_island.add_animals((2,2), [{'species': 'Herbivore', 'age': 5, 'weight': 20}], [{'species': 'Carnivore', 'age': 5, 'weight': 20}] )
+#     herb = new_island.island_map[1][1].herb_pop[0]
+#     carn = new_island.island_map[1][1].carn_pop[0]
+#
+#     for year in range(years):
+#         new_island.move_island()
+#     [new_island.move_island() for year in range(10)]
+#     assert
 
 
 #def test_animals_move_differently(new_island, population):
