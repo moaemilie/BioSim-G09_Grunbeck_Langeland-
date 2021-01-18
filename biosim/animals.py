@@ -22,10 +22,11 @@ class Animals:
         """
         Updates the parameters with new ones.
 
-        :params: dict
-
+        Parameters
+        ----------
+        params: dict
+            New parameters
         """
-
         for key in params:
             if key not in ('w_birth', 'sigma_birth', 'beta', 'eta', 'a_half',
                            'phi_age', 'w_half', 'phi_weight', 'mu', 'gamma',

@@ -22,6 +22,11 @@ class Landscape:
     def set_f_max(cls, params):
         """
         Sets new f_max parameter.
+
+        Parameters
+        ----------
+        params: dict
+            New parameter.
         """
 
         for key in params:
@@ -37,6 +42,16 @@ class Landscape:
 
     @staticmethod
     def set_animal_parameters(species, params):
+        """
+        Updates the parameters with new ones.
+
+        Parameters
+        ----------
+        species: string
+                contains which species.
+        params: dict
+            New parameters
+        """
         animals = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
         animals[species].set_params(params)
 
