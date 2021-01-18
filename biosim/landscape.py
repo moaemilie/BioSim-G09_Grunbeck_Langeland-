@@ -35,6 +35,14 @@ class Landscape:
         cls.default_f_max = params
 
     def __init__(self, ini_herbs=[], ini_carns=[]):
+        """
+        Parameters
+        ----------
+        ini_herbs : list
+            contains a dictionary with information of tha herbivores age and weight.
+        ini_carns: dict
+            contains a dictionary with information of tha carnivore age and weight.
+        """
         self.herb_pop = [Herbivore(ini_herbs[animal]) for animal in range(len(ini_herbs))]
         self.carn_pop = [Carnivore(ini_carns[animal]) for animal in range(len(ini_carns))]
         self.herb_immigrants = []
