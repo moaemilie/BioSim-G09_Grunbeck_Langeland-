@@ -18,6 +18,12 @@ import random
 class Island:
 
     def __init__(self, island_map):
+        """
+        Parameters
+        ----------
+        island_map : string
+            with the information of the landscape combination that creates the map.
+        """
         self.island_map = island_map
         self.map_rows = None
         self.map_columns = None
