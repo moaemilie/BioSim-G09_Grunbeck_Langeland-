@@ -5,7 +5,6 @@
 
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
-from biosim.histograms import Age_hist, Weight_hist, Fitness_hist
 import matplotlib.pyplot as plt
 import numpy as np
 import textwrap
@@ -126,7 +125,7 @@ class Graphics:
         carn_dist = [[self.island.island_map[row][col].get_num_carn() for col in range(self.island.map_columns)] for row in range(self.island.map_rows)]
         self.ax_herb_dist.imshow(herb_dist, cmap='viridis')
         self.ax_carn_dist.imshow(carn_dist, cmap='viridis')
-        colorbar.ColorbarBase(self.ax_herb_dist, cmap='viridis', format='%.1f')
+
 
 
 
