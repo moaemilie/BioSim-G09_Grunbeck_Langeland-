@@ -316,13 +316,15 @@ def test_no_food_left():
 
     new_f_max = {'f_max': 10}
     landscape.set_f_max(new_f_max)
+
     new_params = {'F': 10}
     sheep_1.set_params(new_params)
 
+    start_weight_1 = sheep_1.weight
     start_weight_2 = sheep_2.weight
 
     landscape.eating_landscape()
-    assert sheep_2.weight == start_weight_2
+    assert sheep_2.weight == start_weight_2 or sheep_1.weight == start_weight_1
 
 
 def test_feeding_to_much_food():
