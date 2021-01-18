@@ -99,7 +99,7 @@ class BioSim:
                         age_list_herb.append(herb.age)
                     for carn in self.sim_island.island_map[row][col].carn_pop:
                         age_list_carn.append([carn.age])
-            return (age_list_herb, age_list_carn)
+            return [age_list_herb, age_list_carn]
 
         def weight_list():
             """
@@ -120,6 +120,7 @@ class BioSim:
                         weight_list_herb.append(herb.weight)
                     for carn in self.sim_island.island_map[row][col].carn_pop:
                         weight_list_carn.append([carn.weight])
+            return [weight_list_herb, weight_list_carn]
 
         def fitness_list():
             """
@@ -140,15 +141,13 @@ class BioSim:
                         fitness_list_herb.append(herb.fitness_animal())
                     for carn in self.sim_island.island_map[row][col].carn_pop:
                         fitness_list_carn.append([carn.fitness_animal()])
+            return [fitness_list_herb, fitness_list_carn]
 
         for year in range(num_years):
             simulate_year()
-            age_list()
-            weight_list()
-            fitness_list()
             self.sim_graphics.counter(self.sim_year)
             self.sim_graphics.line_plot(self.sim_year, self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
-
+            self.sim_graphics.hist_plot(age_list(), weight_list(), fitness_list())
 
 
     def add_population(self, population):
