@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 """
-This class contains the simulation
+This file contains the simulation class
 """
 
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
