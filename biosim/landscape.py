@@ -63,17 +63,25 @@ class Landscape:
         """
         Adds a year for all animals in the population for every time its called.
         """
-        for herb, carn in zip(self.herb_pop, self.carn_pop):
+        for herb in self.herb_pop: # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
             herb.aging_animal()
+            herb.fitness_animal()
+
+        for carn in self.carn_pop:  # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
             carn.aging_animal()
+            carn.fitness_animal()
 
     def weightloss_landscape(self):
         """
 
         """
-        for herb, carn in zip(self.herb_pop, self.carn_pop):
+        for herb in self.herb_pop: # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
             herb.weightloss_animal()
+            herb.fitness_animal()
+
+        for carn in self.carn_pop:  # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
             carn.weightloss_animal()
+            carn.fitness_animal()
 
     def fitness_landscape(self):
         """
@@ -107,6 +115,7 @@ class Landscape:
         """
 
         fodder = self.default_f_max['f_max']
+        random.shuffle(self.herb_pop)
 
         for herb in self.herb_pop:
             if fodder == 0:
