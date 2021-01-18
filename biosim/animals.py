@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 """
-
+The animal class
 """
 
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
@@ -9,9 +9,10 @@ import math
 import random
 
 
-
-
 class Animals:
+    """
+    The base class for all animals
+    """
     default_params = {'w_birth': None, 'sigma_birth': None, 'beta': None, 'eta': None, 'a_half': None,
                       'phi_age': None, 'w_half': None, 'phi_weight': None, 'mu': None, 'gamma': None,
                       'zeta': None, 'xi': None, 'omega': None, 'F': None, 'DeltaPhiMax': None}
@@ -25,7 +26,7 @@ class Animals:
         ----------
         new_params: dict
             New parameters
-    """
+        """
         for key in params:
             if key not in ('w_birth', 'sigma_birth', 'beta', 'eta', 'a_half',
                            'phi_age', 'w_half', 'phi_weight', 'mu', 'gamma',
@@ -142,6 +143,9 @@ class Animals:
 
 
 class Herbivore(Animals):
+    """
+    The herbivore class
+    """
     default_params = {'w_birth': 8, 'sigma_birth': 1.5, 'beta': 0.9, 'eta': 0.05, 'a_half': 40.0,
                       'phi_age': 0.6, 'w_half': 10, 'phi_weight': 0.1, 'mu': 0.25, 'gamma': 0.2,
                       'zeta': 3.5, 'xi': 1.2, 'omega': 0.4, 'F': 10, 'DeltaPhiMax': None}
@@ -151,6 +155,9 @@ class Herbivore(Animals):
 
 
 class Carnivore(Animals):
+    """
+    The carnivore class
+    """
     default_params = {'w_birth': 6, 'sigma_birth': 1, 'beta': 0.75, 'eta': 0.125, 'a_half': 40,
                       'phi_age': 0.3, 'w_half': 4.0, 'phi_weight': 0.4, 'mu': 0.4, 'gamma': 0.8,
                       'zeta': 3.5, 'xi': 1.1, 'omega': 0.8, 'F': 50, 'DeltaPhiMax': 10}
