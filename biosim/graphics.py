@@ -22,6 +22,12 @@ class Graphics:
         self.ax4 = self.fig.add_subplot(2, 3, 5)
         self.ax5 = self.fig.add_subplot(2, 3, 6)
         self.ax_count = self.fig.add_axes([0.4, 0.8, 0.2, 0.2])
+        self.count_template = 'Count: {:5d}'
+        self.ax_count_form = self.ax_count.text(0.5, 0.5, self.count_template.format(0),
+                                 horizontalalignment='center',
+                                 verticalalignment='center',
+                                 transform=self.ax_count.transAxes)
+        self.ax_count.axis('off')
 
     def setup(self, num_years):
 
@@ -31,49 +37,36 @@ class Graphics:
         else:
             self.ax_line.set_ylim(0, self.ymax_animals)
 
-        line_herb = self.ax_line.plot(np.arange(num_years),
-                                      np.full(num_years, np.nan), 'b-')[0]
-        line_carn = self.ax_line.plot(np.arange(num_years),
-                                      np.full(num_years, np.nan), 'r-')[0]
+        self.line_herb = self.ax_line.plot(np.arange(num_years),
+                                           np.full(num_years, np.nan), 'b-')[0]
+        self.line_carn = self.ax_line.plot(np.arange(num_years),
+                                           np.full(num_years, np.nan), 'r-')[0]
 
-        self.ax_count.axis('off')
-        template = 'Count: {:5d}'
-        txt = self.ax_count.text(0.5, 0.5, template.format(0),
-                       horizontalalignment='center',
-                       verticalalignment='center',
-                       transform=self.ax_count.transAxes)
+
+    def counter(self, year):
 
         #plt.pause(0.01)
 
-        #input('Press ENTER to begin counting')
-
-        # for k in range(num_years):
-        #     txt.set_text(template.format(k))
-        #     plt.pause(0.1)
-
-        #plt.show()
+        self.ax_count_form.set_text(self.count_template.format(year))
+        plt.pause(0.1)
 
 
-    def line_plot(self):
-        num_years = 100
 
-        for year in range(num_years):
-            ydata_h = line_herb.get_ydata()
-            ydata_c = line_carn.get_ydata()
-            ydata_h[year] = np.random.random()
-            ydata_c[year] = np.random.random()
-            line_herb.set_ydata(ydata_h)
-            line_carn.set_ydata(ydata_c)
-            self.fig.canvas.flush_events()
-            plt.pause(1e-6)
+    def line_plot(self, year, num_herb, num_carn):
 
-
+        ydata_h = self.line_herb.get_ydata()
+        ydata_c = self.line_carn.get_ydata()
+        ydata_h[year-1] = num_herb
+        ydata_c[year-1] = num_carn
+        self.line_herb.set_ydata(ydata_h)
+        self.line_carn.set_ydata(ydata_c)
+        self.fig.canvas.flush_events()
+        plt.pause(1e-6)
 
     # def mapping(self):
     #
     #
-    def logger(self):
-
+    # def logger(self):
 
 
 if __name__ == '__main__':
