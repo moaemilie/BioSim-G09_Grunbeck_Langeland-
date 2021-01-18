@@ -36,6 +36,13 @@ class Animals:
                 cls.default_params[key] = params[key]
 
     def __init__(self, animal_info):
+        """
+        Parameters
+        ----------
+        animal_info : dict
+            contains information about the animal weight and age.
+        """
+
         self.age = animal_info['age']
         self.weight = animal_info['weight']
         self.fit = self.fitness_animal()
@@ -63,7 +70,7 @@ class Animals:
         Returns
         -------
         Float
-        with new fitness between 0 and 1
+            with new fitness between 0 and 1
         """
         if self.weight <= 0:
             self.fit = 0
