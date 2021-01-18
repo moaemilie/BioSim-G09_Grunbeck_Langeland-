@@ -15,7 +15,7 @@ class BioSim:
     """
     The base class of the simulation
     """
-    def __init__(self, island_map, ini_pop, seed,
+    def __init__(self, island_map, ini_pop, seed=123456,
                  ymax_animals=None, cmax_animals=None, hist_specs=None,
                  img_base=None, img_fmt='png'):
         """
@@ -42,15 +42,15 @@ class BioSim:
         self.hist_specs = hist_specs
         self.img_base = img_base
         self.img_fmt = img_fmt
-        self.sim_graphics = Graphics(ymax_animals, cmax_animals)
-        self.sim_island = Island(island_map)
+        self.island_map = island_map
+        self.sim_island = Island(self.island_map)
         self.sim_island.make_map()
         if ini_pop != []:
             if ini_pop[0]['pop'][0]['species'] == 'Herbivore':
                 self.sim_island.add_animals_island(ini_pop[0]['loc'], ini_pop[0]['pop'], None)
             else:
                 self.sim_island.add_animals_island(ini_pop[0]['loc'], None, ini_pop[0]['pop'])
-
+        self.sim_graphics = Graphics(ymax_animals, cmax_animals, hist_specs, self.sim_island)
 
     def set_animal_parameters(self, species, params):
         """
@@ -69,6 +69,7 @@ class BioSim:
         self.tot_years += num_years
 
         self.sim_graphics.setup(self.tot_years)
+        self.sim_graphics.map_plot(self.island_map)
 
         def simulate_year():
             self.sim_island.feeding_island()
@@ -100,6 +101,7 @@ class BioSim:
                     for carn in self.sim_island.island_map[row][col].carn_pop:
                         age_list_carn.append([carn.age])
             return [age_list_herb, age_list_carn]
+
 
         def weight_list():
             """
@@ -148,6 +150,7 @@ class BioSim:
             self.sim_graphics.counter(self.sim_year)
             self.sim_graphics.line_plot(self.sim_year, self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
             self.sim_graphics.hist_plot(age_list(), weight_list(), fitness_list())
+            self.sim_graphics.dist_plot()
 
 
     def add_population(self, population):
