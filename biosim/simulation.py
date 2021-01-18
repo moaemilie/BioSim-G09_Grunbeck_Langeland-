@@ -46,14 +46,13 @@ class BioSim:
 
     def simulate(self, num_years, vis_years=1, img_years=None):
         def simulate_year():
-            self.sim_island.aging_island()
-            self.sim_island.weightloss_island()
-            self.sim_island.fitness_island()
-            self.sim_island.birth_island()
             self.sim_island.feeding_island()
-            self.sim_island.death_island()
+            self.sim_island.birth_island()
             self.sim_island.move_island()
             self.sim_island.add_immigrants_island()
+            self.sim_island.aging_island()
+            self.sim_island.weightloss_island()
+            self.sim_island.death_island()
             self.sim_year += 1
             print(self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
 
