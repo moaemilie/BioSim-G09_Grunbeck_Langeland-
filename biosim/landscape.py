@@ -1,12 +1,11 @@
 # -*- encoding: utf-8 -*-
 """
-
+This file contains the class Landscape
 """
 
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
-from biosim.animals import Herbivore
-from biosim.animals import Carnivore
+from biosim.animals import Herbivore, Carnivore
 import random
 
 
