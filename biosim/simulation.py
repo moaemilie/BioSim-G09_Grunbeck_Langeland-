@@ -1,19 +1,19 @@
 # -*- encoding: utf-8 -*-
 """
-
+This class contains the simulation
 """
 
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 from biosim.island import Island
-from biosim.landscape import Lowland
-from biosim.landscape import Highland
-from biosim.landscape import Desert
-from biosim.landscape import Water
+from biosim.landscape import Lowland, Highland, Desert, Water
 import random
 
 
 class BioSim:
+    """
+    The base class of the simulation
+    """
     def __init__(self, island_map, ini_pop, seed,
                  ymax_animals=None, cmax_animals=None, hist_specs=None,
                  img_base=None, img_fmt='png'):
