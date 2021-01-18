@@ -7,6 +7,7 @@ __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 from biosim.island import Island
 from biosim.landscape import Lowland, Highland, Desert, Water
+from biosim.graphics import Graphics
 import random
 
 
@@ -37,11 +38,11 @@ class BioSim:
         """
         random.seed(seed)
         self.sim_year = 0
-        self.ymax_animals = ymax_animals
-        self.cmax_animals = cmax_animals
+        self.tot_years = 0
         self.hist_specs = hist_specs
         self.img_base = img_base
         self.img_fmt = img_fmt
+        self.sim_graphics = Graphics(ymax_animals, cmax_animals)
         self.sim_island = Island(island_map)
         self.sim_island.make_map()
         if ini_pop != []:
@@ -49,6 +50,7 @@ class BioSim:
                 self.sim_island.add_animals_island(ini_pop[0]['loc'], ini_pop[0]['pop'], None)
             else:
                 self.sim_island.add_animals_island(ini_pop[0]['loc'], None, ini_pop[0]['pop'])
+
 
     def set_animal_parameters(self, species, params):
         """
@@ -63,6 +65,11 @@ class BioSim:
         self.sim_island.set_landscape_parameters(landscape, params)
 
     def simulate(self, num_years, vis_years=1, img_years=None):
+
+        self.tot_years += num_years
+
+        self.sim_graphics.setup(self.tot_years)
+
         def simulate_year():
             self.sim_island.feeding_island()
             self.sim_island.birth_island()
@@ -72,7 +79,6 @@ class BioSim:
             self.sim_island.weightloss_island()
             self.sim_island.death_island()
             self.sim_year += 1
-            print(self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
 
         def age_list():
             """
@@ -87,11 +93,11 @@ class BioSim:
             age_list_herb = []
             age_list_carn = []
 
-            for row in range(self.map_rows):
-                for col in range(self.map_columns):
+            for row in range(self.sim_island.map_rows):
+                for col in range(self.sim_island.map_columns):
                     for herb in self.sim_island.island_map[row][col].herb_pop:
                         age_list_herb.append(herb.age)
-                    for carn in self.sim_island.island_map[row][col].carn.pop:
+                    for carn in self.sim_island.island_map[row][col].carn_pop:
                         age_list_carn.append([carn.age])
             return (age_list_herb, age_list_carn)
 
@@ -108,11 +114,11 @@ class BioSim:
             weight_list_herb = []
             weight_list_carn = []
 
-            for row in range(self.map_rows):
-                for col in range(self.map_columns):
+            for row in range(self.sim_island.map_rows):
+                for col in range(self.sim_island.map_columns):
                     for herb in self.sim_island.island_map[row][col].herb_pop:
                         weight_list_herb.append(herb.weight)
-                    for carn in self.sim_island.island_map[row][col].carn.pop:
+                    for carn in self.sim_island.island_map[row][col].carn_pop:
                         weight_list_carn.append([carn.weight])
 
         def fitness_list():
@@ -128,19 +134,22 @@ class BioSim:
             fitness_list_herb = []
             fitness_list_carn = []
 
-            for row in range(self.map_rows):
-                for col in range(self.map_columns):
+            for row in range(self.sim_island.map_rows):
+                for col in range(self.sim_island.map_columns):
                     for herb in self.sim_island.island_map[row][col].herb_pop:
                         fitness_list_herb.append(herb.fitness_animal())
-                    for carn in self.sim_island.island_map[row][col].carn.pop:
+                    for carn in self.sim_island.island_map[row][col].carn_pop:
                         fitness_list_carn.append([carn.fitness_animal()])
-
 
         for year in range(num_years):
             simulate_year()
             age_list()
             weight_list()
             fitness_list()
+            self.sim_graphics.counter(self.sim_year)
+            self.sim_graphics.line_plot(self.sim_year, self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
+
+
 
     def add_population(self, population):
         if population[0]['pop'][0]['species'] == 'Herbivore':
