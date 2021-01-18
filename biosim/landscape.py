@@ -13,6 +13,9 @@ import random
 
 
 class Landscape:
+    """
+    Class that contains all the landscapes.
+    """
     default_f_max = {'f_max': None}
 
     @classmethod
@@ -199,6 +202,9 @@ class Landscape:
 
 
 class Lowland(Landscape):
+    """
+    Subclass that contains the Lowland cells.
+    """
     default_f_max = {'f_max': 800}
 
     def __init__(self, ini_herbs=[], ini_carns=[]):
@@ -206,6 +212,9 @@ class Lowland(Landscape):
 
 
 class Highland(Landscape):
+    """
+    Subclass that contains the Highland cells.
+    """
     default_f_max = {'f_max': 300}
 
     def __init__(self, ini_herbs=[], ini_carns=[]):
@@ -213,6 +222,9 @@ class Highland(Landscape):
 
 
 class Desert(Landscape):
+    """
+    Subclass that contains the Desert cells.
+    """
     default_f_max = {'f_max': 0}
 
     def __init__(self, ini_herbs=[], ini_carns=[]):
@@ -220,6 +232,9 @@ class Desert(Landscape):
 
 
 class Water(Landscape):
+    """
+    Subclass that contains the Water cells.
+    """
     default_f_max = {'f_max': 0}
 
     def __init__(self, ini_herbs=[], ini_carns=[]):
