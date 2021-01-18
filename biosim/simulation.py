@@ -139,6 +139,8 @@ class BioSim:
         for year in range(num_years):
             simulate_year()
             age_list()
+            weight_list()
+            fitness_list()
 
     def add_population(self, population):
         if population[0]['pop'][0]['species'] == 'Herbivore':
