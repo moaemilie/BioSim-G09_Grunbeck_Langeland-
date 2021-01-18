@@ -67,6 +67,21 @@ class Island:
         return self.island_map
 
     def add_animals_island(self, coordinates, new_herbs=None, new_carns=None):
+        """
+
+        Parameters
+        ----------
+        coordinates: tuple
+            the coordinates that the new animals wil be placed on.
+        new_herbs: list / None
+            containing a dictionary with age and weight of the new herbivores.
+        new_carns: list / None
+            containing a dictionary with age and weight of the new carnivores.
+
+        Raises
+        -------
+        ValueError, ValueError
+        """
         if new_herbs is None:
             new_herbs = []
         elif new_carns is None:
@@ -105,36 +120,49 @@ class Island:
                     for row in range(self.map_rows)])
 
     def aging_island(self):
+        """
+        Ages every animal on the map with one year.
+        """
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].aging_landscape()
-        return self.island_map
 
     def weightloss_island(self):
+        """
+        Make every animal on the map loose weight.
+        """
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].weightloss_landscape()
-        return self.island_map
 
     def fitness_island(self):
+        """
+        Calculates the fitness of every animal on the map.
+        """
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].fitness_landscape()
-        return self.island_map
 
     def birth_island(self):
+        """
+        Find out which animal on the map wil give weight and adds the newborn to the population.
+        """
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].birth_landscape()
-        return self.island_map
 
     def feeding_island(self):
+        """
+        Makes every animal on the map eat.
+        """
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].eating_landscape()
-        return self.island_map
 
     def death_island(self):
+        """
+        Finds the animals that dies and take them away from the population.
+        """
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].death_landscape()
@@ -142,7 +170,6 @@ class Island:
 
     def move_island(self):
         """
-
         Moves the animals
 
         Returns
@@ -153,18 +180,20 @@ class Island:
 
         def choose_neighbor(coord_1, coord_2):
             """
-
             Finds neighbouring cells.
 
             Input
             -------
-            int, int
-                    number of rows and columns
+            coord_1: int
+                    x_positon of the placement of the animal
+            coord_2: int
+                 y_positon of the placement of the animal
 
             Returns
             -------
-            dic
-                    dictionary with the neighbouring cells.
+            landscape instance
+                Where the animal is going to move.
+
             """
             neighbors = {'left': self.island_map[coord_1][coord_2 + 1], 'right': self.island_map[coord_1][coord_2 - 1],
                          'up': self.island_map[coord_1 + 1][coord_2], 'down': self.island_map[coord_1 - 1][coord_2]}
@@ -177,8 +206,12 @@ class Island:
 
             Input
             -------
-            list, dict
-                    list with population, dict with neighboring cells.
+            coord_1: int
+                    x_positon of the placement of the animal
+            coord_2: int
+                 y_positon of the placement of the animal
+            pop: List
+                containing a dictionary with animals weight and age.
 
             Returns
             -------
@@ -201,10 +234,11 @@ class Island:
             for col in range(1, self.map_columns - 2, 1):
                 self.island_map[row][col].herb_pop = move_one_animal(row, col, self.island_map[row][col].herb_pop)
                 self.island_map[row][col].carn_pop = move_one_animal(row, col, self.island_map[row][col].carn_pop)
-        return self.island_map
 
     def add_immigrants_island(self):
+        """
+        Adds the animals that have chosen to move to the populations in the different cells.
+        """
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].add_immigrants_landscape()
-        return self.island_map
