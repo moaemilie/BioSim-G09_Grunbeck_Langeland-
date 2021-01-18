@@ -1,22 +1,19 @@
 # -*- encoding: utf-8 -*-
 """
-
+This file contains the class Island
 """
 
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
-from biosim.landscape import Landscape
-from biosim.landscape import Lowland
-from biosim.landscape import Highland
-from biosim.landscape import Desert
-from biosim.landscape import Water
-from biosim.animals import Herbivore
-from biosim.animals import Carnivore
+from biosim.landscape import Landscape, Lowland, Highland, Desert, Water
+from biosim.animals import Herbivore, Carnivore
 import random
 
 
 class Island:
-
+    """
+    The base class of the Island.
+    """
     def __init__(self, island_map):
         """
         Parameters
@@ -86,10 +83,24 @@ class Island:
         origin_cell.add_animals_landscape(new_herbs, new_carns)
 
     def get_num_herb(self):
+        """
+        Finds the total number herbivores on the map
+        Returns
+        -------
+        int:
+            number of herbs
+        """
         return sum([sum([self.island_map[row][col].get_num_herb() for col in range(self.map_columns)])
                     for row in range(self.map_rows)])
 
     def get_num_carn(self):
+        """
+        Finds the total number carnivores on the map
+        Returns
+        -------
+        int:
+            number of carnivores
+        """
         return sum([sum([self.island_map[row][col].get_num_carn() for col in range(self.map_columns)])
                     for row in range(self.map_rows)])
 
