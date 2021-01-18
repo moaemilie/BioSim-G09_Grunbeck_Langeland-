@@ -17,6 +17,24 @@ class BioSim:
     def __init__(self, island_map, ini_pop, seed,
                  ymax_animals=None, cmax_animals=None, hist_specs=None,
                  img_base=None, img_fmt='png'):
+        """
+        Parameters
+        ----------
+        island_map : string
+            with the information of the landscape combination that creates the map.
+        ini_pop: list
+            with dictionaries that contains the initial coordinates, age, weight and number of animals that begins on the island.
+        seed: int
+            contains the seed for the whole project.
+        ymax_animals: int
+            IDK
+        cmax_animals: IDK
+            IDK
+        hist_specs: dict
+            IDK
+        img_fmt: string
+            which format the images should be saved as.
+        """
         random.seed(seed)
         self.sim_year = 0
         self.ymax_animals = ymax_animals
