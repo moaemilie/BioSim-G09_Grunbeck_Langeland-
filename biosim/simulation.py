@@ -74,8 +74,71 @@ class BioSim:
             self.sim_year += 1
             print(self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
 
+        def age_list():
+            """
+            Creates two lists, one for herbivore and one for carnivore with the age of every animal.
+            Returns
+            -------
+            age_list_herb: list
+                containing the age of every carnivore on the map.
+            age_list_carn: list
+                containing the age of every carnivore on the map.
+            """
+            age_list_herb = []
+            age_list_carn = []
+
+            for row in range(self.map_rows):
+                for col in range(self.map_columns):
+                    for herb in self.sim_island.island_map[row][col].herb_pop:
+                        age_list_herb.append(herb.age)
+                    for carn in self.sim_island.island_map[row][col].carn.pop:
+                        age_list_carn.append([carn.age])
+            return (age_list_herb, age_list_carn)
+
+        def weight_list():
+            """
+            Creates two lists, one for herbivore and one for carnivore with the weight of every animal.
+            Returns
+            -------
+            weight_list_herb: list
+                containing the weight of every carnivore on the map.
+            weight_list_carn: list
+                containing the weight of every carnivore on the map.
+            """
+            weight_list_herb = []
+            weight_list_carn = []
+
+            for row in range(self.map_rows):
+                for col in range(self.map_columns):
+                    for herb in self.sim_island.island_map[row][col].herb_pop:
+                        weight_list_herb.append(herb.weight)
+                    for carn in self.sim_island.island_map[row][col].carn.pop:
+                        weight_list_carn.append([carn.weight])
+
+        def fitness_list():
+            """
+            Creates two lists, one for herbivore and one for carnivore with the fitness of every animal.
+            Returns
+            -------
+            fitness_list_herb: list
+                containing the fitness of every carnivore on the map.
+            fitness_list_carn: list
+                containing the fitness of every carnivore on the map.
+            """
+            fitness_list_herb = []
+            fitness_list_carn = []
+
+            for row in range(self.map_rows):
+                for col in range(self.map_columns):
+                    for herb in self.sim_island.island_map[row][col].herb_pop:
+                        fitness_list_herb.append(herb.fitness_animal())
+                    for carn in self.sim_island.island_map[row][col].carn.pop:
+                        fitness_list_carn.append([carn.fitness_animal()])
+
+
         for year in range(num_years):
             simulate_year()
+            age_list()
 
     def add_population(self, population):
         if population[0]['pop'][0]['species'] == 'Herbivore':
