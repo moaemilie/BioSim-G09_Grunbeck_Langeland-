@@ -45,8 +45,8 @@ if __name__ == '__main__':
                            'weight': 20}
                           for _ in range(40)]}]
 
-    sim = BioSim(island_map=geogr, ini_pop=ini_herbs,
-                 seed=123456, ymax_animals=17000, img_base='/Users/Lina/Desktop/sim/img_',
+    sim = BioSim(island_map=geogr, ini_pop=ini_herbs, seed=123456,
+                 ymax_animals=17000, cmax_animals={'Herbivore': 250, 'Carnivore': 150}, img_base='/Users/Lina/Desktop/sim/img_',
                  hist_specs={'fitness': {'max': 1.0, 'delta': 0.05},
                              'age': {'max': 60.0, 'delta': 2},
                              'weight': {'max': 60, 'delta': 2}},
