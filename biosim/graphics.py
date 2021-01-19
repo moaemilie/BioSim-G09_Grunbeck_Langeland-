@@ -11,11 +11,14 @@ import textwrap
 
 
 class Graphics:
-    def __init__(self, ymax_animals=None, cmax_animals=None, hist_specs=None, sim_island=None):
+    def __init__(self, ymax_animals=None, cmax_animals=None, hist_specs=None, sim_island=None, img_base=None, img_fmt=None):
         self.ymax_animals = ymax_animals
         self.cmax_animals = cmax_animals
         self.hist_specs = hist_specs
         self.island = sim_island
+        self.img_no = 0
+        self.img_base = img_base
+        self.img_fmt = img_fmt
 
         self.fig = plt.figure()
         self.ax_map = self.fig.add_subplot(3, 3, 1)
@@ -138,7 +141,16 @@ class Graphics:
         self.ax_herb_colb.set_data(herb_dist)
         self.ax_carn_colb.set_data(carn_dist)
 
+    def save_graphics(self):
+        """Saves graphics to file if file name given."""
 
+        if self.img_base is None:
+            return
+
+        plt.savefig('{base}_{num:05d}.{type}'.format(base=self.img_base,
+                                                     num=self.img_no,
+                                                     type=self.img_fmt))
+        self.img_no += 1
 
         # def mapping(self):
     #
