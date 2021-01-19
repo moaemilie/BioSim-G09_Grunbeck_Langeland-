@@ -42,7 +42,7 @@ class Graphics:
         self.img_no = 0
         self.img_base = img_base
         if self.img_base is None:
-            self.img_base = '..data'
+            self.img_base = '../data/img_'
         self.img_fmt = img_fmt
 
         self.fig = plt.figure(figsize=(8, 6))
@@ -63,6 +63,15 @@ class Graphics:
                                                  fontsize=14)
 
     def setup(self, num_years):
+        """
+        Sets up figure for plotting of a simulation.
+
+        Parameters
+        ----------
+        num_years: int
+            number of years for which the simulation shall be plotted.
+
+        """
 
         font = 9
         self.plot_count.axis('off')
@@ -103,6 +112,15 @@ class Graphics:
                                'weight': {'max': 60, 'delta': 2}}
 
     def counter(self, year):
+        """
+        Plots the current year of a simulation in the main figure.
+
+        Parameters
+        ----------
+        year: int
+            the current year in a simulation that is being plotted.
+
+        """
 
         self.count_format.set_text(self.count_template.format(year))
         plt.pause(0.1)
@@ -121,6 +139,18 @@ class Graphics:
         plt.pause(1e-6)
 
     def hist_plot(self, fitness_data, age_data, weight_data):
+        """
+        Plots histograms of fitness, age and weight data for the animals in a simulation.
+
+        Parameters
+        ----------
+        fitness_data: 2d-array
+            list with fitness data from a year in a simulation, containing a list for each species.
+        age_data: 2d-array
+            list with age data from a year in a simulation, containing a list for each species.
+        weight_data: 2d-array
+            list with weight data from a year in a simulation, containing a list for each species.
+        """
 
         self.plot_hist_fit.cla()
         self.plot_hist_age.cla()
@@ -138,6 +168,14 @@ class Graphics:
         plt.pause(1e-6)
 
     def map_plot(self, island_map):
+        """
+        Plots the map of a simulation.
+
+        Parameters
+        ----------
+        island_map: string
+            map of an island, consisting of the letters H, L, D and W.
+        """
 
         island_map = textwrap.dedent(island_map)
 
@@ -167,6 +205,9 @@ class Graphics:
             ax_land_type.text(0.35, ix * 0.2, name, transform=ax_land_type.transAxes, fontsize=7)
 
     def dist_plot(self):
+        """
+        Plots 2s-array map for a simulation, which shows the distribution of animals.
+        """
 
         herb_dist = [[self.island.island_map[row][col].get_num_herb_landscape()
                       for col in range(self.island.map_columns)] for row in range(self.island.map_rows)]
@@ -198,7 +239,7 @@ class Graphics:
 
     def save_graphics(self):
         """
-        Saves graphics to file if file name given.
+        Saves graphics to file if file name is given, else saves to default path.
         """
 
         if self.img_base is None:
