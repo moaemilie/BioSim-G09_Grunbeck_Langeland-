@@ -44,7 +44,7 @@ class BioSim:
         self.hist_specs = hist_specs
         self.img_base = img_base
         if self.img_base is None:
-            raise RuntimeError("No filename defined.")
+            self.img_base = '../data'
         self.movie_fmt = movie_fmt
         self.img_fmt = img_fmt
         self.island_map = island_map
