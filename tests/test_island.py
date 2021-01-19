@@ -116,12 +116,12 @@ def test_add_animals(new_island, population):
 
 def test_get_num_herb(new_island, population):
     new_island.add_animals_island((2, 2), population[0], population[1])
-    assert new_island.get_num_herb() == 1
+    assert new_island.get_num_herb_island() == 1
 
 
 def test_get_num_carn(new_island, population):
     new_island.add_animals_island((2, 2), population[0], population[1])
-    assert new_island.get_num_carn() == 1
+    assert new_island.get_num_carn_island() == 1
 
 
 def test_aging(new_island, population):
@@ -152,7 +152,7 @@ def test_fitness(new_island, population):
     carn_expected_fit = (1 / (1 + math.exp(carn.default_params["phi_age"] * (carn.age - carn.default_params["a_half"])))
                          * (1 / (1 + math.exp((-carn.default_params["phi_weight"])
                                               * (carn.weight - carn.default_params["w_half"])))))
-    assert herb.fit == herb_expected_fit, carn.fit == carn_expected_fit
+    assert herb.health == herb_expected_fit, carn.health == carn_expected_fit
 
 
 def test_feeding_herbivore(new_island, population):
@@ -183,7 +183,7 @@ def test_death_prob(new_island, population, mocker):
     new_island.add_animals_island((2, 2), population[0], population[1])
     new_island.death_island()
 
-    assert new_island.get_num_herb() == 0, new_island.get_num_carn() == 0
+    assert new_island.get_num_herb_island() == 0, new_island.get_num_carn_island() == 0
 
 
 def test_death_zero_weight(new_island, population):
@@ -196,7 +196,7 @@ def test_death_zero_weight(new_island, population):
     carn.weight = 0
     new_island.death_island()
 
-    assert new_island.get_num_herb() == 0, new_island.get_num_carn() == 0
+    assert new_island.get_num_herb_island() == 0, new_island.get_num_carn_island() == 0
 
 
 def test_birth(new_island, mocker):
@@ -211,7 +211,7 @@ def test_birth(new_island, mocker):
 
     new_island.birth_island()
 
-    assert new_island.get_num_herb() == 2 * 2, new_island.get_num_carn() == 2 * 2
+    assert new_island.get_num_herb_island() == 2 * 2, new_island.get_num_carn_island() == 2 * 2
 
 
 def test_actually_move(population, mocker):
@@ -232,8 +232,8 @@ def test_actually_move(population, mocker):
     new_island.move_island()
     new_island.add_immigrants_island()
 
-    num_in_cell = new_island.island_map[2][2].get_num_herb() + new_island.island_map[1][1].get_num_carn()
-    num_on_island = new_island.get_num_herb() + new_island.get_num_carn()
+    num_in_cell = new_island.island_map[2][2].get_num_herb_landscape() + new_island.island_map[1][1].get_num_carn_landscape()
+    num_on_island = new_island.get_num_herb_island() + new_island.get_num_carn_island()
 
     assert num_in_cell == 0, num_on_island == 2
 
@@ -270,8 +270,8 @@ def test_move_to_neighbor_cells(population, mocker):
     new_island.add_animals_island((3, 3), population[0])
     new_island.move_island()
     new_island.add_immigrants_island()
-    num_in_neighbor_cells = sum([new_island.island_map[3][4].get_num_herb(), new_island.island_map[3][2].get_num_herb(),
-                                 new_island.island_map[2][3].get_num_herb(), new_island.island_map[4][3].get_num_herb()])
+    num_in_neighbor_cells = sum([new_island.island_map[3][4].get_num_herb_landscape(), new_island.island_map[3][2].get_num_herb_landscape(),
+                                 new_island.island_map[2][3].get_num_herb_landscape(), new_island.island_map[4][3].get_num_herb_landscape()])
     assert num_in_neighbor_cells == 1
 
 

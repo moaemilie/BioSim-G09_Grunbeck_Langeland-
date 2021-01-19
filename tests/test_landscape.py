@@ -51,7 +51,7 @@ def test_get_num_herb():
     N_herb = 2
     landscape = Lowland(herb_info, carn_info)
 
-    assert landscape.get_num_herb() == N_herb
+    assert landscape.get_num_herb_landscape() == N_herb
 
 
 def test_get_num_carn():
@@ -63,7 +63,7 @@ def test_get_num_carn():
     N_carn = 2
     landscape = Lowland(herb_info, carn_info)
 
-    assert landscape.get_num_carn() == N_carn
+    assert landscape.get_num_carn_landscape() == N_carn
 
 
 def test_aging():
@@ -169,7 +169,7 @@ def test_fitness_value_herb():
         landscape.aging_landscape()
         landscape.weightloss_landscape()
         landscape.fitness_landscape()
-        assert 0 <= sheep.fit <= 1
+        assert 0 <= sheep.health <= 1
 
 
 def test_fitness_value_carn():
@@ -186,7 +186,7 @@ def test_fitness_value_carn():
             landscape.aging_landscape()
             landscape.weightloss_landscape()
             landscape.fitness_landscape()
-            assert 0 <= wolf.fit <= 1
+            assert 0 <= wolf.health <= 1
 
 
 def test_birth():
@@ -199,14 +199,14 @@ def test_birth():
                  {'age': 10, 'weight': 10}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 9}]
 
     landscape = Highland(herb_info, carn_info)
-    n_herbs = landscape.get_num_herb()
-    n_carns = landscape.get_num_carn()
+    n_herbs = landscape.get_num_herb_landscape()
+    n_carns = landscape.get_num_carn_landscape()
 
     for year in range(10):
         landscape.birth_landscape()
 
-    n_herbs_afther = landscape.get_num_herb()
-    n_carns_afther = landscape.get_num_carn()
+    n_herbs_afther = landscape.get_num_herb_landscape()
+    n_carns_afther = landscape.get_num_carn_landscape()
 
     assert n_herbs < n_herbs_afther and n_carns < n_carns_afther
 
@@ -273,7 +273,7 @@ def test_feeding_no_food():
     landscape = Highland(animal_info, [])
     sheep = landscape.herb_pop[0]
     sheep.fitness_animal()
-    fitness_before = sheep.fit
+    fitness_before = sheep.health
 
     new_f_max = {'f_max': 0}
     landscape.set_f_max(new_f_max)
@@ -281,7 +281,7 @@ def test_feeding_no_food():
     for year in range(10):
         landscape.eating_landscape()
         sheep.fitness_animal()
-        assert sheep.fit == fitness_before
+        assert sheep.health == fitness_before
 
 
 def test_feeding_little_food():
@@ -381,7 +381,7 @@ def test_herb_feeding_sorting():
 
     landscape.fitness_landscape()
 
-    assert herb1.fit < herb2.fit < herb3.fit
+    assert herb1.health < herb2.health < herb3.health
 
 
 def test_carn_feeding_sorting():
@@ -401,7 +401,7 @@ def test_carn_feeding_sorting():
 
     landscape.fitness_landscape()
 
-    assert carn1.fit > carn2.fit > carn3.fit
+    assert carn1.health > carn2.health > carn3.health
 
 
 def test_carn_weight_zero():
@@ -417,7 +417,7 @@ def test_carn_weight_zero():
 
     for year in range(10):
         landscape.eating_landscape()
-        assert not wolf.kill(sheep.fit)
+        assert not wolf.kill(sheep.health)
 
 
 def test_carn_kill(mocker):

@@ -156,7 +156,7 @@ class BioSim:
         counter = 0
         for year in range(num_years):
             simulate_year()
-            self.sim_graphics.line_plot(self.sim_year, self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
+            self.sim_graphics.line_plot(self.sim_year, self.sim_island.get_num_herb_island(), self.sim_island.get_num_carn_island())
             counter += 1
             if counter % vis_years == 0:
                 self.sim_graphics.counter(self.sim_year)
@@ -183,14 +183,14 @@ class BioSim:
         """
         Total number of animals on island.
         """
-        return self.sim_island.get_num_carn() + self.sim_island.get_num_herb()
+        return self.sim_island.get_num_carn_island() + self.sim_island.get_num_herb_island()
 
     @property
     def num_animals_per_species(self):
         """
         Total number of animals on island per species
         """
-        return {'Herbivore': self.sim_island.get_num_herb(), 'Carnivore': self.sim_island.get_num_carn()}
+        return {'Herbivore': self.sim_island.get_num_herb_island(), 'Carnivore': self.sim_island.get_num_carn_island()}
 
     def make_movie(self):
         """
