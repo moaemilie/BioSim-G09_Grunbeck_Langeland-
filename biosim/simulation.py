@@ -6,11 +6,10 @@ This file contains the simulation class
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
 
 from biosim.island import Island
-from biosim.landscape import Lowland, Highland, Desert, Water
 from biosim.graphics import Graphics
 import random
-import os
 import subprocess
+import matplotlib.pyplot as plt
 
 
 class BioSim:
@@ -19,7 +18,7 @@ class BioSim:
     """
     def __init__(self, island_map, ini_pop, seed=123456,
                  ymax_animals=None, cmax_animals=None, hist_specs=None,
-                 img_base=None, img_fmt='png'):
+                 img_base=None, img_fmt='png', movie_fmt='mp4'):
         """
         Parameters
         ----------
@@ -45,8 +44,7 @@ class BioSim:
         self.img_base = img_base
         if self.img_base is None:
             raise RuntimeError("No filename defined.")
-        #else:
-        #    self.img_base = Path(self.img_base)
+        self.movie_fmt = movie_fmt
         self.img_fmt = img_fmt
         self.island_map = island_map
         self.sim_island = Island(self.island_map)
@@ -200,13 +198,27 @@ class BioSim:
         -------
 
         """
-        try:
-            subprocess.check_call(['ffmpeg',
-                                   '-i', '{}_%05d.png'.format(self.img_base),
-                                   '-y',
-                                   '-profile:v', 'baseline',
-                                   '-level', '3.0',
-                                   '-pix_fmt', 'yuv420p',
-                                   '{}.{}'.format(self.img_base, 'mp4')])
-        except subprocess.CalledProcessError as err:
-            raise RuntimeError('ERROR: ffmpeg failed with: {}'.format(err))
+
+        if self.movie_fmt == 'mp4':
+            try:
+                subprocess.check_call(['ffmpeg',
+                                       '-i', '{}_%05d.png'.format(self.img_base),
+                                       '-y',
+                                       '-profile:v', 'baseline',
+                                       '-level', '3.0',
+                                       '-pix_fmt', 'yuv420p',
+                                       '{}.{}'.format(self.img_base, 'mp4')])
+            except subprocess.CalledProcessError as err:
+                raise RuntimeError('ERROR: ffmpeg failed with: {}'.format(err))
+        elif self.movie_fmt == 'gif':
+            try:
+                subprocess.check_call(['magick',
+                                       '-delay', '1',
+                                       '-loop', '0',
+                                       '{}_*.png'.format(self.img_base),
+                                       '{}.{}'.format(self.img_base, self.movie_fmt)])
+            except subprocess.CalledProcessError as err:
+                raise RuntimeError('ERROR: convert failed with: {}'.format(err))
+        else:
+            raise ValueError('Unknown movie format: ' + self.movie_fmt)
+
