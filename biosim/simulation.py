@@ -9,6 +9,9 @@ from biosim.island import Island
 from biosim.landscape import Lowland, Highland, Desert, Water
 from biosim.graphics import Graphics
 import random
+import os
+import subprocess
+#from pathlib import Path
 
 
 class BioSim:
@@ -41,6 +44,10 @@ class BioSim:
         self.tot_years = 0
         self.hist_specs = hist_specs
         self.img_base = img_base
+        if self.img_base is None:
+            raise RuntimeError("No filename defined.")
+        #else:
+        #    self.img_base = Path(self.img_base)
         self.img_fmt = img_fmt
         self.island_map = island_map
         self.sim_island = Island(self.island_map)
@@ -50,7 +57,9 @@ class BioSim:
                 self.sim_island.add_animals_island(ini_pop[0]['loc'], ini_pop[0]['pop'], None)
             else:
                 self.sim_island.add_animals_island(ini_pop[0]['loc'], None, ini_pop[0]['pop'])
-        self.sim_graphics = Graphics(ymax_animals, cmax_animals, hist_specs, self.sim_island)
+        self.sim_graphics = Graphics(ymax_animals, cmax_animals, hist_specs, self.sim_island, self.img_base, self.img_fmt)
+
+
 
     def set_animal_parameters(self, species, params):
         """
@@ -64,7 +73,10 @@ class BioSim:
         """
         self.sim_island.set_landscape_parameters(landscape, params)
 
-    def simulate(self, num_years, vis_years=1, img_years=None):
+    def simulate(self, num_years=100, vis_years=1, img_years=None):
+
+        if img_years is None:
+            img_years = vis_years
 
         self.tot_years += num_years
 
@@ -145,13 +157,17 @@ class BioSim:
                         fitness_list_carn.append([carn.fitness_animal()])
             return [fitness_list_herb, fitness_list_carn]
 
+        counter = 0
         for year in range(num_years):
             simulate_year()
-            self.sim_graphics.counter(self.sim_year)
             self.sim_graphics.line_plot(self.sim_year, self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
-            self.sim_graphics.hist_plot(age_list(), weight_list(), fitness_list())
-            self.sim_graphics.dist_plot()
-
+            counter += 1
+            if counter % vis_years == 0:
+                self.sim_graphics.counter(self.sim_year)
+                self.sim_graphics.hist_plot(age_list(), weight_list(), fitness_list())
+                self.sim_graphics.dist_plot()
+            if counter % img_years == 0:
+                self.sim_graphics.save_graphics()
 
     def add_population(self, population):
         if population[0]['pop'][0]['species'] == 'Herbivore':
@@ -179,3 +195,22 @@ class BioSim:
         Total number of animals on island per species
         """
         return {'Herbivore': self.sim_island.get_num_herb(), 'Carnivore': self.sim_island.get_num_carn()}
+
+    def make_movie(self):
+        """
+        Create MPEG4 movie from visualization images saved.
+
+        Returns
+        -------
+
+        """
+        try:
+            subprocess.check_call(['ffmpeg',
+                                   '-i', '{}_%05d.png'.format(self._img_base),
+                                   '-y',
+                                   '-profile:v', 'baseline',
+                                   '-level', '3.0',
+                                   '-pix_fmt', 'yuv420p',
+                                   '{}.{}'.format(self._img_base, 'mp4')])
+        except subprocess.CalledProcessError as err:
+            raise RuntimeError('ERROR: ffmpeg failed with: {}'.format(err))

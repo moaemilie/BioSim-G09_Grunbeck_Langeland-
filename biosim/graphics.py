@@ -11,16 +11,22 @@ import textwrap
 
 
 class Graphics:
-    def __init__(self, ymax_animals=None, cmax_animals=None, hist_specs=None, sim_island=None):
+    def __init__(self, ymax_animals=None, cmax_animals=None, hist_specs=None, sim_island=None, img_base=None, img_fmt=None):
         self.ymax_animals = ymax_animals
         self.cmax_animals = cmax_animals
         self.hist_specs = hist_specs
         self.island = sim_island
+        self.img_no = 0
+        self.img_base = img_base
+        self.img_fmt = img_fmt
 
         self.fig = plt.figure()
         self.ax_map = self.fig.add_subplot(3, 3, 1)
         self.ax_line = self.fig.add_subplot(3, 3, 3)
         self.ax_herb_dist = self.fig.add_subplot(3, 3, 4)
+        self.ax_herb_colb = None
+        self.ax_carn_colb = None
+        self.add_col_bar = False
         self.ax_carn_dist = self.fig.add_subplot(3, 3, 6)
         self.ax_hist_fit = self.fig.add_subplot(3, 3, 7)
         self.ax_hist_age = self.fig.add_subplot(3, 3, 8)
@@ -31,17 +37,18 @@ class Graphics:
                                  horizontalalignment='center',
                                  verticalalignment='center',
                                  transform=self.ax_count.transAxes)
-        self.ax_count.axis('off')
-        self.fig.tight_layout()
+
+
 
     def setup(self, num_years):
 
         font = 9
-
+        self.ax_count.axis('off')
+        self.fig.tight_layout()
         self.ax_line.set_title('Animal count', fontsize=font)
         self.ax_line.set_xlim(0, num_years)
         if self.ymax_animals is None:
-            self.ax_line.set_ylim(0, auto=True)
+            self.ax_line.set_autoscaley_on(True)
         else:
             self.ax_line.set_ylim(0, self.ymax_animals)
 
@@ -70,7 +77,6 @@ class Graphics:
         self.ax_count_form.set_text(self.count_template.format(year))
         plt.pause(0.1)
 
-
     def line_plot(self, year, num_herb, num_carn):
 
         ydata_h = self.line_herb.get_ydata()
@@ -83,7 +89,7 @@ class Graphics:
         plt.pause(1e-6)
 
     def hist_plot(self, fitness_data, age_data, weight_data):
-        self.ax_hist_fit.clear()
+        self.ax_hist_fit.clear() #.redraw_in_frame()
         self.ax_hist_age.clear()
         self.ax_hist_weight.clear()
         self.ax_hist_fit.hist(fitness_data[0], bins=round(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']), histtype=u'step')
@@ -123,11 +129,28 @@ class Graphics:
     def dist_plot(self):
         herb_dist = [[self.island.island_map[row][col].get_num_herb() for col in range(self.island.map_columns)] for row in range(self.island.map_rows)]
         carn_dist = [[self.island.island_map[row][col].get_num_carn() for col in range(self.island.map_columns)] for row in range(self.island.map_rows)]
+
+        if self.add_col_bar == False:
+            self.ax_herb_colb = self.ax_herb_dist.imshow(herb_dist, cmap='viridis')
+            self.ax_carn_colb = self.ax_carn_dist.imshow(carn_dist, cmap='viridis')
+            plt.colorbar(self.ax_herb_colb, ax=self.ax_herb_dist, orientation='vertical', shrink=0.7)
+            plt.colorbar(self.ax_carn_colb, ax=self.ax_carn_dist, orientation='vertical', shrink=0.7)
+            self.add_col_bar = True
         self.ax_herb_dist.imshow(herb_dist, cmap='viridis')
-        self.ax_carn_dist.imshow(carn_dist, cmap='viridis')
+        self.ax_carn_colb = self.ax_carn_dist.imshow(carn_dist, cmap='viridis')
+        self.ax_herb_colb.set_data(herb_dist)
+        self.ax_carn_colb.set_data(carn_dist)
 
+    def save_graphics(self):
+        """Saves graphics to file if file name given."""
 
+        if self.img_base is None:
+            return
 
+        plt.savefig('{base}_{num:05d}.{type}'.format(base=self.img_base,
+                                                     num=self.img_no,
+                                                     type=self.img_fmt))
+        self.img_no += 1
 
         # def mapping(self):
     #
