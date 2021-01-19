@@ -9,6 +9,6 @@ The year cycle:
 * Feeding
 * Procreation
 * Migration
-* Ageing
-* Loos of weight
+* Aging
+* Loss of weight
 * Death
