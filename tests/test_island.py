@@ -14,6 +14,9 @@ import random
 
 @pytest.fixture
 def new_island():
+    """
+    Makes simple island for testing.
+    """
     geogr = """\
                WWWW
                WLLW
@@ -27,6 +30,9 @@ def new_island():
 
 @pytest.fixture
 def population():
+    """
+    Makes simple population for testing.
+    """
     return [{'species': 'Herbivore', 'age': 5, 'weight': 20}], [{'species': 'Carnivore', 'age': 5, 'weight': 20}]
 
 
@@ -108,6 +114,9 @@ def test_add_animals_in_water(new_island, population):
 
 
 def test_add_animals(new_island, population):
+    """
+    Test that correct amount of animals is added.
+    """
     new_island.add_animals_island((2, 2), population[0], population[1])
     num_herb = len(new_island.island_map[1][1].herb_pop)
     num_carn = len(new_island.island_map[1][1].carn_pop)
@@ -115,16 +124,25 @@ def test_add_animals(new_island, population):
 
 
 def test_get_num_herb(new_island, population):
+    """
+    Test that correct amount of herbivores is returned.
+    """
     new_island.add_animals_island((2, 2), population[0], population[1])
     assert new_island.get_num_herb_island() == 1
 
 
 def test_get_num_carn(new_island, population):
+    """
+    Test that correct amount of carnivores is returned.
+    """
     new_island.add_animals_island((2, 2), population[0], population[1])
     assert new_island.get_num_carn_island() == 1
 
 
 def test_aging(new_island, population):
+    """
+    Test that all animals age once a year.
+    """
     new_island.add_animals_island((2, 2), population[0], population[1])
     herb = new_island.island_map[1][1].herb_pop[0]
     carn = new_island.island_map[1][1].carn_pop[0]
@@ -133,6 +151,9 @@ def test_aging(new_island, population):
 
 
 def test_weightloss(new_island, population):
+    """
+    Test that all animals loose correct weight once a year.
+    """
     new_island.add_animals_island((2, 2), population[0], population[1])
     herb = new_island.island_map[1][1].herb_pop[0]
     carn = new_island.island_map[1][1].carn_pop[0]
@@ -142,6 +163,9 @@ def test_weightloss(new_island, population):
 
 
 def test_fitness(new_island, population):
+    """
+    Test that the fitness is updated correct for a population.
+    """
     new_island.add_animals_island((2, 2), population[0], population[1])
     herb = new_island.island_map[1][1].herb_pop[0]
     carn = new_island.island_map[1][1].carn_pop[0]
@@ -156,6 +180,9 @@ def test_fitness(new_island, population):
 
 
 def test_feeding_herbivore(new_island, population):
+    """
+    Test that herbivores gain the right amount of weight when they feed.
+    """
     new_island.add_animals_island((2, 2), population[0], None)
     herb = new_island.island_map[1][1].herb_pop[0]
     herb_expected_weight = 20 + (herb.default_params["beta"] * herb.default_params['F'])
@@ -164,6 +191,10 @@ def test_feeding_herbivore(new_island, population):
 
 
 def test_feeding_carnivore(new_island, population, mocker):
+    """
+    Test that carnivores gain the right amount of weight when they feed on herbivores.
+    """
+
     mocker.patch('biosim.animals.Carnivore.kill', ReturnValue=True)
 
     new_island.add_animals_island((2, 2), population[0], population[1])
@@ -177,6 +208,9 @@ def test_feeding_carnivore(new_island, population, mocker):
 
 
 def test_death_prob(new_island, population, mocker):
+    """
+    Test that animals are removed when they are supposed to die.
+    """
 
     mocker.patch('biosim.animals.Animals.death_animal', ReturnValue=True)
 
@@ -187,6 +221,9 @@ def test_death_prob(new_island, population, mocker):
 
 
 def test_death_zero_weight(new_island, population):
+    """
+    Test that animals die when they have zero weight.
+    """
 
     new_island.add_animals_island((2, 2), population[0], population[1])
     new_island.death_island()
@@ -200,6 +237,9 @@ def test_death_zero_weight(new_island, population):
 
 
 def test_birth(new_island, mocker):
+    """
+    Test that animals are added when they are supposed to give birth.
+    """
 
     mocker.patch('biosim.animals.Animals.birth_animal', ReturnValue=True)
 
@@ -215,6 +255,9 @@ def test_birth(new_island, mocker):
 
 
 def test_actually_move(population, mocker):
+    """
+    Test that animals move when they are supposed to.
+    """
     geogr = """\
                WWWWWW
                WHHLLW
@@ -239,6 +282,10 @@ def test_actually_move(population, mocker):
 
 
 def test_animal_not_move_to_water(population):
+    """
+    Test that animals don't move to water, but stay if that is their only option.
+    """
+
     geogr = """\
                WWW
                WHW
@@ -256,6 +303,10 @@ def test_animal_not_move_to_water(population):
 
 
 def test_move_to_neighbor_cells(population, mocker):
+    """
+    Test that animals move to one of the neighboring cells when they move.
+
+    """
     geogr = """\
                WWWWWW
                WHHLLW
