@@ -64,7 +64,7 @@ class BioSim:
         """
         self.sim_island.set_landscape_parameters(landscape, params)
 
-    def simulate(self, num_years, vis_years=1, img_years=None):
+    def simulate(self, num_years=100, vis_years=1, img_years=None):
 
         self.tot_years += num_years
 
@@ -145,12 +145,15 @@ class BioSim:
                         fitness_list_carn.append([carn.fitness_animal()])
             return [fitness_list_herb, fitness_list_carn]
 
+        counter = 0
         for year in range(num_years):
             simulate_year()
-            self.sim_graphics.counter(self.sim_year)
             self.sim_graphics.line_plot(self.sim_year, self.sim_island.get_num_herb(), self.sim_island.get_num_carn())
-            self.sim_graphics.hist_plot(age_list(), weight_list(), fitness_list())
-            self.sim_graphics.dist_plot()
+            counter += 1
+            if counter % vis_years == 0:
+                self.sim_graphics.counter(self.sim_year)
+                self.sim_graphics.hist_plot(age_list(), weight_list(), fitness_list())
+                self.sim_graphics.dist_plot()
 
 
     def add_population(self, population):
