@@ -11,7 +11,6 @@ from biosim.graphics import Graphics
 import random
 import os
 import subprocess
-#from pathlib import Path
 
 
 class BioSim:
@@ -58,8 +57,6 @@ class BioSim:
             else:
                 self.sim_island.add_animals_island(ini_pop[0]['loc'], None, ini_pop[0]['pop'])
         self.sim_graphics = Graphics(ymax_animals, cmax_animals, hist_specs, self.sim_island, self.img_base, self.img_fmt)
-
-
 
     def set_animal_parameters(self, species, params):
         """
@@ -113,7 +110,6 @@ class BioSim:
                     for carn in self.sim_island.island_map[row][col].carn_pop:
                         age_list_carn.append([carn.age])
             return [age_list_herb, age_list_carn]
-
 
         def weight_list():
             """
@@ -206,11 +202,11 @@ class BioSim:
         """
         try:
             subprocess.check_call(['ffmpeg',
-                                   '-i', '{}_%05d.png'.format(self._img_base),
+                                   '-i', '{}_%05d.png'.format(self.img_base),
                                    '-y',
                                    '-profile:v', 'baseline',
                                    '-level', '3.0',
                                    '-pix_fmt', 'yuv420p',
-                                   '{}.{}'.format(self._img_base, 'mp4')])
+                                   '{}.{}'.format(self.img_base, 'mp4')])
         except subprocess.CalledProcessError as err:
             raise RuntimeError('ERROR: ffmpeg failed with: {}'.format(err))
