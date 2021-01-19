@@ -97,7 +97,7 @@ class Island:
         origin_cell = self.island_map[r_coord][c_coord]
         origin_cell.add_animals_landscape(new_herbs, new_carns)
 
-    def get_num_herb(self):
+    def get_num_herb_island(self):
         """
         Finds the total number herbivores on the map
         Returns
@@ -105,10 +105,10 @@ class Island:
         int:
             number of herbs
         """
-        return sum([sum([self.island_map[row][col].get_num_herb() for col in range(self.map_columns)])
+        return sum([sum([self.island_map[row][col].get_num_herb_landscape() for col in range(self.map_columns)])
                     for row in range(self.map_rows)])
 
-    def get_num_carn(self):
+    def get_num_carn_island(self):
         """
         Finds the total number carnivores on the map
         Returns
@@ -116,7 +116,7 @@ class Island:
         int:
             number of carnivores
         """
-        return sum([sum([self.island_map[row][col].get_num_carn() for col in range(self.map_columns)])
+        return sum([sum([self.island_map[row][col].get_num_carn_landscape() for col in range(self.map_columns)])
                     for row in range(self.map_rows)])
 
     def aging_island(self):
