@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 """
-
+This file contains the graphics class.
 """
 
 __author__ = 'Emilie Giltvedt Langeland & Lina Grünbeck / NMBU'
@@ -11,8 +11,28 @@ import textwrap
 
 
 class Graphics:
+    """
+    The base class of graphics.
+    """
     def __init__(self, ymax_animals=None, cmax_animals=None, hist_specs=None, sim_island=None,
                  img_base=None, img_fmt=None):
+        """
+
+        Parameters
+        ----------
+        ymax_animals: int
+             the limits for the vertical axis in the line graph of animal numbers.
+        cmax_animals: dict
+            the limits for the color code in the population maps, separate for both species.
+        hist_specs: dict
+            the upper limit and bin width of the histogram for each parameter (age, weight, fitness).
+        sim_island: class instance
+            instance of the Island class.
+        img_base: string
+            with beginning of file name for figures, including path.
+        img_fmt: string
+            with file type for figures.
+        """
         self.ymax_animals = ymax_animals
         self.cmax_animals = cmax_animals
         if self.cmax_animals is None:
