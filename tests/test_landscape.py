@@ -22,56 +22,81 @@ from biosim.animals import Carnivore
 
 import pytest_mock
 
-def test_set_f_max():
+@pytest.fixture
+def reset_landscape_defaults():
+    # no setup
+    yield
+    Lowland.set_f_max({'f_max': 800.0})
+    Highland.set_f_max({'f_max': 300.0})
+
+
+@pytest.fixture
+def herbs():
+    herb_info = [{'age': 5, 'weight': 6}, {'age': 10, 'weight': 5}]
+    return herb_info
+
+@pytest.fixture
+def carns():
+    carn_info = [{'age': 20, 'weight': 6}, {'age': 3, 'weight': 7}]
+    return carn_info
+
+
+def test_set_f_max(reset_landscape_defaults):
     """
     Tests if the default f_max is being replaced by the new one.
     """
     new_f_max = {'f_max': 1}
 
-    Landscape.set_f_max(new_f_max)
-    assert Landscape.default_f_max == new_f_max
+    Highland.set_f_max(new_f_max)
+    Lowland.set_f_max(new_f_max)
+    assert Highland.default_f_max == new_f_max and Lowland.default_f_max == new_f_max
 
 
-def test_set_right_f_max():
+def test_set_wrong_f_max_Lowland(reset_landscape_defaults):
     """
-    Tests that a KeyError is raised if the new f_max has a wrong key input.
+    Tests that a KeyError is raised if the new f_max has a wrong key input for Lowland.
     """
     new_f_max = {'f': 1}
 
     with pytest.raises(KeyError):
-        Landscape.set_f_max(new_f_max)
+        Lowland.set_f_max(new_f_max)
 
 
-def test_get_num_herb():
+def test_set_wrong_f_max_Highland(reset_landscape_defaults):
+    """
+    Tests that a KeyError is raised if the new f_max has a wrong key input for Highland.
+    """
+    new_f_max = {'f': 1}
+
+    with pytest.raises(KeyError):
+        Highland.set_f_max(new_f_max)
+
+
+def test_get_num_herb(herbs):
     """
     Tests if the right amount of herbivores is returned.
     """
-    herb_info = [{'age': 5, 'weight': 6}, {'age': 10, 'weight': 5}]
-    carn_info = [{'age': 20, 'weight': 6}, {'age': 3, 'weight': 7}]
     N_herb = 2
-    landscape = Lowland(herb_info, carn_info)
+    landscape = Lowland(herbs, [])
 
     assert landscape.get_num_herb_landscape() == N_herb
 
 
-def test_get_num_carn():
+def test_get_num_carn(carns):
     """
     Tests if the right amount of carnivores is returned.
     """
-    herb_info = [{'age': 5, 'weight': 6}, {'age': 10, 'weight': 5}]
-    carn_info = [{'age': 20, 'weight': 6}, {'age': 3, 'weight': 7}]
     N_carn = 2
-    landscape = Lowland(herb_info, carn_info)
-
+    landscape = Lowland([], carns)
     assert landscape.get_num_carn_landscape() == N_carn
 
 
-def test_aging():
+def test_aging(herbs, carns):
     """
     Test that correct number of years are added
     """
     years = 5
-    landscape = Landscape([{'age': 5, 'weight': 6}], [{'age': 10, 'weight': 5}])
+    landscape = Landscape(herbs, carns)
     herb_age = landscape.herb_pop[0].age
     carn_age = landscape.carn_pop[0].age
 
@@ -100,12 +125,12 @@ def test_aging_negative_age():
     assert len(landscape.herb_pop) == 0 and len(landscape.carn_pop) == 0
 
 
-def test_aging_higher():
+def test_aging_higher(herbs, carns):
     """
     Test that the age doesnt become lower than the initial age after the function aging.
     """
     years = 10
-    landscape = Landscape([{'age': 5, 'weight': 6}], [{'age': 10, 'weight': 5}])
+    landscape = Landscape(herbs, carns)
     herb_age = landscape.herb_pop[0].age
     carn_age = landscape.carn_pop[0].age
 
@@ -118,13 +143,11 @@ def test_aging_higher():
     assert herb_new_age > herb_age and carn_new_age > carn_age
 
 
-def test_weightloss():
+def test_weightloss(herbs, carns):
     """
     Test that the weight is lower after the weight loss function
     """
-    herb_info = [{'age': 5, 'weight': 6}]
-    carn_info = [{'age': 20, 'weight': 6}]
-    landscape = Lowland(herb_info, carn_info)
+    landscape = Lowland(herbs, carns)
 
     sheep = landscape.herb_pop[0]
     wolf = landscape.carn_pop[0]
@@ -138,13 +161,12 @@ def test_weightloss():
     assert sheep.weight < herb_first_weight and wolf.weight < carn_first_weight
 
 
-def test_weightloss_zero_weight():
+def test_weightloss_zero_weight(herbs, carns):
     """
     Test that the weight doesent become negative
     """
-    herb_info = [{'age': 5, 'weight': 0},]
-    carn_info = [{'age': 20, 'weight': 0},]
-    landscape = Lowland(herb_info, carn_info)
+
+    landscape = Lowland(herbs, carns)
 
     sheep = landscape.herb_pop[0]
     wolf = landscape.carn_pop[0]
@@ -155,13 +177,11 @@ def test_weightloss_zero_weight():
     assert sheep.weight == 0 and wolf.weight == 0
 
 
-def test_fitness_value_herb():
+def test_fitness_value_herb(herbs):
     """
     Tests that the fitness for a herbivore always lies between 0 and 1
     """
-    herb_info = [{'age': 5, 'weight': 6}]
-    carn_info = []
-    landscape = Lowland(herb_info, carn_info)
+    landscape = Lowland(herbs)
 
     sheep = landscape.herb_pop[0]
 
@@ -172,13 +192,12 @@ def test_fitness_value_herb():
         assert 0 <= sheep.health <= 1
 
 
-def test_fitness_value_carn():
+def test_fitness_value_carn(carns):
         """
         Tests that the fitness for a carnivore always lies between 0 and 1
         """
-        herb_info = []
-        carn_info = [{'age': 20, 'weight': 6}]
-        landscape = Lowland(herb_info, carn_info)
+
+        landscape = Lowland([], carns)
 
         wolf = landscape.carn_pop[0]
 
@@ -211,14 +230,12 @@ def test_birth():
     assert n_herbs < n_herbs_afther and n_carns < n_carns_afther
 
 
-def test_birth_p1(mocker):
+def test_birth_p1(herbs, carns, mocker):
     """
     Test that there wil be added an animal if its 100% likely that birth function in animal returns True.
     """
-    herb_info = [{'age': 20, 'weight': 50}]
-    carn_info = [{'age': 10, 'weight': 10}]
 
-    landscape = Highland(herb_info, carn_info)
+    landscape = Highland(herbs, carns)
     sheep = landscape.herb_pop[0]
     mocker.patch('biosim.animals.Herbivore.birth_animal', ReturnValue = True)
     sheep.babyweight = 9
@@ -228,7 +245,7 @@ def test_birth_p1(mocker):
     assert len(landscape.herb_pop) == 2
 
 
-def test_feeding_F_max_resets():
+def test_feeding_F_max_resets(reset_landscape_defaults):
     """
     Tests that the F_max resets for every year.
     """
@@ -251,7 +268,7 @@ def test_feeding_F_max_resets():
     assert sheep_1.weight and sheep_2.weight and sheep_3.weight == begining_weight + years * sheep_1.default_params['beta'] * sheep_1.default_params['F']
 
 
-def test_feeding_herb_no_weight():
+def test_feeding_herb_no_weight(herbs):
     """
     Test that a herbivore does not eat when his weight is 0 or less.
     """
@@ -264,13 +281,11 @@ def test_feeding_herb_no_weight():
         assert start_weight == sheep.weight
 
 
-def test_feeding_no_food():
+def test_feeding_no_food(herbs, reset_landscape_defaults):
     """
     Test that the animal doesnt eat if the F is zero.
     """
-    animal_info = [{'age': 5, 'weight': 6}]
-
-    landscape = Highland(animal_info, [])
+    landscape = Highland(herbs, [])
     sheep = landscape.herb_pop[0]
     sheep.fitness_animal()
     fitness_before = sheep.health
@@ -284,13 +299,12 @@ def test_feeding_no_food():
         assert sheep.health == fitness_before
 
 
-def test_feeding_little_food():
+def test_feeding_little_food(herbs, reset_landscape_defaults):
     """
     Test that if its to little food the animal eats the food that's left.
     """
-    animal_info = [{'age': 5, 'weight': 6}]
 
-    landscape = Highland(animal_info, [])
+    landscape = Highland(herbs, [])
     sheep = landscape.herb_pop[0]
 
     new_f_max = {'f_max': 50}
@@ -304,13 +318,12 @@ def test_feeding_little_food():
     assert sheep.weight == sheep.default_params['beta'] * new_f_max['f_max'] + begining_weight
 
 
-def test_no_food_left():
+def test_no_food_left(herbs, reset_landscape_defaults):
     """
     Test that if an animal eats the rest of the food its nothing left for the rest of the animals.
     """
-    animal_info = [{'age': 5, 'weight': 6}, {'age': 5, 'weight': 6}]
 
-    landscape = Highland(animal_info, [])
+    landscape = Highland(herbs, [])
     sheep_1= landscape.herb_pop[0]
     sheep_2 = landscape.herb_pop[1]
 
@@ -327,15 +340,17 @@ def test_no_food_left():
     assert sheep_2.weight == start_weight_2 or sheep_1.weight == start_weight_1
 
 
-def test_feeding_to_much_food():
+def test_feeding_to_much_food(herbs, reset_landscape_defaults):
     """
     Test that if its to much food the function eats F and leaves the food that's left to the nest herbivore.
     """
-    animal_info = [{'age': 5, 'weight': 6}, {'age': 5, 'weight': 6}]
 
-    landscape = Highland(animal_info, [])
+    landscape = Highland(herbs, [])
     sheep_1 = landscape.herb_pop[0]
     sheep_2 = landscape.herb_pop[1]
+
+    start_weight_1 = sheep_1.weight
+    start_weight_2 = sheep_2.weight
 
     new_f_max = {'f_max': 200}
     landscape.set_f_max(new_f_max)
@@ -345,16 +360,15 @@ def test_feeding_to_much_food():
 
     landscape.eating_landscape()
 
-    assert sheep_1.weight == sheep_2.weight
+    assert sheep_1.weight > start_weight_1 and sheep_2.weight > start_weight_2
 
 
-def test_herb_feed_desert():
+def test_herb_feed_desert(herbs):
     """
     Tests that the herbivore doesnt eat anything in the dessert
     """
-    animal_info = [{'age': 5, 'weight': 6}]
 
-    landscape = Desert(animal_info, [])
+    landscape = Desert(herbs, [])
     sheep = landscape.herb_pop[0]
 
     weight_first = sheep.weight
@@ -404,14 +418,11 @@ def test_carn_feeding_sorting():
     assert carn1.health > carn2.health > carn3.health
 
 
-def test_carn_weight_zero():
+def test_carn_weight_zero(herbs, carns):
     """
     Test that the herbivore doesnt die if the carnevore weight is zero.
     """
-    herb_info = [{'age': 1, 'weight': 1}]
-    carn_info = [{'age': 5, 'weight': 0}]
-
-    landscape = Highland(herb_info, carn_info)
+    landscape = Highland(herbs, carns)
     sheep = landscape.herb_pop[0]
     wolf = landscape.carn_pop[0]
 
@@ -420,14 +431,11 @@ def test_carn_weight_zero():
         assert not wolf.kill(sheep.health)
 
 
-def test_carn_kill(mocker):
+def test_carn_kill(herbs, carns, mocker, reset_landscape_defaults):
     """
     Test that if a carnevore kills a herbevore that the herbevore is removed from the population
     """
-    herb_info = [{'age': 1, 'weight': 1}, {'age': 1, 'weight': 1}, {'age': 1, 'weight': 1}]
-    carn_info = [{'age': 30, 'weight': 30}]
-
-    landscape = Highland(herb_info, carn_info)
+    landscape = Highland(herbs, carns)
     sheep = landscape.herb_pop[0]
     wolf = landscape.carn_pop[0]
 
@@ -441,11 +449,11 @@ def test_carn_kill(mocker):
     assert len(landscape.herb_pop) == 0
 
 
-def test_carn_gain_weight(mocker):
+def test_carn_gain_weight(reset_landscape_defaults, mocker):
     """
     Test that the carnivore gains the correct weight after eating a herbivore
     """
-    herb_info = [{'age': 1, 'weight': 1}]
+    herb_info = [{'age': 1, 'weight': 1}, {'age': 1, 'weight': 1}]
     carn_info = [{'age': 30, 'weight': 30}]
 
     landscape = Highland(herb_info, carn_info)
@@ -461,10 +469,10 @@ def test_carn_gain_weight(mocker):
 
     landscape.eating_landscape()
 
-    assert wolf.weight == 30 + wolf.default_params["beta"] * 1
+    assert wolf.weight == 30 + 2*(wolf.default_params["beta"] * 1)
 
 
-def test_carn_appetite(mocker):
+def test_carn_appetite(mocker, reset_landscape_defaults):
     """
     Tests that the carnevore stops eating after its full.
     """
@@ -519,27 +527,20 @@ def test_carn_death():
     assert num_carn_before > num_carn_after
 
 
-def test_move_not_water():
+def test_move_not_water(herbs, carns):
     """
     Test that move_landscape returns True if the landscape type is not water.
     """
-    herb_info = [{'age': 1, 'weight': 10}, {'age': 1, 'weight': 50}]
-    carn_info = [{'age': 1, 'weight': 10}, {'age': 1, 'weight': 50}]
-
-    landscape = Highland(herb_info, carn_info)
-
+    landscape = Highland(herbs, carns)
     assert landscape.move_landscape()
 
 
-def test_move_water():
+def test_move_water(herbs,carns):
     """
     Test that move_landscape returns False if the landscape type is water.
     """
-    herb_info = [{'age': 1, 'weight': 10}, {'age': 1, 'weight': 50}]
-    carn_info = [{'age': 1, 'weight': 10}, {'age': 1, 'weight': 50}]
 
-    landscape = Water(herb_info, carn_info)
-
+    landscape = Water(herbs, carns)
     assert not landscape.move_landscape()
 
 
@@ -563,11 +564,10 @@ def test_immigants_added():
 
 def test_add_immigrants_default_value():
     """
-    Test that you can sett nothing as innpult and the default value wil be used
+    Test that you can sett nothing as innput and the default value wil be used
     """
 
     landscape = Highland()
-
 
     landscape.herb_immigrants = [{'age': 30, 'weight': 30}]
     landscape.carn_immigrants = [{'age': 30, 'weight': 30}]
@@ -577,19 +577,16 @@ def test_add_immigrants_default_value():
     assert len(landscape.herb_pop) == 1 and len(landscape.carn_pop) == 1
 
 
-def test_add_animals():
+def test_add_animals(herbs, carns):
     """
     Tests that the new animals are added to the list with old animales.
     """
-    herb_info = [{'age': 1, 'weight': 1}]
-    carn_info = [{'age': 1, 'weight': 1}]
-
-    landscape = Highland(herb_info, carn_info)
+    landscape = Highland(herbs, carns)
 
     new_herbs = [{'age': 2, 'weight': 2}]
     new_carns = [{'age': 2, 'weight': 2}]
 
     landscape.add_animals_landscape(new_herbs, new_carns)
 
-    assert len(landscape.herb_pop) == 2 and len(landscape.carn_pop) == 2
+    assert len(landscape.herb_pop) == 3 and len(landscape.carn_pop) == 3
 
