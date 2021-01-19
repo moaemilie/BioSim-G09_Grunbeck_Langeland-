@@ -152,7 +152,7 @@ def test_fitness(new_island, population):
     carn_expected_fit = (1 / (1 + math.exp(carn.default_params["phi_age"] * (carn.age - carn.default_params["a_half"])))
                          * (1 / (1 + math.exp((-carn.default_params["phi_weight"])
                                               * (carn.weight - carn.default_params["w_half"])))))
-    assert herb.fit == herb_expected_fit, carn.fit == carn_expected_fit
+    assert herb.health == herb_expected_fit, carn.health == carn_expected_fit
 
 
 def test_feeding_herbivore(new_island, population):

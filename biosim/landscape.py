@@ -157,9 +157,9 @@ class Landscape:
         def sort_pop(pop, reverse=False):
             for j in reversed(range(len(pop))):
                 for k in range(j):
-                    if pop[k + 1].fit < pop[k].fit and reverse is False:
+                    if pop[k + 1].health < pop[k].health and reverse is False:
                         pop[k], pop[k + 1] = pop[k + 1], pop[k]
-                    elif pop[k + 1].fit > pop[k].fit and reverse is True:
+                    elif pop[k + 1].health > pop[k].health and reverse is True:
                         pop[k], pop[k + 1] = pop[k + 1], pop[k]
             return pop
 
@@ -170,7 +170,7 @@ class Landscape:
             carn_fodder = 0
             dead_herb = []
             for herb in self.herb_pop:
-                if carn.kill(herb.fit) and carn_fodder + herb.weight <= carn.default_params["F"]:
+                if carn.kill(herb.health) and carn_fodder + herb.weight <= carn.default_params["F"]:
                     carn.eating_animal(herb.weight)
                     dead_herb.append(herb)
                     carn_fodder += herb.weight

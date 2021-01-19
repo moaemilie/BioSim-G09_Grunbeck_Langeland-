@@ -153,9 +153,9 @@ def test_kill_p0():
     """
     wolf = Carnivore({'age':1,'weight':1})
     sheep = Herbivore({'age':20,'weight':10})
-    wolf.fit = 0.2
-    sheep.fit = 0.9
-    assert not wolf.kill(sheep.fit)
+    wolf.health = 0.2
+    sheep.health = 0.9
+    assert not wolf.kill(sheep.health)
 
 
 def test_kill():
@@ -167,7 +167,7 @@ def test_kill():
     wolf.fitness_animal()
     sheep.fitness_animal()
     for year in range(5):
-        assert not wolf.kill(sheep.fit)
+        assert not wolf.kill(sheep.health)
 
 
 def test_kill_p1():
@@ -183,7 +183,7 @@ def test_kill_p1():
     wolf.set_params(new_params)
 
     sheep.fitness_animal()
-    assert wolf.kill(sheep.fit)
+    assert wolf.kill(sheep.health)
 
 
 def test_kill_when_zero_weight():
@@ -213,7 +213,7 @@ def test_death_distribution():
 
     for sheep in sheeps:
         sheep.fitness_animal()
-        p_sum += (sheep.default_params["omega"] * (1 - sheep.fit))
+        p_sum += (sheep.default_params["omega"] * (1 - sheep.health))
         n += sheep.death_animal()
 
     p_mean = p_sum / num_animals
@@ -250,8 +250,8 @@ def test_move_animal():
     Test that the animal moves if the the formula for p_move equals 1.
     """
     sheep = Herbivore({'age': 4,'weight': 10})
-    sheep.fit = 0.5
-    sheep.set_params({'mu': (1/sheep.fit)})
+    sheep.health = 0.5
+    sheep.set_params({'mu': (1 / sheep.health)})
     assert sheep.move_animal()
 
 
