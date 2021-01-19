@@ -9,7 +9,6 @@ from biosim.island import Island
 from biosim.graphics import Graphics
 import random
 import subprocess
-import matplotlib.pyplot as plt
 
 
 class BioSim:
