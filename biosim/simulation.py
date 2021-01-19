@@ -155,7 +155,6 @@ class BioSim:
                 self.sim_graphics.hist_plot(age_list(), weight_list(), fitness_list())
                 self.sim_graphics.dist_plot()
 
-
     def add_population(self, population):
         if population[0]['pop'][0]['species'] == 'Herbivore':
             self.sim_island.add_animals_island(population[0]['loc'], population[0]['pop'], None)
@@ -182,3 +181,12 @@ class BioSim:
         Total number of animals on island per species
         """
         return {'Herbivore': self.sim_island.get_num_herb(), 'Carnivore': self.sim_island.get_num_carn()}
+
+    def make_movie(self):
+        """
+        Create MPEG4 movie from visualization images saved.
+
+        Returns
+        -------
+
+        """
