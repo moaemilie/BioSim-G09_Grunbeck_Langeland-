@@ -18,7 +18,44 @@ from unittest import mock
 ALPHA = 0.05
 random.seed(123456)
 
-def test_set_parameters():
+
+@pytest.fixture
+def reset_animal_defaults():
+    # no setup
+    yield
+    Herbivore.set_params({'w_birth': 8.,
+                          'sigma_birth': 1.5,
+                          'beta': 0.9,
+                          'eta': 0.05,
+                          'a_half': 40.,
+                          'phi_age': 0.6,
+                          'w_half': 10.,
+                          'phi_weight': 0.1,
+                          'mu': 0.25,
+                          'gamma': 0.2,
+                          'zeta': 3.5,
+                          'xi': 1.2,
+                          'omega': 0.4,
+                          'F': 10.})
+    Carnivore.set_params({'w_birth': 6.,
+                          'sigma_birth': 1.0,
+                          'beta': 0.75,
+                          'eta': 0.125,
+                          'a_half': 40.,
+                          'phi_age': 0.3,
+                          'w_half': 4.,
+                          'phi_weight': 0.4,
+                          'mu': 0.4,
+                          'gamma': 0.8,
+                          'zeta': 3.5,
+                          'xi': 1.1,
+                          'omega': 0.8,
+                          'F': 50.,
+                          'DeltaPhiMax': 10.})
+
+
+
+def test_set_parameters(reset_animal_defaults):
     """
     Test if the default parametres is being replaced by the new ones.
     """
@@ -30,7 +67,7 @@ def test_set_parameters():
     assert Herbivore.default_params == new_params
 
 
-def test_set_wrong_parameters():
+def test_set_wrong_parameters(reset_animal_defaults):
     """
     Test that if the new parameters are wrong there will be raised a KeyError.
     """
@@ -42,7 +79,7 @@ def test_set_wrong_parameters():
         Herbivore.set_params(new_params)
 
 
-def test_new_params():
+def test_new_params(reset_animal_defaults):
     """
     Test that if the default params is being replaced by new params, that the new params is being used.
     """
@@ -170,16 +207,14 @@ def test_kill():
         assert not wolf.kill(sheep.health)
 
 
-def test_kill_p1():
+def test_kill_p1(reset_animal_defaults):
     """
     Test that if p=1 that the function always returns true.
     """
     wolf = Carnivore({'age':5,'weight':10})
     sheep = Herbivore({'age':5,'weight':1})
 
-    new_params = {'w_birth': 6, 'sigma_birth': 1, 'beta': 0.75, 'eta': 0.125, 'a_half': 40,
-                      'phi_age': 0.3, 'w_half': 4, 'phi_weight': 0.4, 'mu': 0.4, 'gamma': 0.8,
-                      'zeta': 3.5, 'xi': 1.1, 'omega': 0.8, 'F': 50, 'DeltaPhiMax': 0.5}
+    new_params = {'DeltaPhiMax': 0.5}
     wolf.set_params(new_params)
 
     sheep.fitness_animal()
@@ -245,7 +280,7 @@ def test_death_certain():
         assert sheep.death_animal()
 
 
-def test_move_animal():
+def test_move_animal(reset_animal_defaults):
     """
     Test that the animal moves if the the formula for p_move equals 1.
     """
