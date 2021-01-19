@@ -51,7 +51,7 @@ def test_get_num_herb():
     N_herb = 2
     landscape = Lowland(herb_info, carn_info)
 
-    assert landscape.get_num_herb() == N_herb
+    assert landscape.get_num_herb_landscape() == N_herb
 
 
 def test_get_num_carn():
@@ -63,7 +63,7 @@ def test_get_num_carn():
     N_carn = 2
     landscape = Lowland(herb_info, carn_info)
 
-    assert landscape.get_num_carn() == N_carn
+    assert landscape.get_num_carn_landscape() == N_carn
 
 
 def test_aging():
@@ -199,14 +199,14 @@ def test_birth():
                  {'age': 10, 'weight': 10}, {'age': 30, 'weight': 30}, {'age': 20, 'weight': 9}]
 
     landscape = Highland(herb_info, carn_info)
-    n_herbs = landscape.get_num_herb()
-    n_carns = landscape.get_num_carn()
+    n_herbs = landscape.get_num_herb_landscape()
+    n_carns = landscape.get_num_carn_landscape()
 
     for year in range(10):
         landscape.birth_landscape()
 
-    n_herbs_afther = landscape.get_num_herb()
-    n_carns_afther = landscape.get_num_carn()
+    n_herbs_afther = landscape.get_num_herb_landscape()
+    n_carns_afther = landscape.get_num_carn_landscape()
 
     assert n_herbs < n_herbs_afther and n_carns < n_carns_afther
 

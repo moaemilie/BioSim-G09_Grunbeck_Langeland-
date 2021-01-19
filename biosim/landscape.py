@@ -62,7 +62,7 @@ class Landscape:
         animals = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
         animals[species].set_params(params)
 
-    def get_num_herb(self):
+    def get_num_herb_landscape(self):
         """
        Counts how many herbivores its in the population.
 
@@ -73,7 +73,7 @@ class Landscape:
         """
         return len(self.herb_pop)
 
-    def get_num_carn(self):
+    def get_num_carn_landscape(self):
         """
         Counts how many carnivores its in the population.
 
@@ -124,12 +124,12 @@ class Landscape:
         def herb_newborns(pop):
             return [Herbivore({'species': 'Herbivore',
                                'age': 0,
-                               'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_herb())]
+                               'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_herb_landscape())]
 
         def carn_newborns(pop):
             return [Carnivore({'species': 'Herbivore',
                                'age': 0,
-                               'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_carn())]
+                               'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_carn_landscape())]
 
         self.herb_pop.extend(herb_newborns(self.herb_pop))
         self.carn_pop.extend(carn_newborns(self.carn_pop))

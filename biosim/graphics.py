@@ -129,8 +129,8 @@ class Graphics:
             axlg.text(0.35, ix * 0.2, name, transform=axlg.transAxes, fontsize=7)
 
     def dist_plot(self):
-        herb_dist = [[self.island.island_map[row][col].get_num_herb() for col in range(self.island.map_columns)] for row in range(self.island.map_rows)]
-        carn_dist = [[self.island.island_map[row][col].get_num_carn() for col in range(self.island.map_columns)] for row in range(self.island.map_rows)]
+        herb_dist = [[self.island.island_map[row][col].get_num_herb_landscape() for col in range(self.island.map_columns)] for row in range(self.island.map_rows)]
+        carn_dist = [[self.island.island_map[row][col].get_num_carn_landscape() for col in range(self.island.map_columns)] for row in range(self.island.map_rows)]
 
         if self.add_col_bar == False:
             self.ax_herb_colb = self.ax_herb_dist.imshow(herb_dist, cmap='viridis')
