@@ -274,19 +274,3 @@ def test_move_to_neighbor_cells(population, mocker):
                                  new_island.island_map[2][3].get_num_herb_landscape(), new_island.island_map[4][3].get_num_herb_landscape()])
     assert num_in_neighbor_cells == 1
 
-
-# def test_move_only_once_a_year(new_island, population, mocker):
-#
-#     mocker.patch('biosim.animals.Animals.move_animal', ReturnValue=True)
-#
-#     new_island.add_animals((2,2), [{'species': 'Herbivore', 'age': 5, 'weight': 20}], [{'species': 'Carnivore', 'age': 5, 'weight': 20}] )
-#     herb = new_island.island_map[1][1].herb_pop[0]
-#     carn = new_island.island_map[1][1].carn_pop[0]
-#
-#     for year in range(years):
-#         new_island.move_island()
-#     [new_island.move_island() for year in range(10)]
-#     assert
-
-
-#def test_animals_move_differently(new_island, population):
