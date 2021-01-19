@@ -18,6 +18,16 @@ from unittest import mock
 ALPHA = 0.05
 random.seed(123456)
 
+@pytest.fixture
+def herb():
+    herb = Herbivore({'age': 7, 'weight': 10})
+    return herb
+
+@pytest.fixture
+def carn():
+    carn = Carnivore({'age': 7, 'weight': 10})
+    return carn
+
 
 @pytest.fixture
 def reset_animal_defaults():
@@ -79,11 +89,11 @@ def test_set_wrong_parameters(reset_animal_defaults):
         Herbivore.set_params(new_params)
 
 
-def test_new_params(reset_animal_defaults):
+def test_new_params(herb, reset_animal_defaults):
     """
     Test that if the default params is being replaced by new params, that the new params is being used.
     """
-    sheep = Herbivore({'age':5,'weight':6})
+    sheep = herb
     sheep_default_fitness = (1 / (1 + math.exp(0.6 * (5 - 40))) *(1 / (1 + math.exp((-0.1) *(6 - 10)))))
 
     new_params = {'a_half': 50}
@@ -92,57 +102,62 @@ def test_new_params(reset_animal_defaults):
     assert sheep.fitness_animal() != sheep_default_fitness
 
 
-def test_animal_aging():
+def test_animal_aging(herb, carn):
     """
     Tests that the aging function counts correctly
     """
     years = 4
-    sheep = Herbivore({'age':0,'weight':2})
+
+    sheep = herb
+    wolf = carn
 
     for _ in range(years):
         sheep.aging_animal()
-    assert sheep.age == 4
+        wolf.aging_animal()
+    assert sheep.age == 11 and wolf.age == 11
 
 
-def test_weightloss():
+def test_weightloss(herb):
     """
     Test that the weightloss function returns the true value.
     """
-    sheep = Herbivore({'age':4,'weight':30})
-    delta_weight = 30 * sheep.default_params['eta']
-    animal_weight = 30
+    sheep = herb
+    delta_weight = sheep.weight * sheep.default_params['eta']
+    start_weight = sheep.weight
     sheep.weightloss_animal()
-    assert sheep.weight == animal_weight - delta_weight
+    assert sheep.weight == start_weight - delta_weight
 
 
-def test_animal_fitness():
+def test_animal_fitness(herb):
     """
     Tests that the fitness always lies between 0 and 1
     """
-    sheep = Herbivore({'age':4,'weight':30})
+    sheep = herb
     for year in range(10):
         sheep.weight += 1
         sheep.age += 1
         assert sheep.fitness_animal() >= 0 and sheep.fitness_animal() <= 1
 
 
-def test_low_animalweight_birth():
+def test_low_animalweight_birth(herb):
     """
-    Test that the birth function return False if the animal weight it lower than the babyweight.
+    Test that the birth function return False if the animal weight it lower than the babyweight * xi.
     """
-    sheep = Herbivore({'age': 20,'weight': 1})
+    sheep = herb
+    sheep.set_params({'xi': 0.1})
     assert not sheep.birth_animal(10)
 
 
-def test_birth_p0():
+def test_birth_p0(herb, carn):
     """
     Test that the birth function returns False when there is only one animal. (propability of birth = 0).
     """
-    sheep = Herbivore({'age': 10, 'weight': 30})
-    assert not sheep.birth_animal(1)
+    sheep = herb
+    wolf = carn
+    assert not sheep.birth_animal(1) and not wolf.birth_animal(1)
 
 
-def test_birth_p1(mocker):
+def test_birth_p1(herb, mocker):
     """
     Test if the function birth() with a probability 1 always return True.
     """
@@ -172,21 +187,22 @@ def test_birth_t_test(mocker):
     assert pvalue < alpa
 
 
-def test_eating_weightgain():
+def test_eating_weightgain(herb):
     """
     Tests that the animal gains the correct value afther eating
     """
-    sheep = Herbivore({'age':0,'weight':30})
+    sheep = herb
     fodder = 2
+    first_weight = sheep.weight
     delta_weight = fodder * sheep.default_params['beta']
-    new_weight = sheep.weight + delta_weight
+    new_weight = first_weight + delta_weight
     sheep.eating_animal(fodder)
     assert new_weight == sheep.weight
 
 
 def test_kill_p0():
     """
-    Test that herbivore does not get killed if fitness is higher than the fitness of the carnivore
+    Test that herbivore does not get killed if its fitness is higher than the fitness of the carnivore
     """
     wolf = Carnivore({'age':1,'weight':1})
     sheep = Herbivore({'age':20,'weight':10})
