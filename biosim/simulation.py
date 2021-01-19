@@ -28,13 +28,15 @@ class BioSim:
         seed: int
             contains the seed for the whole project.
         ymax_animals: int
-            IDK
-        cmax_animals: IDK
-            IDK
-        hist_specs: dict
-            IDK
+            the limits for the vertical axis in the line graph of animal numbers
+        cmax_animals: int
+            the limits for the color code in the population maps, separate for both species.
+        hist_specs: int
+            the upper limit and bin width of the histogram for each parameter (age, weight, fitness).
         img_fmt: string
             which format the images should be saved as.
+        movie_fmt: string
+            which format the video should be saved as.
         """
         random.seed(seed)
         self.sim_year = 0
@@ -68,7 +70,18 @@ class BioSim:
         self.sim_island.set_landscape_parameters(landscape, params)
 
     def simulate(self, num_years=100, vis_years=1, img_years=None):
+        """
+        Simulates a year on the island.
 
+        Parameters
+        ----------
+        num_years: int
+            Number of years that the simulation wil runn
+        vis_years: int
+            Number of years the figure wil simulateat the time
+        img_years: int
+            How many years apart there wil be taken an image.
+        """
         if img_years is None:
             img_years = vis_years
 
@@ -78,6 +91,10 @@ class BioSim:
         self.sim_graphics.map_plot(self.island_map)
 
         def simulate_year():
+            """
+            Every time its called it wil run al the functions that has to occurs every year.
+            Also counts number of years.
+            """
             self.sim_island.feeding_island()
             self.sim_island.birth_island()
             self.sim_island.move_island()
