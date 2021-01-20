@@ -58,3 +58,5 @@ if __name__ == '__main__':
     sim.add_population(population=ini_carns)
     sim.simulate(num_years=100, vis_years=5, img_years=10)
     sim.make_movie()
+
+    print(f'After {sim.year} years there are {sim.num_animals} on the island.')
