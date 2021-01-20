@@ -159,10 +159,19 @@ class Graphics:
         self.plot_hist_fit.hist(fitness_data[0],
                                 bins=round(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']),
                                 histtype=u'step')
+        self.plot_hist_fit.hist(fitness_data[1],
+                                bins=round(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']),
+                                histtype=u'step', )
         self.plot_hist_age.hist(age_data[0],
                                 bins=round(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']),
                                 histtype=u'step')
+        self.plot_hist_age.hist(age_data[1],
+                                bins=round(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']),
+                                histtype=u'step')
         self.plot_hist_weight.hist(weight_data[0],
+                                   bins=round(self.hist_specs['age']['max'] / self.hist_specs['weight']['delta']),
+                                   histtype=u'step')
+        self.plot_hist_weight.hist(weight_data[1],
                                    bins=round(self.hist_specs['age']['max'] / self.hist_specs['weight']['delta']),
                                    histtype=u'step')
         plt.pause(1e-6)
