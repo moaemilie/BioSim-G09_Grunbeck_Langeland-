@@ -122,7 +122,7 @@ class BioSim:
                     for herb in self.sim_island.island_map[row][col].herb_pop:
                         age_list_herb.append(herb.age)
                     for carn in self.sim_island.island_map[row][col].carn_pop:
-                        age_list_carn.append([carn.age])
+                        age_list_carn.append(carn.age)
             return [age_list_herb, age_list_carn]
 
         def weight_list():
@@ -143,7 +143,7 @@ class BioSim:
                     for herb in self.sim_island.island_map[row][col].herb_pop:
                         weight_list_herb.append(herb.weight)
                     for carn in self.sim_island.island_map[row][col].carn_pop:
-                        weight_list_carn.append([carn.weight])
+                        weight_list_carn.append(carn.weight)
             return [weight_list_herb, weight_list_carn]
 
         def fitness_list():
@@ -164,7 +164,7 @@ class BioSim:
                     for herb in self.sim_island.island_map[row][col].herb_pop:
                         fitness_list_herb.append(herb.fitness_animal())
                     for carn in self.sim_island.island_map[row][col].carn_pop:
-                        fitness_list_carn.append([carn.fitness_animal()])
+                        fitness_list_carn.append(carn.fitness_animal())
             return [fitness_list_herb, fitness_list_carn]
 
         counter = 0
