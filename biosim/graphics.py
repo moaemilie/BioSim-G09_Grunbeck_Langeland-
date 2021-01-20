@@ -162,34 +162,23 @@ class Graphics:
                                 histtype='step')
 
         self.plot_hist_fit.hist(fitness_data[1],
-                                bins=int(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']),
+                                bins=int(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']), range=(0, self.hist_specs['fitness']['max']),
                                 histtype='step')
 
-        self.plot_hist_fit.hist(fitness_data[1],
-                                bins=round(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']),
-                                histtype=u'step')
+
         self.plot_hist_age.hist(age_data[0],
                                 bins=int(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']), range=(0, self.hist_specs['age']['max']),
                                 histtype='step')
 
         self.plot_hist_age.hist(age_data[1],
-                                bins=int(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']),
-                                range=(0, self.hist_specs['age']['max']),
+                                bins=int(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']), range=(0, self.hist_specs['age']['max']),
                                 histtype='step')
 
-        self.plot_hist_age.hist(age_data[1],
-                                bins=round(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']),
-                                histtype=u'step')
         self.plot_hist_weight.hist(weight_data[0],
-                                   bins=round(self.hist_specs['age']['max'] / self.hist_specs['weight']['delta']),
+                                   bins=round(self.hist_specs['age']['max'] / self.hist_specs['weight']['delta']), range=(0, (self.hist_specs['weight']['max'])),
                                    histtype=u'step')
         self.plot_hist_weight.hist(weight_data[1],
                                    bins=int(self.hist_specs['weight']['max'] / self.hist_specs['weight']['delta']), range=(0, (self.hist_specs['weight']['max'])),
-                                   histtype='step')
-
-        self.plot_hist_weight.hist(weight_data[1],
-                                   bins=int(self.hist_specs['weight']['max'] / self.hist_specs['weight']['delta']),
-                                   range=(0, (self.hist_specs['weight']['max'])),
                                    histtype='step')
         plt.pause(1e-6)
 
