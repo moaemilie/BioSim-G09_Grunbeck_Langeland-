@@ -107,6 +107,7 @@ class Graphics:
                                              np.full(num_years, np.nan), 'b-')[0]
         self.line_carn = self.plot_line.plot(np.arange(num_years),
                                              np.full(num_years, np.nan), 'r-')[0]
+        self.plot_line.legend(['Herbivores', 'Carnivores'], loc='upper left', prop={'size': 5})
 
         if self.hist_specs is None:
             self.hist_specs = {'fitness': {'max': 1.0, 'delta': 0.05}, 'age': {'max': 60.0, 'delta': 2},
@@ -159,27 +160,27 @@ class Graphics:
 
         self.plot_hist_fit.hist(fitness_data[0],
                                 bins=int(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']), range=(0, self.hist_specs['fitness']['max']),
-                                histtype='step')
+                                histtype='step', color='b')
 
         self.plot_hist_fit.hist(fitness_data[1],
                                 bins=int(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']), range=(0, self.hist_specs['fitness']['max']),
-                                histtype='step')
+                                histtype='step', color='r')
 
 
         self.plot_hist_age.hist(age_data[0],
                                 bins=int(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']), range=(0, self.hist_specs['age']['max']),
-                                histtype='step')
+                                histtype='step', color='b')
 
         self.plot_hist_age.hist(age_data[1],
                                 bins=int(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']), range=(0, self.hist_specs['age']['max']),
-                                histtype='step')
+                                histtype='step', color='r')
 
         self.plot_hist_weight.hist(weight_data[0],
                                    bins=round(self.hist_specs['age']['max'] / self.hist_specs['weight']['delta']), range=(0, (self.hist_specs['weight']['max'])),
-                                   histtype=u'step')
+                                   histtype=u'step', color='b')
         self.plot_hist_weight.hist(weight_data[1],
                                    bins=int(self.hist_specs['weight']['max'] / self.hist_specs['weight']['delta']), range=(0, (self.hist_specs['weight']['max'])),
-                                   histtype='step')
+                                   histtype='step', color='r')
         plt.pause(1e-6)
 
     def map_plot(self, island_map):
