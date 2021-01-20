@@ -1,1 +1,0 @@
-# Example simulation scripts
