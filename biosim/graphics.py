@@ -51,6 +51,7 @@ class Graphics:
         self.plot_herb_dist = self.fig.add_subplot(3, 3, 4)
         self.plot_carn_dist = self.fig.add_subplot(3, 3, 6)
         self.plot_hist_fit = self.fig.add_subplot(3, 3, 7)
+        self.hist_fit = None
         self.plot_hist_age = self.fig.add_subplot(3, 3, 8)
         self.plot_hist_weight = self.fig.add_subplot(3, 3, 9)
         self.add_col_bar = False
@@ -157,14 +158,25 @@ class Graphics:
         self.plot_hist_weight.cla()
 
         self.plot_hist_fit.hist(fitness_data[0],
-                                bins=round(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']),
-                                histtype=u'step')
+                                bins=int(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']), range=(0, self.hist_specs['fitness']['max']),
+                                histtype='step')
+
+        self.plot_hist_fit.hist(fitness_data[1],
+                                bins=int(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']),
+                                histtype='step')
+
         self.plot_hist_fit.hist(fitness_data[1],
                                 bins=round(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']),
                                 histtype=u'step')
         self.plot_hist_age.hist(age_data[0],
-                                bins=round(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']),
-                                histtype=u'step')
+                                bins=int(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']), range=(0, self.hist_specs['age']['max']),
+                                histtype='step')
+
+        self.plot_hist_age.hist(age_data[1],
+                                bins=int(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']),
+                                range=(0, self.hist_specs['age']['max']),
+                                histtype='step')
+
         self.plot_hist_age.hist(age_data[1],
                                 bins=round(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']),
                                 histtype=u'step')
@@ -172,8 +184,13 @@ class Graphics:
                                    bins=round(self.hist_specs['age']['max'] / self.hist_specs['weight']['delta']),
                                    histtype=u'step')
         self.plot_hist_weight.hist(weight_data[1],
-                                   bins=round(self.hist_specs['age']['max'] / self.hist_specs['weight']['delta']),
-                                   histtype=u'step')
+                                   bins=int(self.hist_specs['weight']['max'] / self.hist_specs['weight']['delta']), range=(0, (self.hist_specs['weight']['max'])),
+                                   histtype='step')
+
+        self.plot_hist_weight.hist(weight_data[1],
+                                   bins=int(self.hist_specs['weight']['max'] / self.hist_specs['weight']['delta']),
+                                   range=(0, (self.hist_specs['weight']['max'])),
+                                   histtype='step')
         plt.pause(1e-6)
 
     def map_plot(self, island_map):
