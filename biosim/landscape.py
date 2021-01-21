@@ -9,8 +9,6 @@ from biosim.animals import Herbivore, Carnivore
 import random
 
 
-
-
 class Landscape:
     """
     Class that contains all the landscapes.
@@ -88,7 +86,7 @@ class Landscape:
         """
         Adds a year for all animals in the population for every time its called.
         """
-        for herb in self.herb_pop: # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
+        for herb in self.herb_pop:  # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
             herb.aging_animal()
             herb.fitness_animal()
 
@@ -100,7 +98,7 @@ class Landscape:
         """
 
         """
-        for herb in self.herb_pop: # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
+        for herb in self.herb_pop:  # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
             herb.weightloss_animal()
             herb.fitness_animal()
 
@@ -124,12 +122,14 @@ class Landscape:
         def herb_newborns(pop):
             return [Herbivore({'species': 'Herbivore',
                                'age': 0,
-                               'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_herb_landscape())]
+                               'weight': parent.babyweight}) for parent in pop if
+                    parent.birth_animal(self.get_num_herb_landscape())]
 
         def carn_newborns(pop):
             return [Carnivore({'species': 'Herbivore',
                                'age': 0,
-                               'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_carn_landscape())]
+                               'weight': parent.babyweight}) for parent in pop if
+                    parent.birth_animal(self.get_num_carn_landscape())]
 
         self.herb_pop.extend(herb_newborns(self.herb_pop))
         self.carn_pop.extend(carn_newborns(self.carn_pop))
@@ -154,17 +154,8 @@ class Landscape:
                     fodder = 0
                 herb.fitness_animal()
 
-        def sort_pop(pop, reverse=False):
-            for j in reversed(range(len(pop))):
-                for k in range(j):
-                    if pop[k + 1].health < pop[k].health and reverse is False:
-                        pop[k], pop[k + 1] = pop[k + 1], pop[k]
-                    elif pop[k + 1].health > pop[k].health and reverse is True:
-                        pop[k], pop[k + 1] = pop[k + 1], pop[k]
-            return pop
-
-        self.herb_pop = sort_pop(self.herb_pop)
-        self.carn_pop = sort_pop(self.carn_pop, reverse=True)
+        self.herb_pop = self.herb_pop.sort(key=lambda x: x.health)
+        self.carn_pop = self.carn_pop.sort(key=lambda x: x.health, reverse=True)
 
         for carn in self.carn_pop:
             carn_fodder = 0
@@ -175,8 +166,8 @@ class Landscape:
                     dead_herb.append(herb)
                     carn_fodder += herb.weight
                     carn.fitness_animal()
-                #elif carn_fodder + herb.weight > carn.default_params["F"]:
-                   # break
+                # elif carn_fodder + herb.weight > carn.default_params["F"]:
+                # break
             self.herb_pop = [herbo for herbo in self.herb_pop if herbo not in dead_herb]
 
     def death_landscape(self):
