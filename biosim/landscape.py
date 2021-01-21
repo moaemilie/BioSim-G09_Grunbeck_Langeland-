@@ -86,11 +86,11 @@ class Landscape:
         """
         Adds a year for all animals in the population for every time its called.
         """
-        for herb in self.herb_pop:  # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
+        for herb in self.herb_pop:
             herb.aging_animal()
             herb.fitness_animal()
 
-        for carn in self.carn_pop:  # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
+        for carn in self.carn_pop:
             carn.aging_animal()
             carn.fitness_animal()
 
@@ -98,11 +98,11 @@ class Landscape:
         """
 
         """
-        for herb in self.herb_pop:  # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
+        for herb in self.herb_pop:
             herb.weightloss_animal()
             herb.fitness_animal()
 
-        for carn in self.carn_pop:  # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
+        for carn in self.carn_pop:
             carn.weightloss_animal()
             carn.fitness_animal()
 
@@ -122,14 +122,12 @@ class Landscape:
         def herb_newborns(pop):
             return [Herbivore({'species': 'Herbivore',
                                'age': 0,
-                               'weight': parent.babyweight}) for parent in pop if
-                    parent.birth_animal(self.get_num_herb_landscape())]
+                               'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_herb_landscape())]
 
         def carn_newborns(pop):
             return [Carnivore({'species': 'Herbivore',
                                'age': 0,
-                               'weight': parent.babyweight}) for parent in pop if
-                    parent.birth_animal(self.get_num_carn_landscape())]
+                               'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_carn_landscape())]
 
         self.herb_pop.extend(herb_newborns(self.herb_pop))
         self.carn_pop.extend(carn_newborns(self.carn_pop))
@@ -166,8 +164,6 @@ class Landscape:
                     dead_herb.append(herb)
                     carn_fodder += herb.weight
                     carn.fitness_animal()
-                # elif carn_fodder + herb.weight > carn.default_params["F"]:
-                # break
             self.herb_pop = [herbo for herbo in self.herb_pop if herbo not in dead_herb]
 
     def death_landscape(self):

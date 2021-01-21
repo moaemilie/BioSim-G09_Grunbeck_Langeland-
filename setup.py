@@ -36,5 +36,5 @@ setup(name='BioSim',
       author='Emilie Giltvedt Langeland & Lina Grünbeck / NMBU',
       requires=['matplotlib', 'numpy', 'random', 'math', 'textwrap', 'subprocess'],
       packages=['biosim'],
-      scripts=['examples/example_simulation.py', 'examples/example_animals.py'],
+      scripts=['examples/example_simulation.py'],
       )

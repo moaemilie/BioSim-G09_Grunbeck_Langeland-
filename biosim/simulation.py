@@ -174,7 +174,6 @@ class BioSim:
             counter += 1
             if counter % vis_years == 0:
                 self.sim_graphics.counter(self.sim_year)
-                age_val = age_list()
                 self.sim_graphics.hist_plot(fitness_list(), age_list(), weight_list())
                 self.sim_graphics.dist_plot()
             if counter % img_years == 0:
