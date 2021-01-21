@@ -88,11 +88,11 @@ class Landscape:
         """
         Adds a year for all animals in the population for every time its called.
         """
-        for herb in self.herb_pop: # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
+        for herb in self.herb_pop:
             herb.aging_animal()
             herb.fitness_animal()
 
-        for carn in self.carn_pop:  # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
+        for carn in self.carn_pop:
             carn.aging_animal()
             carn.fitness_animal()
 
@@ -100,11 +100,11 @@ class Landscape:
         """
 
         """
-        for herb in self.herb_pop: # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
+        for herb in self.herb_pop:
             herb.weightloss_animal()
             herb.fitness_animal()
 
-        for carn in self.carn_pop:  # Vi zipper, null carn -> Null vekttap TAKKET VÆRE AMIR ∑
+        for carn in self.carn_pop:
             carn.weightloss_animal()
             carn.fitness_animal()
 
@@ -175,8 +175,6 @@ class Landscape:
                     dead_herb.append(herb)
                     carn_fodder += herb.weight
                     carn.fitness_animal()
-                #elif carn_fodder + herb.weight > carn.default_params["F"]:
-                   # break
             self.herb_pop = [herbo for herbo in self.herb_pop if herbo not in dead_herb]
 
     def death_landscape(self):
