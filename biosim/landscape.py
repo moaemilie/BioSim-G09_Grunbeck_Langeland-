@@ -152,8 +152,8 @@ class Landscape:
                     fodder = 0
                 herb.fitness_animal()
 
-        self.herb_pop = self.herb_pop.sort(key=lambda x: x.health)
-        self.carn_pop = self.carn_pop.sort(key=lambda x: x.health, reverse=True)
+        self.herb_pop.sort(key=lambda x: x.health)
+        self.carn_pop.sort(key=lambda x: x.health, reverse=True)
 
         for carn in self.carn_pop:
             carn_fodder = 0
