@@ -64,8 +64,6 @@ class Island:
         self.map_rows = len(self.island_map)
         self.map_columns = len(self.island_map[0])
 
-        return self.island_map
-
     def add_animals_island(self, coordinates, new_herbs=None, new_carns=None):
         """
 
@@ -166,7 +164,6 @@ class Island:
         for row in range(self.map_rows):
             for col in range(self.map_columns):
                 self.island_map[row][col].death_landscape()
-        return self.island_map
 
     def move_island(self):
         """

@@ -61,13 +61,13 @@ class BioSim:
         """
         Set parameters for animal species.
         """
-        self.sim_island.set_animal_parameters(species, params)
+        Island.set_animal_parameters(species, params)
 
     def set_landscape_parameters(self, landscape, params):
         """
         Set parameters for landscape type.
         """
-        self.sim_island.set_landscape_parameters(landscape, params)
+        Island.set_landscape_parameters(landscape, params)
 
     def simulate(self, num_years=100, vis_years=1, img_years=None):
         """

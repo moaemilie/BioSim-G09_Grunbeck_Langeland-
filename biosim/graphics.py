@@ -51,7 +51,6 @@ class Graphics:
         self.plot_herb_dist = self.fig.add_subplot(3, 3, 4)
         self.plot_carn_dist = self.fig.add_subplot(3, 3, 6)
         self.plot_hist_fit = self.fig.add_subplot(3, 3, 7)
-        self.hist_fit = None
         self.plot_hist_age = self.fig.add_subplot(3, 3, 8)
         self.plot_hist_weight = self.fig.add_subplot(3, 3, 9)
         self.add_col_bar = False
@@ -166,7 +165,6 @@ class Graphics:
                                 bins=int(self.hist_specs['fitness']['max'] / self.hist_specs['fitness']['delta']), range=(0, self.hist_specs['fitness']['max']),
                                 histtype='step', color='r')
 
-
         self.plot_hist_age.hist(age_data[0],
                                 bins=int(self.hist_specs['age']['max'] / self.hist_specs['age']['delta']), range=(0, self.hist_specs['age']['max']),
                                 histtype='step', color='b')
@@ -178,6 +176,7 @@ class Graphics:
         self.plot_hist_weight.hist(weight_data[0],
                                    bins=round(self.hist_specs['age']['max'] / self.hist_specs['weight']['delta']), range=(0, (self.hist_specs['weight']['max'])),
                                    histtype=u'step', color='b')
+
         self.plot_hist_weight.hist(weight_data[1],
                                    bins=int(self.hist_specs['weight']['max'] / self.hist_specs['weight']['delta']), range=(0, (self.hist_specs['weight']['max'])),
                                    histtype='step', color='r')
@@ -257,9 +256,6 @@ class Graphics:
         """
         Saves graphics to file if file name is given, else saves to default path.
         """
-
-        if self.img_base is None:
-            return
 
         plt.savefig('{base}_{num:05d}.{type}'.format(base=self.img_base,
                                                      num=self.img_no,

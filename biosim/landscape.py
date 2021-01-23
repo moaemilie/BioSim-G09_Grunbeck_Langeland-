@@ -29,7 +29,7 @@ class Landscape:
         for key in params:
             if key != 'f_max':
                 raise KeyError('Invalid parameter name: ' + key)
-        cls.default_f_max = params
+            cls.default_f_max[key] = params[key]
 
     def __init__(self, ini_herbs=[], ini_carns=[]):
         """
@@ -88,11 +88,9 @@ class Landscape:
         """
         for herb in self.herb_pop:
             herb.aging_animal()
-            herb.fitness_animal()
 
         for carn in self.carn_pop:
             carn.aging_animal()
-            carn.fitness_animal()
 
     def weightloss_landscape(self):
         """
@@ -100,18 +98,18 @@ class Landscape:
         """
         for herb in self.herb_pop:
             herb.weightloss_animal()
-            herb.fitness_animal()
 
         for carn in self.carn_pop:
             carn.weightloss_animal()
-            carn.fitness_animal()
 
     def fitness_landscape(self):
         """
         Calculates the fitness for every animal in the population.
         """
-        for herb, carn in zip(self.herb_pop, self.carn_pop):
+        for herb in self.herb_pop:
             herb.fitness_animal()
+
+        for carn in self.carn_pop:
             carn.fitness_animal()
 
     def birth_landscape(self):
@@ -125,7 +123,7 @@ class Landscape:
                                'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_herb_landscape())]
 
         def carn_newborns(pop):
-            return [Carnivore({'species': 'Herbivore',
+            return [Carnivore({'species': 'Carnivore',
                                'age': 0,
                                'weight': parent.babyweight}) for parent in pop if parent.birth_animal(self.get_num_carn_landscape())]
 
@@ -147,7 +145,7 @@ class Landscape:
                 if fodder >= herb.default_params["F"]:
                     herb.eating_animal(herb.default_params["F"])
                     fodder -= herb.default_params["F"]
-                elif fodder < herb.default_params["F"] and fodder != 0:
+                elif fodder < herb.default_params["F"]:
                     herb.eating_animal(fodder)
                     fodder = 0
                 herb.fitness_animal()

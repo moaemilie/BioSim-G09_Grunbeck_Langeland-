@@ -72,7 +72,7 @@ class Animals:
         Float
             with new fitness between 0 and 1
         """
-        if self.weight <= 0:
+        if round(self.weight) <= 0:
             self.health = 0
         else:
             self.health = (1 / (
